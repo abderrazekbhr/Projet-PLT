@@ -18,7 +18,7 @@ int main(int argc,char* argv[])
     Example example;
     example.setX(53);
 
-    cout << "It works !" << endl;
+    cout << "Bonjour, c'est jeux du carte !" << endl;
 
     return 0;
 }
