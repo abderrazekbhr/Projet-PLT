@@ -8,4 +8,5 @@ src/*/*/*.h
 .idea
 .vscode
 *.autosave
+testFucntions
 
