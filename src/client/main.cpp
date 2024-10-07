@@ -9,11 +9,16 @@ void testSFML() {
 // end of test SFML
 
 #include "../shared/state.h"
+
+
+
 using namespace std;
+using namespace state;
 
 int main(int argc,char* argv[])
 {
-    cout << "Bonjour, c'est jeux du carte CHKOBA!" << endl;
+
+    cout << "Bonjour, C'est jeux du carte CHKOBA!" << endl;
 
     state::Game *game=new state::Game();
     game->setState(new state::InitState());
