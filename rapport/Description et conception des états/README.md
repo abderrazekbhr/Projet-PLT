@@ -1,6 +1,6 @@
 ## 1. Description des États
 
-Le jeu est structuré en plusieurs états distincts, chacun représentant une étape du déroulement de la partie. Voici une description détaillée des états qui permettent la progression du jeu :
+Le jeu est structuré en plusieurs états distincts, chacun représentant une étape du déroulement de la partie. Voici une description détaillée des états permettant la progression du jeu :
 
 ### 1.1. États du Jeu
 
@@ -13,9 +13,9 @@ Le jeu est structuré en plusieurs états distincts, chacun représentant une é
   - Le nombre de joueurs : 2 joueurs ou 4 joueurs (2 vs 2).
   - Le nombre de points nécessaires pour terminer la partie : 11 ou 21.
 - Le système mélange les cartes et coupe le paquet.
-- Le joueur (tireur) reçoit une carte :
-  - Il peut choisir de la garder, et dans ce cas, il reçoit deux cartes supplémentaires, les autres joueurs reçoivent également des cartes, puis 4 cartes sont posées sur le tapis.
-  - Si le joueur pose la première carte sur le tapis, trois autres cartes sont ajoutées sur le tapis et chaque joueur reçoit 3 cartes supplémentaires.
+- Le joueur tireur reçoit une carte :
+  - Il peut choisir de la garder, auquel cas il reçoit deux cartes supplémentaires. Les autres joueurs reçoivent également leurs cartes, et 4 cartes sont posées sur le tapis.
+  - S'il décide de poser la première carte sur le tapis, trois autres cartes sont ajoutées sur le tapis et chaque joueur reçoit 3 cartes supplémentaires.
 
 #### 1.1.3. **EnPartie**
 - Cet état représente le déroulement normal du jeu :
@@ -56,4 +56,3 @@ Le diagramme des classes pour la gestion des états du jeu est structuré autour
   - Le tapis peut contenir zéro ou plusieurs cartes à tout moment, en fonction de l'état de la partie.
 - Comportement :
   - Cette classe permet de suivre l'état du tapis et de vérifier si une **chkobba** a été réalisée (qui vaut +1 point), en analysant l'état du tapis après chaque tour de jeu.
-
