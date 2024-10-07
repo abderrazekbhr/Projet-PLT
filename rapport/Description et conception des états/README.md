@@ -38,6 +38,7 @@ Le jeu est structuré en plusieurs états distincts, chacun représentant une é
 
 Le diagramme des classes pour la gestion des états du jeu est structuré autour de plusieurs classes importantes :
 <center><img src="../ressources/image.png" style="border-radius:2em;width:100%;"></center>
+
 #### 2.1.1. **Classe Joueur**
 - Attributs :
   - Identifiant unique du joueur.
