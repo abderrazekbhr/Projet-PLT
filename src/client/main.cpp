@@ -10,6 +10,8 @@ void testSFML() {
 
 #include "../shared/state.h"
 
+
+
 using namespace std;
 using namespace state;
 
