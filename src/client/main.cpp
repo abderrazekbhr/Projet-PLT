@@ -10,6 +10,8 @@ void testSFML() {
 
 #include "../shared/state.h"
 
+
+
 using namespace std;
 
 int main(int argc,char* argv[])
