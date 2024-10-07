@@ -17,8 +17,10 @@ using namespace state;
 
 int main(int argc,char* argv[])
 {
+    Example example;
+    example.setX(53);
 
-    cout << "Bonjour, C'est jeux du carte CHKOBA!" << endl;
+    cout << "Bonjour, c'est jeux du carte CHKOBA!" << endl;
 
     state::Game *game=new state::Game();
     game->setState(new state::InitState());
