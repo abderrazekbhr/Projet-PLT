@@ -53,6 +53,6 @@ Les points sont marqués de deux manières :
 
 Pour réaliser ce jeu, nous aurons besoin des éléments suivants :
 
-<center><img src="./globalResources/ressources.PNG" style="width:100%;"></center>
+<img src="./globalResources/ressources.PNG" style="width:100%;">
 - **Tapis de jeu** : Un plateau sur lequel les cartes seront posées et le jeu se déroulera.
 - **Cartes de jeu** : Les 40 cartes traditionnelles nécessaires pour jouer à la Chkoba, comprenant les quatre enseignes et leurs valeurs respectives.
