@@ -9,9 +9,6 @@ void testSFML() {
 // end of test SFML
 
 #include "../shared/state.h"
-
-
-
 using namespace std;
 
 int main(int argc,char* argv[])
