@@ -3,8 +3,7 @@ build
 cmake-build-debug
 bin
 nbproject
-src/*/*.h
-src/*/*/*.h
+
 .idea
 .vscode
 *.autosave
