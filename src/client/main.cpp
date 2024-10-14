@@ -16,7 +16,7 @@ using namespace state;
 int main(int argc,char* argv[])
 {
 
-    cout << "Bonjour, c'est jeux du carte CHKOBA!" << endl;
+    cout << "Bonjour, C'est jeux du carte CHKOBA!" << endl;
 
     return 0;
 }
