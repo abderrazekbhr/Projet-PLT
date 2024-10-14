@@ -4,17 +4,20 @@
 
 #include <vector>
 #include <memory>
-
-namespace state {
+#include <string>
+namespace state
+{
   class Card;
 }
 
 #include "Card.h"
 
-namespace state {
+namespace state
+{
 
-  /// class Player - 
-  class Player {
+  /// class Player -
+  class Player
+  {
     // Associations
     // Attributes
   private:
@@ -25,16 +28,16 @@ namespace state {
     std::vector<std::unique_ptr<Card>> holdedCard;
     // Operations
   public:
-    Player ();
-    int getIdPlayer ();
-    std::string getName ();
-    void setName (std::string name);
-    int getScore ();
-    ~Player ();
-    int getTotalCollectCard ();
-    int getTotalHoldCard ();
-    void dIsplayCollectCard ();
-    void displayHoldCard ();
+    Player();
+    int getIdPlayer();
+    std::string getName();
+    void setName(std::string name);
+    int getScore();
+    ~Player();
+    int getTotalCollectCard();
+    int getTotalHoldCard();
+    void dIsplayCollectCard();
+    void displayHoldCard();
     // Setters and Getters
   };
 
