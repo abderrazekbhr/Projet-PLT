@@ -19,7 +19,7 @@ namespace state {
     // Associations
     // Attributes
   private:
-    int idPlayer;
+    static int idPlayer;
     std::string name;
     int totalScore;
     std::vector<std::unique_ptr<Card>> collectedCard;
@@ -34,8 +34,9 @@ namespace state {
     ~Player ();
     int getTotalCollectCard ();
     int getTotalHoldCard ();
-    void dIsplayCollectCard ();
+    void displayCollectCard ();
     void displayHoldCard ();
+    int addToScore ();
     // Setters and Getters
   };
 
