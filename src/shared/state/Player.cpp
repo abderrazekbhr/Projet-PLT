@@ -47,9 +47,14 @@ void Player::displayCollectCard ()
 {
     cout << "Collected Cards " << endl;
 
+    if(collectedCard.empty())
+    {
+        cout << "Vous n'avez pas de cartes collectées \n" << endl;
+    }
+
     for(const auto& card : collectedCard)
     {
-       cout << "Card : " << card << endl;        
+       cout << "Card Number : " << to_string(card.getNumberCard()) << " Card Type : "<< to_string(card.getTypeCard()) << endl;        
     }
 }
 
@@ -57,9 +62,14 @@ void Player::displayHoldCard ()
 {
     cout << "Holded Cards " << endl;
 
+    if(holdedCard.empty())
+    {
+        cout << "Vous ne possédez pas de cartes \n" << endl;
+    }
+
     for(const auto& card : holdedCard)
     {
-       cout << "Card : " << card.getTypeCard() << endl;        
+       cout << "Card : " << to_string(card.getTypeCard()) << endl;        
     }
 }
 
