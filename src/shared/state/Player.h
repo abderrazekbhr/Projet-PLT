@@ -2,6 +2,7 @@
 #ifndef STATE__PLAYER__H
 #define STATE__PLAYER__H
 
+#include <string>
 #include <vector>
 #include <memory>
 
@@ -19,7 +20,7 @@ namespace state {
     // Attributes
   private:
     int idPlayer;
-    string name;
+    std::string name;
     int totalScore;
     std::vector<std::unique_ptr<Card>> collectedCard;
     std::vector<std::unique_ptr<Card>> holdedCard;
@@ -27,8 +28,8 @@ namespace state {
   public:
     Player ();
     int getIdPlayer ();
-    string getName ();
-    void setName (string name);
+    std::string getName ();
+    void setName (std::string name);
     int getScore ();
     ~Player ();
     int getTotalCollectCard ();
