@@ -3,15 +3,18 @@
 #include "state.h"
 
 using namespace state;
-using namespace std;    
-
+using namespace std;
+int nbPlayerInstance = 0;
 Player::Player()
 {
-    this->name="Player " + to_string(rand());
-    cout << "\n" << endl; 
+    this->nbPlayerInstance++;
+    this->name = "Player " + to_string(this->idPlayer);
+    this->idPlayer = this->nbPlayerInstance;
+    this->totalScore = 0;
+
 }
 
-//getters
+// getters
 int Player::getIdPlayer()
 {
     return this->idPlayer;
@@ -27,54 +30,57 @@ int Player::getScore()
     return this->totalScore;
 }
 
-int Player::getTotalCollectCard ()
+int Player::getTotalCollectCard()
 {
     return collectedCard.size();
 }
 
-int Player::getTotalHoldCard ()
+int Player::getTotalHoldCard()
 {
     return holdedCard.size();
 }
 
-//Setters
-void Player::setName (std::string name)
+// Setters
+void Player::setName(std::string name)
 {
-    name=this->name;
+    name = this->name;
 }
 
-void Player::displayCollectCard ()
+void Player::displayCollectCard()
 {
     cout << "Collected Cards " << endl;
 
-    if(collectedCard.empty())
+    if (collectedCard.empty())
     {
-        cout << "Vous n'avez pas de cartes collectées \n" << endl;
+        cout << "Vous n'avez pas de cartes collectées \n"
+             << endl;
     }
 
-    for(const auto& card : collectedCard)
+    for (const auto &card : collectedCard)
     {
-       cout << "Card Number : " << to_string(card.getNumberCard()) << " Card Type : "<< to_string(card.getTypeCard()) << endl;        
+        cout << "[" << card.get()->getNumberCard() << "|" << card.get()->getTypeCard() << "] ,";
     }
 }
 
-void Player::displayHoldCard ()
+void Player::displayHoldCard()
 {
     cout << "Holded Cards " << endl;
 
-    if(holdedCard.empty())
+    if (holdedCard.empty())
     {
-        cout << "Vous ne possédez pas de cartes \n" << endl;
+        cout << "Vous ne possédez pas de cartes \n"
+             << endl;
     }
 
-    for(const auto& card : holdedCard)
+    for (const auto &card : holdedCard)
     {
-       cout << "Card : " << to_string(card.getTypeCard()) << endl;        
+        cout << "[" << card.get()->getNumberCard() << "|" << card.get()->getTypeCard() << "] ,";
     }
 }
 
-
-
-
-
-
+Player::~Player()
+{
+    this->collectedCard.clear();
+    this->holdedCard.clear();
+    this->totalScore = 0;
+}
