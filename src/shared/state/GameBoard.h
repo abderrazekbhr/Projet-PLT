@@ -3,7 +3,6 @@
 #define STATE__GAMEBOARD__H
 
 #include <vector>
-#include <memory>
 
 namespace state {
   class Card;
@@ -18,12 +17,17 @@ namespace state {
     // Associations
     // Attributes
   private:
-    std::vector<std::unique_ptr<Card>> cardsOnBoard;
+    int id;
+    static int nbInstanceBoardGame;
+    std::vector<Card> cardsOnBoard;
     // Operations
   public:
     GameBoard ();
     ~GameBoard ();
     int getNumberCardBoard ();
+    int getIdBoard ();
+    void deleteCardFrom (Card card);
+    void addCardToBoard ( , Card card);
     // Setters and Getters
   };
 

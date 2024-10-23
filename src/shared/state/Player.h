@@ -17,24 +17,30 @@ namespace state {
   class Player {
     // Associations
     // Attributes
+  public:
+    bool isYourTurn;
   private:
     int idPlayer;
     string name;
     int totalScore;
     std::vector<std::unique_ptr<Card>> collectedCard;
     std::vector<std::unique_ptr<Card>> holdedCard;
+    static int nbPlayerInstance;
     // Operations
   public:
     Player ();
     int getIdPlayer ();
-    string getName ();
-    void setName (string name);
-    int getScore ();
+    std::string getName ();
+    void setName (std::string name);
     ~Player ();
     int getTotalCollectCard ();
     int getTotalHoldCard ();
-    void dIsplayCollectCard ();
+    void displayCollectCard ();
     void displayHoldCard ();
+    Card selectCard ();
+    void playCard (std::vector<Card> selectedCard);
+    void addToScore (int points);
+    int getScore ();
     // Setters and Getters
   };
 
