@@ -2,6 +2,7 @@
 #ifndef STATE__PLAYER__H
 #define STATE__PLAYER__H
 
+#include <string>
 #include <vector>
 #include <memory>
 
@@ -21,7 +22,7 @@ namespace state {
     bool isYourTurn;
   private:
     int idPlayer;
-    string name;
+    std::string name;
     int totalScore;
     std::vector<std::unique_ptr<Card>> collectedCard;
     std::vector<std::unique_ptr<Card>> holdedCard;
@@ -32,15 +33,16 @@ namespace state {
     int getIdPlayer ();
     std::string getName ();
     void setName (std::string name);
-    ~Player ();
-    int getTotalCollectCard ();
-    int getTotalHoldCard ();
-    void displayCollectCard ();
+    std::vector<std::unique_ptr<Card>> getCollectCard ();
+    std::vector<std::unique_ptr<Card>> getHoldCard ();
+    Card selectCardFromHand (int cardIndex);
+    Card selectCardFromBoard (int cardIndex);
+    void play ();
     void displayHoldCard ();
-    Card selectCard ();
-    void playCard (std::vector<Card> selectedCard);
+    void displayCollectCard ();
     void addToScore (int points);
     int getScore ();
+    ~Player ();
     // Setters and Getters
   };
 

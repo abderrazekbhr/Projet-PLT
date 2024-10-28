@@ -11,7 +11,6 @@ Player::Player()
     this->name = "Player " + to_string(this->idPlayer);
     this->idPlayer = this->nbPlayerInstance;
     this->totalScore = 0;
-
 }
 
 // getters
@@ -77,7 +76,18 @@ void Player::displayHoldCard()
         cout << "[" << card.get()->getNumberCard() << "|" << card.get()->getTypeCard() << "] ,";
     }
 }
+void Player::addToScore(int points)
+{
+    this->totalScore += points;
+}
 
+void Player::playCard(std::vector<Card> selectedCard)
+{
+    for (const auto &card : selectedCard)
+    {
+        this->holdedCard.push_back(card);
+    }
+}
 Player::~Player()
 {
     this->collectedCard.clear();
