@@ -3,8 +3,8 @@
 #define STATE__CARD__H
 
 
-#include "NumberCard.h"
 #include "TypeCard.h"
+#include "NumberCard.h"
 
 namespace state {
 
@@ -13,11 +13,11 @@ namespace state {
     // Associations
     // Attributes
   private:
-    int idCard;
+    TypeCard typeOfCard;
+    NumberCard numberOfCard;
     // Operations
   public:
-    Card ();
-    int  getIdCard ();
+    Card (NumberCard number, TypeCard type);
     NumberCard getNumberCard ();
     TypeCard getTypeCard ();
     ~Card ();

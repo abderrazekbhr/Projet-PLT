@@ -2,11 +2,14 @@
 #ifndef STATE__WAITSTATE__H
 #define STATE__WAITSTATE__H
 
+#include <vector>
 
 namespace state {
+  class Player;
   class State;
 }
 
+#include "Player.h"
 #include "State.h"
 
 namespace state {
@@ -17,7 +20,7 @@ namespace state {
   public:
     WaitState ();
     ~WaitState ();
-    void handleRequest ();
+    void handleRequest (std::vector<Player> players);
     // Setters and Getters
   };
 

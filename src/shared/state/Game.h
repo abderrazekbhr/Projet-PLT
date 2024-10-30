@@ -3,14 +3,15 @@
 #define STATE__GAME__H
 
 #include <vector>
-#include <memory>
 
 namespace state {
-  class State;
   class Player;
+  class State;
+  class GameBoard;
 }
 
 #include "Player.h"
+#include "GameBoard.h"
 
 namespace state {
 
@@ -19,14 +20,17 @@ namespace state {
     // Associations
     // Attributes
   private:
-    int idGame;
-    std::vector<std::unique_ptr<Player>> players;
+    std::vector<Player> players;
+    static GameBoard * board;
+    State *  state;
     // Operations
   public:
     Game ();
-    int getIdGame ();
     void setState (State * state);
     void request ();
+    void addPlayer (Player & player);
+    void displayPlayers ();
+    static GameBoard * getGameBoard ();
     ~Game ();
     // Setters and Getters
   };
