@@ -2,14 +2,22 @@
 #include "../state.h"
 #include "Game.h"
 #include <iostream>
+
 using namespace std;
 using namespace state;
 
 Game::Game() {
     state = new WaitState();
     board = new GameBoard();
+    for (int type = treffle; type <= coeur; ++type) {
+        for (int number = un; number <= roi; ++number) {
+            Card card(static_cast<NumberCard>(number), static_cast<TypeCard>(type));
+            addCard(card);
+        }
+    }
 
 }
+
 
 void Game::setState(State* state) {
     delete this->state;
@@ -29,7 +37,12 @@ void Game::addPlayer(Player& player) {
     players.push_back(player);
 }
 
-GameBoard* Game::getGameBoard() {
+void Game::addCard(Card &card) {
+    listOfCards.push_back(card);
+}
+
+
+GameBoard * Game::getGameBoard() {
     return board;
 }
 
@@ -40,4 +53,16 @@ void Game::displayPlayers() {
         players[i].displayHoldCard();
         players[i].displayCollectCard();
     }
+}
+
+int Game::getMaxScore() {
+    return maxScore;
+}
+
+void Game::setMaxScore(int maxScore) {
+    Game::maxScore = maxScore;
+}
+
+std::vector<Card> Game::getListOfCards() {
+    return listOfCards;
 }

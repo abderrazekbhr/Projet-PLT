@@ -20,7 +20,7 @@ namespace state {
   public:
     WaitState ();
     ~WaitState ();
-    void handleRequest (std::vector<Player> players);
+    void handleRequest (std::vector<Player> & players);
     // Setters and Getters
   };
 

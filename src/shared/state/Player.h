@@ -41,6 +41,7 @@ namespace state {
     void displayCollectCard ();
     void addToScore (int points);
     int getScore ();
+    void setScore (int totalScore);
     ~Player ();
     // Setters and Getters
   };

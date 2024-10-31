@@ -14,7 +14,6 @@ namespace state {
 
   /// class GameBoard - 
   class GameBoard {
-    // Associations
     // Attributes
   private:
     std::vector<Card> cardsOnBoard;

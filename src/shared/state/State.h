@@ -19,7 +19,7 @@ namespace state {
     // Associations
     // Operations
   public:
-    virtual void handleRequest (std::vector<Player> players);
+    virtual void handleRequest (std::vector<Player> & players);
     virtual ~State ();
     // Setters and Getters
   };

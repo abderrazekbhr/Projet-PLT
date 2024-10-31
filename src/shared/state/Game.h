@@ -7,10 +7,12 @@
 namespace state {
   class Player;
   class State;
+  class Card;
   class GameBoard;
 }
 
 #include "Player.h"
+#include "Card.h"
 #include "GameBoard.h"
 
 namespace state {
@@ -20,17 +22,23 @@ namespace state {
     // Associations
     // Attributes
   private:
-    std::vector<Player> players;
+    static std::vector<Player> players;
     static GameBoard * board;
     State *  state;
+    static int maxScore;
+    static std::vector<Card> listOfCards;
     // Operations
   public:
     Game ();
     void setState (State * state);
+    static int getMaxScore ();
+    static void setMaxScore (int maxScore);
     void request ();
-    void addPlayer (Player & player);
-    void displayPlayers ();
+    static void addPlayer (Player & player);
+    static void addCard (Card & card);
+    static void displayPlayers ();
     static GameBoard * getGameBoard ();
+    static std::vector<Card> getListOfCards ();
     ~Game ();
     // Setters and Getters
   };
