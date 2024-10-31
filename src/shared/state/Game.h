@@ -3,15 +3,16 @@
 #define STATE__GAME__H
 
 #include <vector>
-#include <memory>
 
 namespace state {
-  class State;
   class Player;
+  class State;
+  class Card;
   class GameBoard;
 }
 
 #include "Player.h"
+#include "Card.h"
 #include "GameBoard.h"
 
 namespace state {
@@ -20,23 +21,25 @@ namespace state {
   class Game {
     // Associations
     // Attributes
-  public:
-    short maxScore;
-    short maxNumberOfPlayers;
   private:
-    int idGame;
-    std::vector<std::unique_ptr<Player>> players;
-    static int nbInstanceOfGame;
-    static GameBoard board;
+    static std::vector<Player> players;
+    static GameBoard * board;
+    State *  state;
+    static int maxScore;
+    static std::vector<Card> listOfCards;
     // Operations
   public:
     Game ();
-    int getIdGame ();
     void setState (State * state);
+    static int getMaxScore ();
+    static void setMaxScore (int maxScore);
     void request ();
+    static void addPlayer (Player & player);
+    static void addCard (Card & card);
+    static void displayPlayers ();
+    static GameBoard * getGameBoard ();
+    static std::vector<Card> getListOfCards ();
     ~Game ();
-    void addPlayer (Player player);
-    static GameBoard getGameBoard ();
     // Setters and Getters
   };
 

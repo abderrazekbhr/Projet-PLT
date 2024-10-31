@@ -2,11 +2,14 @@
 #ifndef STATE__STATE__H
 #define STATE__STATE__H
 
+#include <vector>
 
 namespace state {
+  class Player;
   class Game;
 }
 
+#include "Player.h"
 #include "Game.h"
 
 namespace state {
@@ -16,9 +19,8 @@ namespace state {
     // Associations
     // Operations
   public:
-    State ();
-    void handleRequest ();
-    ~State ();
+    virtual void handleRequest (std::vector<Player> & players);
+    virtual ~State ();
     // Setters and Getters
   };
 

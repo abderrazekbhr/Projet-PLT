@@ -2,11 +2,14 @@
 #ifndef STATE__INITSTATE__H
 #define STATE__INITSTATE__H
 
+#include <vector>
 
 namespace state {
+  class Player;
   class State;
 }
 
+#include "Player.h"
 #include "State.h"
 
 namespace state {
@@ -17,7 +20,7 @@ namespace state {
   public:
     InitState ();
     ~InitState ();
-    void handleRequest ();
+    void handleRequest (std::vector<Player> & players);
     // Setters and Getters
   };
 

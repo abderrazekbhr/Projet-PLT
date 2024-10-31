@@ -13,14 +13,11 @@ namespace state {
     // Associations
     // Attributes
   private:
-    int idCard;
     TypeCard typeOfCard;
     NumberCard numberOfCard;
-    static int nbCardInstrance;
     // Operations
   public:
     Card (NumberCard number, TypeCard type);
-    int  getIdCard ();
     NumberCard getNumberCard ();
     TypeCard getTypeCard ();
     ~Card ();
