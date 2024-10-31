@@ -2,22 +2,24 @@
 #ifndef STATE__ROUNDSTATE__H
 #define STATE__ROUNDSTATE__H
 
+#include <vector>
+#include <memory>
 
 namespace state {
-  class State;
+  class Player;
 }
 
-#include "State.h"
+#include "Player.h"
 
 namespace state {
 
   /// class RoundState - 
-  class RoundState : public state::State {
+  class RoundState {
     // Operations
   public:
     RoundState ();
     ~RoundState ();
-    void handleRequest ();
+    void handleRequest (std::vector<std::unique_ptr<Player>> players);
     // Setters and Getters
   };
 

@@ -20,23 +20,21 @@ namespace state {
   class Game {
     // Associations
     // Attributes
-  public:
-    short maxScore;
-    short maxNumberOfPlayers;
   private:
     int idGame;
     std::vector<std::unique_ptr<Player>> players;
     static int nbInstanceOfGame;
     static GameBoard board;
+    State *  state;
     // Operations
   public:
     Game ();
     int getIdGame ();
     void setState (State * state);
     void request ();
-    ~Game ();
-    void addPlayer (Player player);
+    void addPlayer (std::unique_ptr<Player> player);
     static GameBoard getGameBoard ();
+    ~Game ();
     // Setters and Getters
   };
 

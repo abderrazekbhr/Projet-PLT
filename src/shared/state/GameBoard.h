@@ -24,10 +24,10 @@ namespace state {
   public:
     GameBoard ();
     ~GameBoard ();
-    int getNumberCardBoard ();
+    std::vector<Card> getCardBoard ();
     int getIdBoard ();
     void deleteCardFrom (Card card);
-    void addCardToBoard ( , Card card);
+    void addCardToBoard (Card card);
     // Setters and Getters
   };
 

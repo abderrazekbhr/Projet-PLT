@@ -2,22 +2,24 @@
 #ifndef STATE__DISTRIBUTECARDSTATE__H
 #define STATE__DISTRIBUTECARDSTATE__H
 
+#include <vector>
+#include <memory>
 
 namespace state {
-  class State;
+  class Player;
 }
 
-#include "State.h"
+#include "Player.h"
 
 namespace state {
 
   /// class DistributeCardState - 
-  class DistributeCardState : public state::State {
+  class DistributeCardState {
     // Operations
   public:
     DistributeCardState ();
     ~DistributeCardState ();
-    void handleRequest ();
+    void handleRequest (std::vector<std::unique_ptr<Player>> players);
     // Setters and Getters
   };
 

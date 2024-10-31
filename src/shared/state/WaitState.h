@@ -2,22 +2,24 @@
 #ifndef STATE__WAITSTATE__H
 #define STATE__WAITSTATE__H
 
+#include <vector>
+#include <memory>
 
 namespace state {
-  class State;
+  class Player;
 }
 
-#include "State.h"
+#include "Player.h"
 
 namespace state {
 
   /// class WaitState - 
-  class WaitState : public state::State {
+  class WaitState {
     // Operations
   public:
     WaitState ();
     ~WaitState ();
-    void handleRequest ();
+    void handleRequest (std::vector<std::unique_ptr<Player>> players);
     // Setters and Getters
   };
 

@@ -2,22 +2,24 @@
 #ifndef STATE__COUNTSCORESTATE__H
 #define STATE__COUNTSCORESTATE__H
 
+#include <vector>
+#include <memory>
 
 namespace state {
-  class State;
+  class Player;
 }
 
-#include "State.h"
+#include "Player.h"
 
 namespace state {
 
   /// class CountScoreState - 
-  class CountScoreState : public state::State {
+  class CountScoreState {
     // Operations
   public:
     CountScoreState ();
     ~CountScoreState ();
-    void handleRequest ();
+    void handleRequest (std::vector<std::unique_ptr<Player>> players);
     // Setters and Getters
   };
 

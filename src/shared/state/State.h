@@ -2,23 +2,23 @@
 #ifndef STATE__STATE__H
 #define STATE__STATE__H
 
+#include <vector>
+#include <memory>
 
 namespace state {
-  class Game;
+  class Player;
 }
 
-#include "Game.h"
+#include "Player.h"
 
 namespace state {
 
   /// class State - 
   class State {
-    // Associations
     // Operations
   public:
-    State ();
-    void handleRequest ();
-    ~State ();
+    virtual void handleRequest (std::vector<std::unique_ptr<Player>> players);
+    virtual ~State ();
     // Setters and Getters
   };
 

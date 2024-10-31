@@ -2,22 +2,24 @@
 #ifndef STATE__INITSTATE__H
 #define STATE__INITSTATE__H
 
+#include <vector>
+#include <memory>
 
 namespace state {
-  class State;
+  class Player;
 }
 
-#include "State.h"
+#include "Player.h"
 
 namespace state {
 
   /// class InitState - 
-  class InitState : public state::State {
+  class InitState {
     // Operations
   public:
     InitState ();
     ~InitState ();
-    void handleRequest ();
+    void handleRequest (std::vector<std::unique_ptr<Player>> players);
     // Setters and Getters
   };
 
