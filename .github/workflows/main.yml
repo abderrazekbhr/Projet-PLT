@@ -6,7 +6,7 @@ name: PLT build
 # events but only for the master branch
 on:
   push:
-    branches: [ main ]
+    branches: [ main,abderrazek ]
   pull_request:
     branches: [ main ]
 
