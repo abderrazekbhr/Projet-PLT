@@ -16,6 +16,7 @@ namespace state {
 
   /// class State - 
   class State {
+    // Associations
     // Operations
   public:
     virtual void handleRequest (std::vector<Player> & players);

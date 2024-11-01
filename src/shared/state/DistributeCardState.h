@@ -15,7 +15,7 @@ namespace state {
 namespace state {
 
   /// class DistributeCardState - 
-  class DistributeCardState {
+  class DistributeCardState : public state::State {
     // Operations
   public:
     DistributeCardState ();

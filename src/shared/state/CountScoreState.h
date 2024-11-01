@@ -15,7 +15,7 @@ namespace state {
 namespace state {
 
   /// class CountScoreState - 
-  class CountScoreState {
+  class CountScoreState : public state::State {
     // Operations
   public:
     CountScoreState ();

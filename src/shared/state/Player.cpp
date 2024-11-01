@@ -113,7 +113,7 @@ vector<Card> Player::selectCardFromBoard()
     set<int> cardIndex;
     bool needToSelect = true;
     string answer;
-    int boardSize = Game::getGameBoard().getCardBoard().size();
+    int boardSize = Game::getGameBoard()->getCardBoard().size();
     if (boardSize == 0)
     {
         cout << "*********** The board is empty ***********" << endl;
@@ -121,7 +121,7 @@ vector<Card> Player::selectCardFromBoard()
     }
 
     cout << "*********** Choose a card index from the board between 1 and " << boardSize << " ***********" << endl;
-    for (Card &card : Game::getGameBoard().getCardBoard()) // Use const reference
+    for (Card &card : Game::getGameBoard()->getCardBoard()) // Use const reference
     {
         cout << "[" << card.getNumberCard() << "|" << card.getTypeCard() << "], ";
     }
@@ -143,7 +143,7 @@ vector<Card> Player::selectCardFromBoard()
         }
         cardIndex.insert(index); // Insert directly
         
-        selectedCard.push_back(Game::getGameBoard().getCardBoard()[index]);
+        selectedCard.push_back(Game::getGameBoard()->getCardBoard()[index]);
     }
 
     return selectedCard; // Returns the selected cards
@@ -167,13 +167,13 @@ void Player::play()
         {
             collectedCard.push_back(card);
             removeCardFromHand(card);
-            Game::getGameBoard().deleteCardFrom(selectedCard[0]);
+            Game::getGameBoard()->deleteCard(selectedCard[0]);
             break;
         }
 
         else if (selectedCard.empty())
         {
-            Game::getGameBoard().addCardToBoard(card);
+            Game::getGameBoard()->addCardToBoard(card);
             removeCardFromHand(card);
             break;
         }
@@ -192,7 +192,7 @@ void Player::play()
                 for (const Card &cd : selectedCard)
                 {
                     collectedCard.push_back(cd);
-                    Game::getGameBoard().deleteCardFrom(cd);
+                    Game::getGameBoard()->deleteCard(cd);
                 }
                 break;
             }

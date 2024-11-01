@@ -22,8 +22,9 @@ namespace state {
     GameBoard ();
     ~GameBoard ();
     int getNumberCardBoard ();
-    void deleteCardFrom (Card card);
+    void deleteCard (Card card);
     void addCardToBoard (Card card);
+    std::vector<Card> getCardBoard ( );
     // Setters and Getters
   };
 

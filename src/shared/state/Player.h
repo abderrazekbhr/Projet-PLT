@@ -22,7 +22,6 @@ namespace state {
     int totalScore;
     std::vector<Card> collectedCard;
     std::vector<Card> holdedCard;
-    static int nbPlayerInstance;
     // Operations
   public:
     Player ();
@@ -37,7 +36,6 @@ namespace state {
     int getScore ();
     void addHoldedCard (Card card);
     ~Player ();
-    
   private:
     Card selectCardFromHand ();
     std::vector<Card> selectCardFromBoard ();

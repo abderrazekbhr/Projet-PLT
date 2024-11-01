@@ -15,7 +15,7 @@ namespace state {
 namespace state {
 
   /// class WaitState - 
-  class WaitState {
+  class WaitState : public state::State {
     // Operations
   public:
     WaitState ();
