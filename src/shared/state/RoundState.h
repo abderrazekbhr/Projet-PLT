@@ -15,7 +15,7 @@ namespace state {
 namespace state {
 
   /// class RoundState - 
-  class RoundState : public state::State {
+  class RoundState {
     // Operations
   public:
     RoundState ();

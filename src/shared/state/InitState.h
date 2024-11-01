@@ -15,7 +15,7 @@ namespace state {
 namespace state {
 
   /// class InitState - 
-  class InitState : public state::State {
+  class InitState {
     // Operations
   public:
     InitState ();
