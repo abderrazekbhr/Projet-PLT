@@ -13,16 +13,16 @@ namespace state {
     // Associations
     // Attributes
   private:
-    int idCard;
+    //int idCard;
     TypeCard typeOfCard;
     NumberCard numberOfCard;
     static int nbCardInstrance;
     // Operations
   public:
     Card (NumberCard number, TypeCard type);
-    int  getIdCard ();
-    NumberCard getNumberCard ();
-    TypeCard getTypeCard ();
+    NumberCard getNumberCard () const;
+    TypeCard getTypeCard () const;
+    bool operator==(const Card& other) const;
     ~Card ();
     // Setters and Getters
   };
