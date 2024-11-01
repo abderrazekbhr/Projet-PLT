@@ -8,19 +8,12 @@
 using namespace state;
 using namespace std;
 
-int nbPlayerInstance = 0;
-
 Player::Player()
 {
-    nbPlayerInstance++;
-    idPlayer = nbPlayerInstance;
-    name = "Player " + to_string(idPlayer);
+    cout << "Enter your name:" << endl;
+    cin >> name;
     totalScore = 0;
 }
-
-// Getters
-// Returns the ID of the player
-int Player::getIdPlayer() { return idPlayer; }
 
 // Returns the name of the player
 string Player::getName() { return name; }
@@ -36,7 +29,7 @@ std::vector<Card> Player::getHoldCard() { return holdedCard; }
 
 // Setters
 // Sets the name of the player
-void Player::setName(std::string name) { this->name = std::move(name); }
+void Player::setName(std::string name) { this->name = name; }
 
 // Displays the collected cards of the player
 void Player::displayCollectCard()
@@ -44,31 +37,37 @@ void Player::displayCollectCard()
     cout << "Collected Cards:" << endl;
     if (collectedCard.empty())
     {
-        cout << "Vous n'avez pas de cartes collectées\n" << endl;
+        cout << "You don't have any collected cards." << endl;
     }
     else
     {
-        for ( Card& card : collectedCard) // Use const reference for efficiency
+        for (Card &card : collectedCard) // Use const reference for efficiency
         {
-            cout << "[" << card.getNumberCard() << "|" << card.getTypeCard() << "] ,";
+            cout << "[" << card.getNumberCard() << "|" << card.getTypeCard() << "], ";
         }
         cout << endl;
     }
 }
 
+// Adds a card to the list of collected cards
+void Player::addHoldedCard(Card card)
+{
+    holdedCard.push_back(card);
+}
+
 // Displays the cards held in hand by the player
 void Player::displayHoldCard()
 {
-    cout << "*********** Les cartes dans ta main: ***********" << endl;
+    cout << "*********** Your Holded Cards: ***********" << endl;
     if (holdedCard.empty())
     {
-        cout << "*********** Vous ne possédez pas de cartes ***********\n" << endl;
+        cout << "*********** You don't have any cards in your hand. ***********" << endl;
     }
     else
     {
-        for ( Card& card : holdedCard) // Use const reference for efficiency
+        for (Card &card : holdedCard) // Use const reference for efficiency
         {
-            cout << "[" << card.getNumberCard() << "|" << card.getTypeCard() << "] ,";
+            cout << "[" << card.getNumberCard() << "|" << card.getTypeCard() << "], ";
         }
         cout << endl;
     }
@@ -83,11 +82,10 @@ Card Player::selectCardFromHand()
     int cardIndex = -1;
     int size = holdedCard.size();
     displayHoldCard();
-    cout << "*********** Choisissez une carte à jouer entre 1 et " << size << " ***********" << endl;
 
     while (!(cin >> cardIndex) || cardIndex < 1 || cardIndex > size)
     {
-        cout << "*********** Entrez un index valide entre 1 et " << size << " ***********" << endl;
+        cout << "*********** Choose a card index from your hand between 1 and " << size << " ***********" << endl;
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
@@ -99,7 +97,7 @@ Card Player::selectCardFromHand()
 void Player::removeCardFromHand(Card card)
 {
     auto it = std::remove_if(holdedCard.begin(), holdedCard.end(),
-                             [&]( Card& c) // Use const reference
+                             [&](Card &c)
                              {
                                  return c.getNumberCard() == card.getNumberCard() &&
                                         c.getTypeCard() == card.getTypeCard();
@@ -116,25 +114,30 @@ vector<Card> Player::selectCardFromBoard()
     bool needToSelect = true;
     string answer;
     int boardSize = Game::getGameBoard().getCardBoard().size();
-
-    cout << "*********** Choisissez les cartes de board: ***********" << endl;
-    for ( Card& card : Game::getGameBoard().getCardBoard()) // Use const reference
+    if (boardSize == 0)
     {
-        cout << "[" << card.getNumberCard() << "|" << card.getTypeCard() << "] ,";
+        cout << "*********** The board is empty ***********" << endl;
+        return selectedCard;
+    }
+
+    cout << "*********** Choose a card index from the board between 1 and " << boardSize << " ***********" << endl;
+    for (Card &card : Game::getGameBoard().getCardBoard()) // Use const reference
+    {
+        cout << "[" << card.getNumberCard() << "|" << card.getTypeCard() << "], ";
     }
     cout << endl;
 
     while (needToSelect)
     {
-        cout << "*********** Voulez-vous selectionner une carte? (oui/non) ***********" << endl;
+        cout << "*********** Do you want to choose any card from the board? (yes/no) ***********" << endl;
         cin >> answer;
-        if (answer == "non") break;
+        if (answer == "no")
+            break;
 
         int index = -1;
         while (!(cin >> index) || cardIndex.count(index) || index < 0 || index >= boardSize)
         {
-            cout << "*********** Entrez un index valide entre 0 et " << boardSize - 1
-                 << " (non déjà sélectionné) ***********" << endl;
+            cout << "*********** Enter a valid index between 0 and " << boardSize - 1 << " (not already selected) ***********" << endl;
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
@@ -149,41 +152,24 @@ vector<Card> Player::selectCardFromBoard()
 void Player::play()
 {
     cout << "-----------------------------------" << endl;
-    cout << "C'est le tour de " << name << endl;
+    cout << "It's " << name << "'s turn." << endl;
 
     while (true)
     {
-        cout << "*********** sélectionnez une carte de votre main pour jouer ***********" << endl;
+        cout << "*********** Select a card from your hand to play ***********" << endl;
         Card card = selectCardFromHand();
-        cout << "*********** sélectionnez une carte du board pour jouer ***********" << endl;
+        cout << "*********** Select cards from the board to play ***********" << endl;
         vector<Card> selectedCard = selectCardFromBoard();
         int cardNumber = card.getNumberCard();
 
-        bool cardExistInBoard = std::any_of(Game::getGameBoard().getCardBoard().begin(),
-                                            Game::getGameBoard().getCardBoard().end(),
-                                            [&]( Card& cd) // Use const reference
-                                            { return cd.getNumberCard() == cardNumber; });
-
-        if (cardExistInBoard)
+        if (selectedCard.size() == 1 && selectedCard[0].getNumberCard() == cardNumber)
         {
-            if (selectedCard.size() == 1 && selectedCard[0].getNumberCard() == cardNumber)
-            {
-                collectedCard.push_back(card);
-                removeCardFromHand(card);
-                Game::getGameBoard().deleteCardFrom(selectedCard[0]);
-
-                if (holdedCard.empty())
-                {
-                    cout << "*********** Vous avez une CHKOBA ***********" << endl;
-                    addToScore(1);
-                }
-                break;
-            }
-            else
-            {
-                cout << "*********** Le nombre de cette carte est déjà dans le board; il faut le prendre. ***********" << endl;
-            }
+            collectedCard.push_back(card);
+            removeCardFromHand(card);
+            Game::getGameBoard().deleteCardFrom(selectedCard[0]);
+            break;
         }
+
         else if (selectedCard.empty())
         {
             Game::getGameBoard().addCardToBoard(card);
@@ -193,7 +179,7 @@ void Player::play()
         else
         {
             int sum = 0;
-            for ( Card& cd : selectedCard) // Use const reference
+            for (Card &cd : selectedCard)
             {
                 sum += cd.getNumberCard();
             }
@@ -202,7 +188,7 @@ void Player::play()
             {
                 collectedCard.push_back(card);
                 removeCardFromHand(card);
-                for ( Card& cd : selectedCard) // Use const reference
+                for (const Card &cd : selectedCard)
                 {
                     collectedCard.push_back(cd);
                     Game::getGameBoard().deleteCardFrom(cd);
@@ -211,7 +197,7 @@ void Player::play()
             }
             else
             {
-                cout << "*********** La somme des cartes sélectionnées n'est pas égale à la carte choisie. ***********" << endl;
+                cout << "*********** The sum of selected cards does not match the chosen card number. ***********" << endl;
             }
         }
     }
