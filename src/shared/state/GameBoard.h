@@ -25,6 +25,7 @@ namespace state {
     void deleteCard (Card card);
     void addCardToBoard (Card card);
     std::vector<Card> getCardBoard ( );
+    void displayCardsOnBoard ();
     // Setters and Getters
   };
 
