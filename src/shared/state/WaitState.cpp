@@ -8,7 +8,7 @@ state::WaitState::WaitState() {
 state::WaitState::~WaitState() {
     std::cout << "WaitState destroyed." << std::endl;
 }
-
+// create first player and his waiting for the game
 void state::WaitState::handleRequest(std::vector<Player> &players) {
     Player* newPlayer = new Player();
     // Add the new player to the game

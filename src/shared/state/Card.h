@@ -3,6 +3,10 @@
 #define STATE__CARD__H
 
 
+namespace state {
+  class Card;
+}
+
 #include "TypeCard.h"
 #include "NumberCard.h"
 
@@ -20,6 +24,7 @@ namespace state {
     Card (NumberCard number, TypeCard type);
     NumberCard getNumberCard ();
     TypeCard getTypeCard ();
+    bool operator== (Card card);
     ~Card ();
     // Setters and Getters
   };

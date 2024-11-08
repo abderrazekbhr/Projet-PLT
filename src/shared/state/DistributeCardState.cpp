@@ -14,18 +14,18 @@ DistributeCardState::~DistributeCardState() {
 }
 
 void DistributeCardState::handleRequest(std::vector<Player> &players) {
-
+//Before dealing the cards, we must check if there are still cards left in the initial deck. If not, the game is over
     if (Game::getListOfCards().size() < players.size() * 3) {
-        std::cerr << " No more cards in the deck to distribute to each player. Round over." << std::endl;
+        std::cerr << " No more cards in the deck to distribute to each player. Game over." << std::endl;
         return;
     }
 
-
+//Distribute 3 cards to each player
     for (auto& player : players) {
         for (int i = 0; i < 3; ++i) {
 
             Card card = Game::getListOfCards().back();
-            player.getHoldCard().push_back(card);
+            player.addHoldedCard(card);
 
             Game::getListOfCards().pop_back();
         }
