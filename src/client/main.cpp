@@ -13,12 +13,9 @@ void testSFML() {
 
 
 using namespace std;
-using namespace state;
 
 int main(int argc,char* argv[])
 {
-    Example example;
-    example.setX(53);
 
     cout << "Bonjour, c'est jeux du carte CHKOBA!" << endl;
 
