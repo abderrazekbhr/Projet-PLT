@@ -34,7 +34,6 @@ namespace state {
     static int getMaxScore ();
     static void setMaxScore (int maxScore);
     void request ();
-    static void CalculScorePlayer (Player & player);
     static void addPlayer (Player & player);
     static void addCard (Card & card);
     static void displayPlayers ();
