@@ -14,4 +14,5 @@
 #include "state/RoundState.h"
 #include "state/CountScoreState.h"
 #include "state/DistributeCardState.h"
+#include "state/EndGameState.h"
 #endif

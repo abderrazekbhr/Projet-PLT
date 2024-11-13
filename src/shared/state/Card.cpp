@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
-#include "state.h"
-
+#include "../state.h"
 using namespace state;
 using namespace std;
 
@@ -11,22 +10,21 @@ Card::Card(NumberCard number, TypeCard type)
     this->numberOfCard = number;
 }
 
-NumberCard Card::getNumberCard() 
+NumberCard Card::getNumberCard()
 {
     return this->numberOfCard;
 }
 
-TypeCard Card::getTypeCard() 
+TypeCard Card::getTypeCard()
 {
     return this->typeOfCard;
 }
 
 bool Card::operator==(Card other)
 {
-    return (this->getNumberCard()==other.numberOfCard && this->getTypeCard() == other.typeOfCard);
-} 
+    return (this->getNumberCard() == other.numberOfCard && this->getTypeCard() == other.typeOfCard);
+}
 
 Card::~Card()
 {
-
 }

@@ -142,7 +142,6 @@ vector<Card> Player::selectCardFromBoard()
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
         cardIndex.insert(index); // Insert directly
-        
         selectedCard.push_back(Game::getGameBoard()->getCardBoard()[index]);
     }
 
