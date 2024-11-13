@@ -16,7 +16,7 @@ namespace state
 
     int GameBoard::getNumberCardBoard()
     {
-        this->cardsOnBoard.size();
+        return this->cardsOnBoard.size();
     }
 
     void GameBoard::addCardToBoard(Card card)
