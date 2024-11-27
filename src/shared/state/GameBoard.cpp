@@ -81,14 +81,17 @@ namespace state
         return selectedCard; // Returns the selected cards
     }
 
-    void GameBoard::displayCardsOnBoard()
-    {
-        std::cout << "Cards on Board : ";
-        for (Card &card : cardsOnBoard)
-        {
-            std::cout << "[" << card.getNumberCard() << "||" << card.getTypeCard() << "]";
-        }
-        std::cout << std::endl;
-    }
+<<<<<<< HEAD
+// void GameBoard::displayCardsOnBoard()
+// {
+//     std::cout<<"Cards on Boad : ";
+//     for (const Card& card : cardsOnBoard)
+//     {
+//         std::cout<< "[" << card.getNumberCard() << "||" << card.getTypeCard() << "]";
+//     }
+//     std::cout<<std::endl;
+// }
+=======
+>>>>>>> b5e1e6b16a45180c333ea9d1655340ab60739614
 
-};
+ };

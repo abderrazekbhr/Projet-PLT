@@ -69,7 +69,7 @@ void InitState::handleRequest(std::vector<Player>& players) {
 //then, 3 cards will be received to the others players and 4 cards will be placed on the board
     if (response == 'y' || response == 'Y') {
         mainPlayer.addHoldedCard(firstCard);
-        std::cout << "You kept the card." << std::endl;
+        // std::cout << "You kept the card." << std::endl;
 
 
         for (int i = 0; i < 2; ++i) {
@@ -96,7 +96,7 @@ void InitState::handleRequest(std::vector<Player>& players) {
 // if he doesn't keep the card, it will be placed on the board
         //THen, 3 more cards will be added to the board and 3 cards will be dealt to each player
         Game::getGameBoard()->addCardToBoard(firstCard);
-        std::cout << "You placed the card on the board." << std::endl;
+        // std::cout << "You placed the card on the board." << std::endl;
 
 
         for (int i = 0; i < 3; ++i) {
@@ -115,5 +115,5 @@ void InitState::handleRequest(std::vector<Player>& players) {
         }
     }
 
-    std::cout << "Card distribution completed." << std::endl;
+    // std::cout << "Card distribution completed." << std::endl;
 }
