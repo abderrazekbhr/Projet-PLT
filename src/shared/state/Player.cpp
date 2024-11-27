@@ -61,7 +61,7 @@ void Player::displayHoldCard()
     cout << "*********** Your Holded Cards: ***********" << endl;
     if (holdedCard.empty())
     {
-        cout << "*********** You don't have any cards in your hand. ***********" << endl;
+       cout << "*********** You don't have any cards in your hand. ***********" << endl;
     }
     else
     {
@@ -81,6 +81,7 @@ Card Player::selectCardFromHand()
 {
     int cardIndex = -1;
     int size = holdedCard.size();
+ /*   
     displayHoldCard();
 
     while (!(cin >> cardIndex) || cardIndex < 1 || cardIndex > size)
@@ -89,7 +90,7 @@ Card Player::selectCardFromHand()
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
-
+*/
     return holdedCard[cardIndex - 1]; // Adjust for 0-based index
 }
 
