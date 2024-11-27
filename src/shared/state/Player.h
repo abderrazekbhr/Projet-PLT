@@ -4,7 +4,6 @@
 
 #include <string>
 #include <vector>
-#include <memory>
 
 namespace state {
   class Card;
@@ -18,31 +17,29 @@ namespace state {
   class Player {
     // Associations
     // Attributes
-  public:
-    bool isYourTurn;
   private:
-    int idPlayer;
     std::string name;
     int totalScore;
-    std::vector<std::unique_ptr<Card>> collectedCard;
-    std::vector<std::unique_ptr<Card>> holdedCard;
-    static int nbPlayerInstance;
+    std::vector<Card> collectedCard;
+    std::vector<Card> holdedCard;
     // Operations
   public:
     Player ();
-    int getIdPlayer ();
     std::string getName ();
     void setName (std::string name);
-    std::vector<std::unique_ptr<Card>> getCollectCard ();
-    std::vector<std::unique_ptr<Card>> getHoldCard ();
-    Card selectCardFromHand (int cardIndex);
-    Card selectCardFromBoard (int cardIndex);
+    std::vector<Card> getCollectCard ();
+    std::vector<Card> getHoldCard ();
     void play ();
     void displayHoldCard ();
     void displayCollectCard ();
     void addToScore (int points);
     int getScore ();
+    void addHoldedCard (Card card);
     ~Player ();
+  private:
+    Card selectCardFromHand ();
+    std::vector<Card> selectCardFromBoard ();
+    void removeCardFromHand (Card card);
     // Setters and Getters
   };
 

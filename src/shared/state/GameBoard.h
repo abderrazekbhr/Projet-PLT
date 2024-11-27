@@ -14,19 +14,18 @@ namespace state {
 
   /// class GameBoard - 
   class GameBoard {
-    // Associations
     // Attributes
   private:
-    static int nbInstanceBoardGame;
     std::vector<Card> cardsOnBoard;
     // Operations
   public:
     GameBoard ();
     ~GameBoard ();
     int getNumberCardBoard ();
-    void displayCardsOnBoard();
-    void deleteCardFrom (Card card);
+    void deleteCard (Card card);
     void addCardToBoard (Card card);
+    std::vector<Card> getCardBoard ( );
+    void displayCardsOnBoard ();
     // Setters and Getters
   };
 

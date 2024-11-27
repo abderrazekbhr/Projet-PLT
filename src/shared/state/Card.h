@@ -3,6 +3,10 @@
 #define STATE__CARD__H
 
 
+namespace state {
+  class Card;
+}
+
 #include "TypeCard.h"
 #include "NumberCard.h"
 
@@ -13,16 +17,14 @@ namespace state {
     // Associations
     // Attributes
   private:
-    //int idCard;
     TypeCard typeOfCard;
     NumberCard numberOfCard;
-    static int nbCardInstrance;
     // Operations
   public:
     Card (NumberCard number, TypeCard type);
-    NumberCard getNumberCard () const;
-    TypeCard getTypeCard () const;
-    bool operator==(const Card& other) const;
+    NumberCard getNumberCard ();
+    TypeCard getTypeCard ();
+    bool operator== (Card card);
     ~Card ();
     // Setters and Getters
   };

@@ -6,39 +6,36 @@
 namespace state
 {
 
-int GameBoard::nbInstanceBoardGame=0;
-
-GameBoard::GameBoard()
-{
-    this->nbInstanceBoardGame++;
-}
-
-GameBoard::~GameBoard()
-{
-
-}
-
-int GameBoard::getNumberCardBoard()
-{
-    this->cardsOnBoard.size();
-}
-
-void GameBoard::addCardToBoard(Card card)
-{
-    cardsOnBoard.push_back(card);
-}
-
-void GameBoard::deleteCardFrom(Card card)
-{
-    for(auto it = cardsOnBoard.begin(); it != cardsOnBoard.end(); it++)
+    GameBoard::GameBoard()
     {
-        if(*it==card)
+    }
+
+    GameBoard::~GameBoard()
+    {
+    }
+
+    int GameBoard::getNumberCardBoard()
+    {
+        return this->cardsOnBoard.size();
+    }
+
+    void GameBoard::addCardToBoard(Card card)
+    {
+        cardsOnBoard.push_back(card);
+    }
+
+    void GameBoard::deleteCard(Card card)
+    {
+        for (auto it = cardsOnBoard.begin(); it != cardsOnBoard.end(); it++)
         {
-            cardsOnBoard.erase(it);
+            if (*it == card)
+            {
+                cardsOnBoard.erase(it);
+            }
         }
     }
-}
 
+<<<<<<< HEAD
 // void GameBoard::displayCardsOnBoard()
 // {
 //     std::cout<<"Cards on Boad : ";
@@ -48,5 +45,7 @@ void GameBoard::deleteCardFrom(Card card)
 //     }
 //     std::cout<<std::endl;
 // }
+=======
+>>>>>>> b5e1e6b16a45180c333ea9d1655340ab60739614
 
  };
