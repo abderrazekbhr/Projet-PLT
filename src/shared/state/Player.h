@@ -10,36 +10,36 @@ namespace state {
 }
 
 #include "Card.h"
+#include "PlayerStatus.h"
 
 namespace state {
 
   /// class Player - 
   class Player {
-    // Associations
     // Attributes
   private:
     std::string name;
     int totalScore;
     std::vector<Card> collectedCard;
     std::vector<Card> holdedCard;
+    PlayerStatus status;
     // Operations
   public:
-    Player ();
+    Player (String name);
     std::string getName ();
     void setName (std::string name);
-    std::vector<Card> getCollectCard ();
-    std::vector<Card> getHoldCard ();
-    void play ();
-    void displayHoldCard ();
-    void displayCollectCard ();
-    void addToScore (int points);
     int getScore ();
+    void addToScore (int score);
+    std::vector<Card> getCollectCard ();
+    void addCollectedCard (Card card);
+    std::vector<Card> getHoldCard ();
+    void addHoldCard (Card card);
+    PlayerStatus getPlayerStatus ();
+    void setPlayerStatus (PlayerStatus newStatus);
+    Card selectCardFromHand (int cardIndex);
     void addHoldedCard (Card card);
+    void removeCardHand (Card card);
     ~Player ();
-  private:
-    Card selectCardFromHand ();
-    std::vector<Card> selectCardFromBoard ();
-    void removeCardFromHand (Card card);
     // Setters and Getters
   };
 

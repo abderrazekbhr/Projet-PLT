@@ -9,6 +9,7 @@ using namespace state;
 Game::Game() {
     state = new WaitState();
     board = new GameBoard();
+    // TODO :initCards()
     for (int type = treffle; type <= coeur; ++type) {
         for (int number = un; number <= roi; ++number) {
             Card card(static_cast<NumberCard>(number), static_cast<TypeCard>(type));

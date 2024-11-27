@@ -21,11 +21,11 @@ namespace state {
   public:
     GameBoard ();
     ~GameBoard ();
-    int getNumberCardBoard ();
-    void deleteCard (Card card);
-    void addCardToBoard (Card card);
     std::vector<Card> getCardBoard ( );
-    void displayCardsOnBoard ();
+    int getNumberCardBoard ();
+    void addCardToBoard (Card card);
+    void removeCardBoard (Card card);
+    std::vector<Card> selectCardFromBoard (std::vector<int> cardIndexs);
     // Setters and Getters
   };
 
