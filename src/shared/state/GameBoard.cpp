@@ -81,7 +81,6 @@ namespace state
         return selectedCard; // Returns the selected cards
     }
 
-<<<<<<< HEAD
 // void GameBoard::displayCardsOnBoard()
 // {
 //     std::cout<<"Cards on Boad : ";
@@ -91,7 +90,3 @@ namespace state
 //     }
 //     std::cout<<std::endl;
 // }
-=======
->>>>>>> b5e1e6b16a45180c333ea9d1655340ab60739614
-
- };
