@@ -24,23 +24,23 @@ namespace state
         cardsOnBoard.push_back(card);
     }
 
-    void GameBoard::deleteCard(Card card)
+    void GameBoard::removeCardBoard(Card card)
     {
         for (auto it = cardsOnBoard.begin(); it != cardsOnBoard.end(); it++)
         {
-            if (*it == card)
+            if (it->equals(card))
             {
                 cardsOnBoard.erase(it);
             }
         }
     }
     // Prompts the player to select cards from the game board
-    vector<Card> Player::selectCardFromBoard(cardIndexs:std::vector<int>)
+    std::vector<Card> GameBoard::selectCardFromBoard(std::vector<int> cardIndexs)
     {
-        vector<Card> selectedCard;
+        std::vector<Card> selectedCard;
         for (int index : cardIndexs)
         {
-            selectedCard.push_back(Game::getGameBoard()->getCardBoard()[index]);
+            selectedCard.push_back(cardsOnBoard[index]);
         }
         // set<int> cardIndex;
         // bool needToSelect = true;
@@ -81,12 +81,12 @@ namespace state
         return selectedCard; // Returns the selected cards
     }
 
-// void GameBoard::displayCardsOnBoard()
-// {
-//     std::cout<<"Cards on Boad : ";
-//     for (const Card& card : cardsOnBoard)
-//     {
-//         std::cout<< "[" << card.getNumberCard() << "||" << card.getTypeCard() << "]";
-//     }
-//     std::cout<<std::endl;
-// }
+    // void GameBoard::displayCardsOnBoard()
+    // {
+    //     std::cout<<"Cards on Boad : ";
+    //     for (const Card& card : cardsOnBoard)
+    //     {
+    //         std::cout<< "[" << card.getNumberCard() << "||" << card.getTypeCard() << "]";
+    //     }
+    //     std::cout<<std::endl;
+    // }
