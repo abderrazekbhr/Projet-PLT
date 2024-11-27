@@ -19,19 +19,6 @@ int main(int argc,char* argv[])
 
     cout << "Bonjour, c'est jeux du carte CHKOBA!" << endl;
 
-    state::Game *game=new state::Game();
-    game->setState(new state::InitState());
-    game->request();
-    while (Game::players) {
-        game->setState(new state::RoundState());
-        game->request();
-        game->setState(new state::DistributeCardState());
-        game->request();
-        game->setState(new state::CountScoreState());
-        game->request();
-    }
-
-
 
     return 0;
 }
