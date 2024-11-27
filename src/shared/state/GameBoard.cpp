@@ -39,14 +39,14 @@ void GameBoard::deleteCardFrom(Card card)
     }
 }
 
-void GameBoard::displayCardsOnBoard()
-{
-    std::cout<<"Cards on Boad : ";
-    for (const Card& card : cardsOnBoard)
-    {
-        std::cout<< "[" << card.getNumberCard() << "||" << card.getTypeCard() << "]";
-    }
-    std::cout<<std::endl;
-}
+// void GameBoard::displayCardsOnBoard()
+// {
+//     std::cout<<"Cards on Boad : ";
+//     for (const Card& card : cardsOnBoard)
+//     {
+//         std::cout<< "[" << card.getNumberCard() << "||" << card.getTypeCard() << "]";
+//     }
+//     std::cout<<std::endl;
+// }
 
-};
+ };
