@@ -22,8 +22,8 @@ namespace state {
   public:
     CardsDeck ();
     ~CardsDeck ();
-    void distributeCards(std::vector<Player>& players, int nbCards);
-    void distributeCardsOnBoards(GameBoard& board, int nbCards);
+    void distributeCards (std::vector<Player> player, int nbCards);
+    void distributeCardsOnBoards (GameBoard& board,int nbCards);
     void shuffleDeck();
     // Setters and Getters
   };

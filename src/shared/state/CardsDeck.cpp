@@ -17,7 +17,7 @@ namespace state
             }
         }
         
-        shuffleDeck();
+   
 
     }
 
@@ -26,7 +26,7 @@ namespace state
 
     }
 
-    void CardsDeck::distributeCards(std::vector<Player>& players, int nbCards)
+    void CardsDeck::distributeCards(std::vector<Player> players,int nbCards)
     {
         if(allCards.size() < players.size() * nbCards) // Check if the number of cards on the deck is enough
         {
