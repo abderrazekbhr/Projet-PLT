@@ -3,10 +3,17 @@
 #define STATE__STATE__H
 
 
-namespace state {
+namespace render {
+  class Scene;
+}
+
+#include "render/Scene.h"
+
+namespace State {
 
   /// class State - 
   class State {
+    // Associations
     // Setters and Getters
   };
 
