@@ -2,31 +2,29 @@
 #ifndef STATE__CARD__H
 #define STATE__CARD__H
 
-namespace state
-{
+
+namespace state {
   class Card;
 }
 
 #include "TypeCard.h"
 #include "NumberCard.h"
 
-namespace state
-{
+namespace state {
 
-  /// class Card -
-  class Card
-  {
+  /// class Card - 
+  class Card {
     // Attributes
   private:
     TypeCard typeOfCard;
     NumberCard numberOfCard;
     // Operations
   public:
-    Card(NumberCard number, TypeCard type);
-    NumberCard getNumberCard();
-    TypeCard getTypeCard();
-    bool equals(Card card);
-    ~Card();
+    Card (NumberCard number, TypeCard type);
+    NumberCard getNumberCard ();
+    TypeCard getTypeCard ();
+    bool equals (Card card);
+    ~Card ();
     // Setters and Getters
   };
 
