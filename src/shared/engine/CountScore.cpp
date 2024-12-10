@@ -42,7 +42,7 @@ namespace engine {
 
     // Check if a player has the maximum number of cards compared to all other players
     bool CountScore::hasMaxCards(state::Player& player, state::State& currentState) {
-        int numCards = player.getCollectCard().size();
+        int numCards = player.getSizeCollectedCards();
 
         // Loop through all other players to check if any player has more cards
         for (auto& otherPlayer : currentState.getAllPlayers()) {

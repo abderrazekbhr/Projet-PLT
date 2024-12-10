@@ -37,7 +37,7 @@ namespace state {
     void initPlayer (std::string name);
     int getMaxScore ();
     int getNbPlayer ();
-    GameBoard getBoard ();
+    GameBoard* getBoard ();
     void setNbPlayer (int newNbPlayer);
     void setMaxScore (int newMaxScore);
     void initCards ();

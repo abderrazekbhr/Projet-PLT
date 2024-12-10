@@ -23,7 +23,7 @@ namespace state {
     CardsDeck ();
     ~CardsDeck ();
     void distributeCards (std::vector<Player> players, int nbCards);
-    void distributeCardsOnBoards (GameBoard& board,int nbCards);
+    void distributeCardsOnBoards (GameBoard* board,int nbCards);
     void shuffleDeck();
     // Setters and Getters
   };
