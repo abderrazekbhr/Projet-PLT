@@ -7,8 +7,8 @@ namespace engine {
   class Engine;
 };
 namespace state {
-  class State;
   class Player;
+  class State;
 };
 namespace engine {
   class Command;

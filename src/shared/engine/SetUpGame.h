@@ -22,11 +22,10 @@ namespace engine {
   /// class SetUpGame - 
   class SetUpGame : public engine::Command {
     // Attributes
-  public:
-    std::vector<std::string>& playersName;
   private:
     int nbPlayer;
     int maxScore;
+    std::vector<std::string>& playersName;
     // Operations
   public:
     SetUpGame (int nbPlayer, int maxScore, std::vector<std::string>& players);
