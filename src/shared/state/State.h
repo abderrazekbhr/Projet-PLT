@@ -13,6 +13,7 @@ namespace state {
 
 #include "CardsDeck.h"
 #include "GameBoard.h"
+#include "Player.h"
 
 namespace state {
 
@@ -34,11 +35,7 @@ namespace state {
     ~State ();
     int getMaxScore ();
     int getNbPlayer ();
-<<<<<<< HEAD
     GameBoard * getBoard ();
-=======
-    GameBoard* getBoard ();
->>>>>>> 547ce8cd34d4e4782a1abc470195895a6d6d2651
     void setNbPlayer (int newNbPlayer);
     void setMaxScore (int newMaxScore);
     void initCards ();
@@ -46,6 +43,7 @@ namespace state {
     int incrementTurn ();
     void initBoard ();
     void addPlayer (std::string namePlayer);
+    std::vector<Player *> getAllPlayers ();
     // Setters and Getters
   };
 

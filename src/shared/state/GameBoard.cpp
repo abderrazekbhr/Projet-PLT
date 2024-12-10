@@ -3,7 +3,8 @@
 #include "GameBoard.h"
 #include "Card.h"
 
-namespace state {
+namespace state
+{
     GameBoard::GameBoard()
     {
     }
@@ -33,7 +34,8 @@ namespace state {
         }
     }
 
-    std::vector<Card> getCardBoard(){
-        return cardsOnBoard
+    std::vector<Card> GameBoard::getCardBoard()
+    {
+        return cardsOnBoard;
     }
 }

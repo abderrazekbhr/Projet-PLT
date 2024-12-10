@@ -11,7 +11,6 @@ file(GLOB_RECURSE shared_sources *.cpp)
 
 # Build the "shared" library and add required includes
 add_library(${lib_shared_target} STATIC ${shared_sources} ${jsoncpp_sources}
-<<<<<<< HEAD
         state/Card.cpp
         state/CardsDeck.cpp
         state/GameBoard.cpp
@@ -24,9 +23,6 @@ add_library(${lib_shared_target} STATIC ${shared_sources} ${jsoncpp_sources}
         engine/SetUpGame.cpp
         engine/RoundDistributeCards.cpp
         engine/RoundInitDistributeCards.cpp
-=======
-        state/InitState.cpp
->>>>>>> 547ce8cd34d4e4782a1abc470195895a6d6d2651
         engine/Command.cpp
         engine/Engine.cpp
 )

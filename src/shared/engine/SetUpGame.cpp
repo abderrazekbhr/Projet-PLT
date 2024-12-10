@@ -5,7 +5,7 @@
 namespace engine
 {
 
-    SetUpGame::SetUpGame(int nbPlayer, int maxScore, std::vector<std::string>& players): nbPlayer(nbPlayer), maxScore(maxScore), playersNames(playersNames)
+    SetUpGame::SetUpGame(int nbPlayer, int maxScore, std::vector<std::string> &players) : nbPlayer(nbPlayer), maxScore(maxScore), playersName(playersName)
     { // Initialisation des membres
     }
 
@@ -29,14 +29,14 @@ namespace engine
 
     void SetUpGame::initPlayers(state::State &currentState)
     {
-        if (playersNames.size() != nbPlayer)
+        if (playersName.size() != nbPlayer)
         {
             throw std::invalid_argument("The number of players does not match the number of names provided.");
         }
 
         for (int i = 0; i < nbPlayer; i++)
         {
-            currentState.addPlayer(playersNames.at(i));
+            currentState.addPlayer(playersName.at(i));
         }
     }
 
