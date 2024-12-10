@@ -19,8 +19,8 @@ bool CaptureCard::execute(Engine *engine)
         state::State currentState = engine->getState();
         state::Player player = engine->getActualPlayer();
         state::GameBoard *board = currentState.getBoard();
-        bool isValidHandCard = this->validateCardHand(indexCardHand, player.getHoldCard().size()); // TODO: create a function to return the number of cards in the hand
-        bool isValidBoardCard = this->validateCardBoard(indexsCardsBoard, board->getNumberCardBoard());
+        this->validateCardHand(indexCardHand, player.getHoldCard().size()); // TODO: create a function to return the number of cards in the hand
+        this->validateCardBoard(indexsCardsBoard, board->getNumberCardBoard());
         state::Card card = player.getHoldCard()[indexCardHand];
         player.removeCardFromHand(card);
         player.addCollectedCard(card);
@@ -51,7 +51,8 @@ bool CaptureCard::validateCardHand(int indexCard, int maxIndex)
 }
 bool CaptureCard::validateCardBoard(std::vector<int> indexsCards, int maxIndex)
 {
-    for (int i = 0; i < indexsCards.size(); i++)
+    int size = indexsCards.size();
+    for (int i = 0; i < size; i++)
     {
         if (indexsCards[i] < 0 || indexsCards[i] >= maxIndex)
         {
@@ -62,7 +63,8 @@ bool CaptureCard::validateCardBoard(std::vector<int> indexsCards, int maxIndex)
 }
 void CaptureCard::collectMultipleCard(state::GameBoard &board, std::vector<int> collectedCardIndexs, state::Player &player)
 {
-    for (int i = 0; i < collectedCardIndexs.size(); i++)
+    int size = collectedCardIndexs.size();
+    for (int i = 0; i < size; i++)
     {
         state::Card card = board.getCardBoard()[collectedCardIndexs[i]];
         player.addCollectedCard(card);

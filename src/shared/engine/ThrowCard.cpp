@@ -12,7 +12,7 @@ bool ThrowCard::execute(Engine *engine)
     state::Player player = engine->getActualPlayer();
     try
     {
-        bool isValidCard = this->validateCardHand(indexCardHand, player.getHoldCard().size());
+        this->validateCardHand(indexCardHand, player.getHoldCard().size());
         engine->setNextPlayer();
         state::State currentState = engine->getState();
         state::Card card = player.getHoldCard()[indexCardHand];
