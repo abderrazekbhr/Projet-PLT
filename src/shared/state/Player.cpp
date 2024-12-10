@@ -42,29 +42,18 @@ void Player::addToScore(int points) { totalScore += points; }
 // Prompts the player to select a card from their hand
 Card Player::selectCardFromHand(int cardIndex)
 {
-    // int cardIndex = -1;
-    // int size = holdedCard.size();
-    // displayHoldCard();
-
-    // while (!(cin >> cardIndex) || cardIndex < 1 || cardIndex > size)
-    // {
-    //     cout << "*********** Choose a card index from your hand between 1 and " << size << " ***********" << endl;
-    //     cin.clear();
-    //     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    // }
-
-    return holdedCard[cardIndex - 1]; // Adjust for 0-based index
+    return holdedCard[cardIndex];
 }
 
 // Removes a specified card from the player's hand
 void Player::removeCardFromHand(Card card)
 {
     auto it = remove_if(holdedCard.begin(), holdedCard.end(),
-                             [&](Card &c)
-                             {
-                                 return c.getNumberCard() == card.getNumberCard() &&
-                                        c.getTypeCard() == card.getTypeCard();
-                             });
+                        [&](Card &c)
+                        {
+                            return c.getNumberCard() == card.getNumberCard() &&
+                                   c.getTypeCard() == card.getTypeCard();
+                        });
 
     holdedCard.erase(it, holdedCard.end()); // Use erase-remove idiom
 }
@@ -74,116 +63,19 @@ void Player::addCollectedCard(Card card)
     collectedCard.push_back(card);
 }
 
-// void Player::setPlayerStatus(PlayerStatus newStatus)
-// {
-//     status = newStatus;
-// }
-
 void Player::addHoldCard(Card card)
 {
     holdedCard.push_back(card);
 }
 
-// PlayerStatus Player::getPlayerStatus()
-// {
-//     return status;
-// }
+void Player::setPlayerStatus(PlayerStatus newStatus)
+{
+    status = newStatus;
+}
 
-// Destructor that cleans up player data
 Player::~Player()
 {
     collectedCard.clear();
     holdedCard.clear();
     totalScore = 0;
 }
-
-// Displays the collected cards of the player
-// void Player::displayCollectCard()
-// {
-//     cout << "Collected Cards:" << endl;
-//     if (collectedCard.empty())
-//     {
-//         cout << "You don't have any collected cards." << endl;
-//     }
-//     else
-//     {
-//         for (Card &card : collectedCard) // Use const reference for efficiency
-//         {
-//             cout << "[" << card.getNumberCard() << "|" << card.getTypeCard() << "], ";
-//         }
-//         cout << endl;
-//     }
-// }
-
-// Displays the cards held in hand by the player
-// void Player::displayHoldCard()
-// {
-//     cout << "*********** Your Holded Cards: ***********" << endl;
-//     if (holdedCard.empty())
-//     {
-//         cout << "*********** You don't have any cards in your hand. ***********" << endl;
-//     }
-//     else
-//     {
-//         for (Card &card : holdedCard) // Use const reference for efficiency
-//         {
-//             cout << "[" << card.getNumberCard() << "|" << card.getTypeCard() << "], ";
-//         }
-//         cout << endl;
-//     }
-// }
-
-// Handles the player's turn and manages the game logic for playing a card
-// void Player::play()
-// {
-//     cout << "-----------------------------------" << endl;
-//     cout << "It's " << name << "'s turn." << endl;
-
-//     while (true)
-//     {
-//         cout << "*********** Select a card from your hand to play ***********" << endl;
-//         Card card = selectCardFromHand();
-//         cout << "*********** Select cards from the board to play ***********" << endl;
-//         vector<Card> selectedCard = selectCardFromBoard();
-//         int cardNumber = card.getNumberCard();
-
-//         if (selectedCard.size() == 1 && selectedCard[0].getNumberCard() == cardNumber)
-//         {
-//             collectedCard.push_back(card);
-//             removeCardFromHand(card);
-//             Game::getGameBoard()->deleteCard(selectedCard[0]);
-//             break;
-//         }
-
-//         else if (selectedCard.empty())
-//         {
-//             Game::getGameBoard()->addCardToBoard(card);
-//             removeCardFromHand(card);
-//             break;
-//         }
-//         else
-//         {
-//             int sum = 0;
-//             for (Card &cd : selectedCard)
-//             {
-//                 sum += cd.getNumberCard();
-//             }
-
-//             if (sum == cardNumber)
-//             {
-//                 collectedCard.push_back(card);
-//                 removeCardFromHand(card);
-//                 for (const Card &cd : selectedCard)
-//                 {
-//                     collectedCard.push_back(cd);
-//                     Game::getGameBoard()->deleteCard(cd);
-//                 }
-//                 break;
-//             }
-//             else
-//             {
-//                 cout << "*********** The sum of selected cards does not match the chosen card number. ***********" << endl;
-//             }
-//         }
-//     }
-// }

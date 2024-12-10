@@ -10,15 +10,15 @@ ThrowCard::ThrowCard(int indexCardHand)
 bool ThrowCard::execute(Engine *engine)
 {
 
-    state::Player player = engine->getActualPlayer();
     try
     {
-        bool isValidCard = this->validateCardHand(indexCardHand, player.getHoldCard().size());
-        engine->setNextPlayer();
+        state::Player player = engine->getActualPlayer();
+        bool isValidCard = this->validateCardHand(indexCardHand, player.getHoldCard().size());// TODO: getnumber of cards in hand
         state::State currentState = engine->getState();
         state::Card card = player.getHoldCard()[indexCardHand];
         player.removeCardFromHand(card);
         currentState.getBoard().addCardToBoard(card);
+        engine->setNextPlayer();
         return true;
     }
     catch (const std::invalid_argument &e)
