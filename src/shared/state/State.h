@@ -45,12 +45,8 @@ namespace state {
     void setNbPlayer (int newNbPlayer);
     void setMaxScore (int newMaxScore);
     void initCards ();
-<<<<<<< HEAD
     CardsDeck getAllCards ();
     std::vector<Player> getAllPlayers();
-=======
-    std::vector<Card> getAllCards ();
->>>>>>> df043d9d77211bd4375cc581b5bea3cdfe49e5bd
     int incrementTurn ();
     // Setters and Getters
   };

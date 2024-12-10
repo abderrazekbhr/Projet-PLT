@@ -14,7 +14,7 @@ namespace engine{
     
             if (response == 'y' || response == 'Y') {
                
-                currentState.getAllPlayers().at(0).addHoldCard();
+            currentState.getAllPlayers().at(0).addHoldCard();
        
        
         currentState.getAllCards().distributeCards(currentState.getAllPlayers(),2);
@@ -25,7 +25,7 @@ namespace engine{
         }
 
 
-        for (auto& player : players) {
+        for (auto& player : state::players) {
             if (&player != &mainPlayer) {
                 for (int i = 0; i < 3; ++i) {
                     player.addHoldedCard(Game::getListOfCards().back());
@@ -39,7 +39,7 @@ namespace engine{
             Game::getGameBoard()->addCardToBoard(Game::getListOfCards().back());
             Game::getListOfCards().pop_back();
         }
-    } else {
+        }else {
 // if he doesn't keep the card, it will be placed on the board
         //THen, 3 more cards will be added to the board and 3 cards will be dealt to each player
         Game::getGameBoard()->addCardToBoard(firstCard);

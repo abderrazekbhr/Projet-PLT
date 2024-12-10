@@ -10,6 +10,6 @@ public:
         this->message = message;   
     }
     void what(){
-        cout << message << endl;
+        //cout << message << endl;
     }
 };
