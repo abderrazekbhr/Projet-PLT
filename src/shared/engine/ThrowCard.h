@@ -19,10 +19,11 @@ namespace engine {
     int indexCardHand;
     // Operations
   public:
-    ThrowCard ();
+    ThrowCard (int indexCardHand);
     ~ThrowCard ();
     bool execute (Engine * engine);
-    bool validateCardHand (int nbHandCard);
+  private:
+    bool validateCardHand (int indexCard, int maxIndex);
     // Setters and Getters
   };
 

@@ -25,7 +25,7 @@ namespace engine {
     void init ();
     state::State& getState ();
     void setNextPlayer ();
-    Player getActualPlayer ();
+    state::Player& getActualPlayer ();
     // Setters and Getters
   };
 
