@@ -5,15 +5,16 @@
 
 namespace state {
   class State;
+  class Player;
 }
 
 #include "state/State.h"
+#include "state/Player.h"
 
 namespace engine {
 
   /// class Engine - 
   class Engine {
-    // Associations
     // Attributes
   private:
     state::State currentState;
@@ -23,6 +24,8 @@ namespace engine {
     ~Engine ();
     void init ();
     state::State& getState ();
+    void setNextPlayer ();
+    Player getActualPlayer ();
     // Setters and Getters
   };
 

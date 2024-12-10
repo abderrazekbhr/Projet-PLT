@@ -2,11 +2,47 @@
 #ifndef STATE__STATE__H
 #define STATE__STATE__H
 
+#include <vector>
+#include <string>
+
+namespace state {
+  class Player;
+  class GameBoard;
+  class CardsDeck;
+}
+
+#include "Player.h"
+#include "GameBoard.h"
+#include "CardsDeck.h"
 
 namespace state {
 
   /// class State - 
   class State {
+    // Associations
+    // Attributes
+  public:
+    int turn;
+  private:
+    std::vector<Player> players;
+    int nbPlayer;
+    int maxScore;
+    GameBoard board;
+    CardsDeck allCards;
+    // Operations
+  public:
+    State ();
+    ~State ();
+    void init ();
+    void initPlayer (std::string name);
+    int getMaxScore ();
+    int getNbPlayer ();
+    GameBoard getBoard ();
+    void setNbPlayer (int newNbPlayer);
+    void setMaxScore (int newMaxScore);
+    void initCards ();
+    std::vector<Card> getAllCards ();
+    int incrementTurn ();
     // Setters and Getters
   };
 
