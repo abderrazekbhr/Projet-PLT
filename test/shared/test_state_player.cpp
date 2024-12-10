@@ -32,13 +32,6 @@ BOOST_AUTO_TEST_CASE(setNameTest)
     BOOST_CHECK_EQUAL(p1->getName(), "TOM");
 }
 
-// test setName method
-BOOST_AUTO_TEST_CASE(setNameTest)
-{
-    p1->setName("TOM");
-    BOOST_CHECK_EQUAL(p1->getName(), "TOM");
-}
-
 // test addCollectedCard method
 BOOST_AUTO_TEST_CASE(addCollectedCardTest)
 {

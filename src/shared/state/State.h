@@ -43,6 +43,7 @@ namespace state {
     void initCards ();
     std::vector<Card> getAllCards ();
     int incrementTurn ();
+    void initBoard ();
     // Setters and Getters
   };
 
