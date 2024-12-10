@@ -38,6 +38,7 @@ void state::State::setNbPlayer(int newNbPlayer)
 int state::State::incrementTurn()
 {
     turn = (turn + 1) % nbPlayer;
+    return turn;
 }
 void state::State::initBoard()
 {
