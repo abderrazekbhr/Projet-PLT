@@ -22,7 +22,7 @@ namespace engine {
     ThrowCard ();
     ~ThrowCard ();
     bool execute (Engine * engine);
-    bool validateCardHand ();
+    bool validateCardHand (int nbHandCard);
     // Setters and Getters
   };
 

@@ -38,7 +38,7 @@ namespace state {
     void setPlayerStatus (PlayerStatus newStatus);
     Card selectCardFromHand (int cardIndex);
     void addHoldedCard (Card card);
-    void removeCardHand (Card card);
+    void removeCardFromHand (Card card);
     ~Player ();
     // Setters and Getters
   };

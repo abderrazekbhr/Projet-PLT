@@ -3,17 +3,16 @@
 #include <set>
 #include "state.h"
 #include <limits>
-#include <algorithm> // For std::remove_if and std::any_of
+#include <algorithm>
 
-using namespace state;
 using namespace std;
+using namespace state;
 
-Player::Player(std::string name)
+Player::Player(string name)
 {
     this->name = name;
     totalScore = 0;
 }
-
 
 // Returns the name of the player
 string Player::getName() { return name; }
@@ -22,22 +21,20 @@ string Player::getName() { return name; }
 int Player::getScore() { return totalScore; }
 
 // Returns the list of collected cards
-std::vector<Card> Player::getCollectCard() { return collectedCard; }
+vector<Card> Player::getCollectCard() { return collectedCard; }
 
 // Returns the list of held cards
-std::vector<Card> Player::getHoldCard() { return holdedCard; }
+vector<Card> Player::getHoldCard() { return holdedCard; }
 
 // Setters
 // Sets the name of the player
-void Player::setName(std::string name) { this->name = name; }
-
+void Player::setName(string name) { this->name = name; }
 
 // Adds a card to the list of collected cards
 void Player::addHoldedCard(Card card)
 {
     holdedCard.push_back(card);
 }
-
 
 // Adds points to the player's total score
 void Player::addToScore(int points) { totalScore += points; }
@@ -62,7 +59,7 @@ Card Player::selectCardFromHand(int cardIndex)
 // Removes a specified card from the player's hand
 void Player::removeCardFromHand(Card card)
 {
-    auto it = std::remove_if(holdedCard.begin(), holdedCard.end(),
+    auto it = remove_if(holdedCard.begin(), holdedCard.end(),
                              [&](Card &c)
                              {
                                  return c.getNumberCard() == card.getNumberCard() &&
@@ -72,9 +69,25 @@ void Player::removeCardFromHand(Card card)
     holdedCard.erase(it, holdedCard.end()); // Use erase-remove idiom
 }
 
+void Player::addCollectedCard(Card card)
+{
+    collectedCard.push_back(card);
+}
 
+// void Player::setPlayerStatus(PlayerStatus newStatus)
+// {
+//     status = newStatus;
+// }
 
+void Player::addHoldCard(Card card)
+{
+    holdedCard.push_back(card);
+}
 
+// PlayerStatus Player::getPlayerStatus()
+// {
+//     return status;
+// }
 
 // Destructor that cleans up player data
 Player::~Player()
@@ -83,7 +96,6 @@ Player::~Player()
     holdedCard.clear();
     totalScore = 0;
 }
-
 
 // Displays the collected cards of the player
 // void Player::displayCollectCard()
@@ -120,7 +132,6 @@ Player::~Player()
 //         cout << endl;
 //     }
 // }
-
 
 // Handles the player's turn and manages the game logic for playing a card
 // void Player::play()
