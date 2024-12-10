@@ -2,13 +2,13 @@
 #ifndef ENGINE__COMMAND__H
 #define ENGINE__COMMAND__H
 
-
 namespace engine {
   class Engine;
 }
 
 #include "CMDTypeId.h"
 #include "Engine.h"
+#include "TypeId.h"
 
 namespace engine {
 
@@ -23,8 +23,8 @@ namespace engine {
     Command ();
     ~Command ();
     CMDTypeId getCMDTypeId ();
-    virtual bool execute (Engine* engine) = 0;
-    void setNewCMD (CMDTypeId cmd);
+    void setNewCMD(CMDTypeId cmd);
+    virtual bool execute (Engine* engine);
     // Setters and Getters
   };
 

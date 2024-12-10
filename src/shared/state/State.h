@@ -3,7 +3,6 @@
 #define STATE__STATE__H
 
 #include <vector>
-#include <string>
 
 namespace state {
   class Player;
@@ -41,9 +40,11 @@ namespace state {
     void setNbPlayer (int newNbPlayer);
     void setMaxScore (int newMaxScore);
     void initCards ();
-    std::vector<Card> getAllCards ();
+    void initBoard();
+    void addPlayer (std::string namePlayer);
+    CardsDeck getAllCards ();
+    std::vector<Player> getAllPlayers();
     int incrementTurn ();
-    void initBoard ();
     // Setters and Getters
   };
 

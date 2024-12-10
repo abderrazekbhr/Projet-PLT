@@ -1,9 +1,20 @@
-// #include "Command.h"
-// using namespace engine;
+//
+// Created by nour on 10/12/24.
+//
+#include "Command.h"
 
-// Command::Command(){}
-// Command::~Command(){}
-// CMDTypeId Command::getCMDTypeId(){
-//     return typeId;
-// }
-// void Command::execute(Engine* engine)=0;
+namespace engine {
+
+    Command::Command() : typeId(CMDTypeId::SETUP_GAME) {}
+    Command::~Command() {}
+
+
+    CMDTypeId Command::getCMDTypeId() {
+        return typeId;
+    }
+
+    void Command::setNewCMD(CMDTypeId cmd) {
+        typeId = cmd;
+    }
+
+}
