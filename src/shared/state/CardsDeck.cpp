@@ -24,7 +24,9 @@ namespace state
 
     void CardsDeck::distributeCards(std::vector<Player *> players, int nbCards)
     {
-        if (allCards.size() < players.size() * nbCards) // Check if the number of cards on the deck is enough
+        int sizeCards= allCards.size();
+        int sizePlayers = players.size();
+        if (sizeCards< sizePlayers * nbCards) // Check if the number of cards on the deck is enough
         {
             return;
         }
@@ -44,7 +46,8 @@ namespace state
 
     void CardsDeck::distributeCardsOnBoard(GameBoard &board, int nbCards)
     {
-        if (allCards.size() < nbCards)
+        int sizeCards= allCards.size();
+        if (sizeCards < nbCards)
         {
             return;
         }
