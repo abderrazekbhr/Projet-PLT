@@ -3,9 +3,7 @@
 #include "GameBoard.h"
 #include "Card.h"
 
-namespace state
-{
-
+namespace state {
     GameBoard::GameBoard()
     {
     }

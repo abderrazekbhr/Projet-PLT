@@ -25,6 +25,7 @@ namespace state {
     int getNumberCardBoard ();
     void addCardToBoard (Card card);
     void removeCardBoard (Card card);
+    std::vector<Card> selectCardFromBoard (std::vector<int> cardIndexs);
     // Setters and Getters
   };
 
