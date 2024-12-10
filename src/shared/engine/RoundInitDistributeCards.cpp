@@ -10,7 +10,7 @@ namespace engine{
 
         state::State& currentState = engine->getState();
 
-        currentState.getAllCards().shuffleDeck();
+        currentState.getAllCards()->shuffleDeck();
     
             if (response == 'y' || response == 'Y') {
                
