@@ -11,7 +11,6 @@ namespace state {
 }
 
 #include "Card.h"
-#include "Player.h"
 
 namespace state {
 
@@ -25,8 +24,9 @@ namespace state {
   public:
     CardsDeck ();
     ~CardsDeck ();
-    void distributeCards (std::vector<Player> players, int nbCards);
+    void distributeCards (std::vector<Player*> players, int nbCards);
     void distributeCardsOnBoard (GameBoard & board, int nbCards);
+    void shuffleDeck ();
     // Setters and Getters
   };
 

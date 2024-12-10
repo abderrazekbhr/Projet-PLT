@@ -1,18 +1,19 @@
 #include "RoundDistributeCards.h"
 
-namespace engine{
+namespace engine
+{
 
     RoundDistributeCards::RoundDistributeCards() {}
     RoundDistributeCards::~RoundDistributeCards() {}
 
-    bool RoundDistributeCards::execute (Engine * engine){
-        
-        state::State& currentState = engine->getState();
+    bool RoundDistributeCards::execute(Engine *engine)
+    {
 
-        //Distribute 3 cards to each player
-        currentState.getAllCards()->distributeCards(currentState.getAllPlayers(),3);
+        state::State &currentState = engine->getState();
+
+        // Distribute 3 cards to each player
+        currentState.getAllCards()->distributeCards(currentState.getAllPlayers(), 3);
         return true;
-
     }
 
 }

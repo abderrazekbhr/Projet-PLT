@@ -13,6 +13,7 @@ namespace state {
 
 #include "CardsDeck.h"
 #include "GameBoard.h"
+#include "Player.h"
 
 namespace state {
 
