@@ -38,7 +38,12 @@ namespace state {
     void setPlayerStatus (PlayerStatus newStatus);
     Card selectCardFromHand (int cardIndex);
     void addHoldedCard (Card card);
+<<<<<<< HEAD
     void removeCardFromHand (Card card);
+=======
+    void removeCardHand (Card card);
+    int getSizeCollectedCards();
+>>>>>>> 547ce8cd34d4e4782a1abc470195895a6d6d2651
     ~Player ();
     int getSizeCollectedCards ();
     int getSizeHoldedCards ();
