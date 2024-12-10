@@ -2,13 +2,13 @@
 #ifndef ENGINE__COMMAND__H
 #define ENGINE__COMMAND__H
 
-
 namespace engine {
   class Engine;
 }
 
 #include "CMDTypeId.h"
 #include "Engine.h"
+#include "TypeId.h"
 
 namespace engine {
 

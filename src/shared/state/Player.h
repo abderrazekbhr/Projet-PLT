@@ -25,7 +25,7 @@ namespace state {
     PlayerStatus status;
     // Operations
   public:
-    Player (String name);
+    Player (std::string name);
     std::string getName ();
     void setName (std::string name);
     int getScore ();
