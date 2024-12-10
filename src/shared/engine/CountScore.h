@@ -5,6 +5,12 @@
 
 namespace engine {
   class Engine;
+};
+namespace state {
+  class State;
+  class Player;
+};
+namespace engine {
   class Command;
 }
 
@@ -19,6 +25,13 @@ namespace engine {
     CountScore ();
     ~CountScore ();
     bool execute (Engine * engine);
+  private:
+    bool hasMaxCards (state::Player& player, state::State & currentState);
+    bool hasMaxDiamonds (state::Player& player, state::State & currentState);
+    bool hasMaxSevens (state::Player& player, state::State & currentState);
+    bool hasSevenOfDiamonds (state::Player& player);
+    int countCardType (state::Player& player, int type);
+    int countCardNumber (state::Player& player, int number);
     // Setters and Getters
   };
 

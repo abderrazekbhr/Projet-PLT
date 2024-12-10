@@ -2,52 +2,58 @@
 #include <iostream>
 #include <vector>
 
-state::State::State() {
-    turn=-1;
+state::State::State()
+{
+    turn = -1;
     initBoard();
     initCards();
     board = new GameBoard();
     allCards = new CardsDeck();
-
 }
 
-state::GameBoard* state::State::getBoard() {
+state::GameBoard *state::State::getBoard()
+{
     return this->board;
 }
-state::CardsDeck* state::State::getAllCards() {
+state::CardsDeck *state::State::getAllCards()
+{
     return allCards;
 }
-int state::State::getMaxScore() {
+int state::State::getMaxScore()
+{
     return maxScore;
 }
-int state::State::getNbPlayer() {
+int state::State::getNbPlayer()
+{
     return nbPlayer;
 }
-void state::State::setMaxScore(int newMaxScore) {
+void state::State::setMaxScore(int newMaxScore)
+{
     maxScore = newMaxScore;
 }
-void state::State::setNbPlayer(int newNbPlayer) {
+void state::State::setNbPlayer(int newNbPlayer)
+{
     nbPlayer = newNbPlayer;
 }
-int state::State::incrementTurn() {
-    turn =(turn+1)%nbPlayer;
+int state::State::incrementTurn()
+{
+    turn = (turn + 1) % nbPlayer;
 }
-void state::State::initBoard() {
+void state::State::initBoard()
+{
     board = new GameBoard();
 }
-void state::State::initCards() {
+void state::State::initCards()
+{
     allCards = new CardsDeck();
 }
-void state::State::addPlayer(std::string playerName) {
-    Player *player= new Player(playerName);
+void state::State::addPlayer(std::string playerName)
+{
+    Player *player = new Player(playerName);
     players.push_back(player);
 }
-state::State::~State() {
+state::State::~State()
+{
     delete board;
     delete allCards;
 }
-
-
-
-
-

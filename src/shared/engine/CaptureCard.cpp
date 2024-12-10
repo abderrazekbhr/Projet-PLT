@@ -18,14 +18,14 @@ bool CaptureCard::execute(Engine *engine)
     {
         state::State currentState = engine->getState();
         state::Player player = engine->getActualPlayer();
-        state::GameBoard board = currentState.getBoard();
+        state::GameBoard *board = currentState.getBoard();
         bool isValidHandCard = this->validateCardHand(indexCardHand, player.getHoldCard().size()); // TODO: create a function to return the number of cards in the hand
-        bool isValidBoardCard = this->validateCardBoard(indexsCardsBoard, board.getNumberCardBoard());
+        bool isValidBoardCard = this->validateCardBoard(indexsCardsBoard, board->getNumberCardBoard());
         state::Card card = player.getHoldCard()[indexCardHand];
         player.removeCardFromHand(card);
         player.addCollectedCard(card);
-        this->collectMultipleCard(board, indexsCardsBoard, player);
-        if (this->verifyChkoba(board))
+        this->collectMultipleCard(*board, indexsCardsBoard, player);
+        if (this->verifyChkoba(*board))
         {
             player.addToScore(1);
         }
