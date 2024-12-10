@@ -10,7 +10,7 @@ namespace engine{
         state::State& currentState = engine->getState();
 
         //Distribute 3 cards to each player
-        currentState.getAllCards().distributeCards(currentState.getAllPlayers(),3);
+        currentState.getAllCards()->distributeCards(currentState.getAllPlayers(),3);
         return true;
 
     }

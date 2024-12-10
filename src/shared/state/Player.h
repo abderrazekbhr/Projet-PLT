@@ -38,9 +38,10 @@ namespace state {
     void setPlayerStatus (PlayerStatus newStatus);
     Card selectCardFromHand (int cardIndex);
     void addHoldedCard (Card card);
-    void removeCardHand (Card card);
-    int getSizeCollectedCards();
+    void removeCardFromHand (Card card);
     ~Player ();
+    int getSizeCollectedCards ();
+    int getSizeHoldedCards ();
     // Setters and Getters
   };
 

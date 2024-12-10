@@ -30,7 +30,7 @@ namespace engine
     }
 
     state::Player Engine::getActualPlayer(){
-        return currentState.getAllPlayers().at(currentState.turn);
+        return *currentState.getAllPlayers().at(currentState.turn);
     }
 
 }

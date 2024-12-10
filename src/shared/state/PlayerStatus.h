@@ -4,17 +4,11 @@
 
 
 namespace state {
-  class Player;
-}
-
-#include "Player.h"
-
-namespace state {
 
   enum PlayerStatus {
-    PLAYING,
-    WON,
-    LOST
+    PLAYING     = 1,
+    WON     = 2,
+    LOST     = 3
   };
 
 };

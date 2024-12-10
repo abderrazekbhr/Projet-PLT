@@ -17,23 +17,23 @@ namespace engine {
         // Loop through all players to assign points based on the game rules
         for (auto& player : currentState.getAllPlayers()) {
             // Award points if the player has the most cards
-            if (hasMaxCards(player, currentState)) {
-                player.addToScore(1);
+            if (hasMaxCards(*player, currentState)) {
+                player->addToScore(1);
             }
 
             // Award points if the player has the most "Diamond" cards
-            if (hasMaxDiamonds(player, currentState)) {
-                player.addToScore(1);
+            if (hasMaxDiamonds(*player, currentState)) {
+                player->addToScore(1);
             }
 
             // Award points if the player has the most "Seven" cards
-            if (hasMaxSevens(player, currentState)) {
-                player.addToScore(1);
+            if (hasMaxSevens(*player, currentState)) {
+                player->addToScore(1);
             }
 
             // Award points if the player has a "Seven of Diamonds"
-            if (hasSevenOfDiamonds(player)) {
-                player.addToScore(1);
+            if (hasSevenOfDiamonds(*player)) {
+                player->addToScore(1);
             }
         }
 
@@ -46,8 +46,8 @@ namespace engine {
 
         // Loop through all other players to check if any player has more cards
         for (auto& otherPlayer : currentState.getAllPlayers()) {
-            bool isNotSamePlayer = &otherPlayer != &player;  // Check if the player is different
-            bool hasMoreCards = otherPlayer.getSizeCollectedCards() > numCards;  // Check if other player has more cards
+            bool isNotSamePlayer = otherPlayer != &player;  // Check if the player is different
+            bool hasMoreCards = otherPlayer->getSizeCollectedCards() > numCards;  // Check if other player has more cards
 
             // If any player has more cards, return false
             if (isNotSamePlayer && hasMoreCards) {
@@ -64,8 +64,8 @@ namespace engine {
 
         // Loop through all other players to check if any player has more Diamond cards
         for (auto& otherPlayer : currentState.getAllPlayers()) {
-            bool isNotSamePlayer = &otherPlayer != &player;  // Check if it's not the same player
-            bool hasMoreDiamonds = countCardType(otherPlayer, 2) > numDiamonds;  // Check if the other player has more Diamonds
+            bool isNotSamePlayer = otherPlayer != &player;  // Check if it's not the same player
+            bool hasMoreDiamonds = countCardType(*otherPlayer, 2) > numDiamonds;  // Check if the other player has more Diamonds
 
             if (isNotSamePlayer && hasMoreDiamonds) {
                 return false;  // If another player has more Diamond cards, return false
@@ -80,8 +80,8 @@ namespace engine {
 
         // Loop through all other players to check if any player has more Seven cards
         for (auto& otherPlayer : currentState.getAllPlayers()) {
-            bool isNotSamePlayer = &otherPlayer != &player;  // Check if it's not the same player
-            bool hasMoreSevens = countCardNumber(otherPlayer, 7) > numSevens;  // Check if the other player has more Sevens
+            bool isNotSamePlayer = otherPlayer != &player;  // Check if it's not the same player
+            bool hasMoreSevens = countCardNumber(*otherPlayer, 7) > numSevens;  // Check if the other player has more Sevens
 
             if (isNotSamePlayer && hasMoreSevens) {
                 return false;  // If another player has more Seven cards, return false
