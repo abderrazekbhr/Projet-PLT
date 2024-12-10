@@ -17,12 +17,13 @@ namespace engine {
     // Associations
     // Attributes
   private:
-    TypeId typeId;
+    CMDTypeId typeId;
     // Operations
   public:
     Command ();
     ~Command ();
     CMDTypeId getCMDTypeId ();
+    void setNewCMD(CMDTypeId cmd);
     virtual bool execute (Engine* engine);
     // Setters and Getters
   };

@@ -23,6 +23,8 @@ namespace engine {
     ~Engine ();
     void init ();
     state::State& getState ();
+    void setNextPlayer ();
+    state::Player getActualPlayer();
     // Setters and Getters
   };
 
