@@ -25,7 +25,7 @@ namespace state {
     PlayerStatus status;
     // Operations
   public:
-    Player (String name);
+    Player (std::string name);
     std::string getName ();
     void setName (std::string name);
     int getScore ();
@@ -38,7 +38,7 @@ namespace state {
     void setPlayerStatus (PlayerStatus newStatus);
     Card selectCardFromHand (int cardIndex);
     void addHoldedCard (Card card);
-    void removeCardHand (Card card);
+    void removeCardFromHand (Card card);
     ~Player ();
     // Setters and Getters
   };
