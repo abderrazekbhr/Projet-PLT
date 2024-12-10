@@ -16,16 +16,17 @@ namespace engine
 
     void Engine::init()
     {
-        
+        currentState.initCards();
+        currentState.initBoard();
     }
 
     void Engine::setNextPlayer()
     {
-
+        currentState.incrementTurn();
     }
 
     state::Player Engine::getActualPlayer(){
-        return player.at();
+        return currentState.getAllPlayers().at(currentState.turn);
     }
 
 }
