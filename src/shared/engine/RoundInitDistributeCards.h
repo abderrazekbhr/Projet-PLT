@@ -8,18 +8,13 @@ namespace engine {
   class Command;
 }
 
-
 #include "Command.h"
-
 
 namespace engine {
 
   /// class RoundInitDistributeCards - 
   class RoundInitDistributeCards : public engine::Command {
     // Operations
-    private :
-    char response;
-    
   public:
     RoundInitDistributeCards ();
     ~RoundInitDistributeCards ();

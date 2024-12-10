@@ -15,13 +15,10 @@ namespace engine {
 namespace engine {
 
   /// class SetUpGame - 
-class SetUpGame : public engine::Command {
-    private:
-    int nbPlayer; 
-    int maxScore;
+  class SetUpGame : public engine::Command {
     // Operations
   public:
-    SetUpGame ();
+    SetUpGame (int nbPlayer, int maxScore, std::vector<std::string> players);
     ~SetUpGame ();
     bool execute (Engine* engine);
     // Setters and Getters

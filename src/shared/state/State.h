@@ -3,11 +3,7 @@
 #define STATE__STATE__H
 
 #include <vector>
-<<<<<<< HEAD
-
-=======
 #include <string>
->>>>>>> df043d9d77211bd4375cc581b5bea3cdfe49e5bd
 
 namespace state {
   class Player;
@@ -15,9 +11,8 @@ namespace state {
   class CardsDeck;
 }
 
-#include "Player.h"
-#include "GameBoard.h"
 #include "CardsDeck.h"
+#include "GameBoard.h"
 
 namespace state {
 
@@ -28,27 +23,25 @@ namespace state {
   public:
     int turn;
   private:
-    std::vector<Player> players;
+    std::vector<Player *> players;
     int nbPlayer;
     int maxScore;
-    GameBoard board;
-    CardsDeck allCards;
+    GameBoard* board;
+    CardsDeck* allCards;
     // Operations
   public:
     State ();
     ~State ();
-    void init ();
-    void initPlayer (std::string name);
     int getMaxScore ();
     int getNbPlayer ();
-    GameBoard getBoard ();
+    GameBoard * getBoard ();
     void setNbPlayer (int newNbPlayer);
     void setMaxScore (int newMaxScore);
     void initCards ();
-    void initBoard();
-    CardsDeck getAllCards ();
-    std::vector<Player> getAllPlayers();
+    CardsDeck * getAllCards ();
     int incrementTurn ();
+    void initBoard ();
+    void addPlayer (std::string namePlayer);
     // Setters and Getters
   };
 

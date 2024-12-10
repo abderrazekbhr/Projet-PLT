@@ -21,7 +21,7 @@ namespace state {
   public:
     GameBoard ();
     ~GameBoard ();
-    std::vector<Card> getCardBoard ( );
+    std::vector<Card> getCardBoard();
     int getNumberCardBoard ();
     void addCardToBoard (Card card);
     void removeCardBoard (Card card);

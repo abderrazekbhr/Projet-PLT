@@ -44,7 +44,7 @@ namespace state
         } 
     }
 
-    void CardsDeck::distributeCardsOnBoards(GameBoard& board, int nbCards)
+    void CardsDeck::distributeCardsOnBoard(GameBoard* board, int nbCards)
     {
         if(allCards.size() < nbCards)
         {
@@ -53,7 +53,7 @@ namespace state
            for (int i =0; i<nbCards;++i)
            {
             Card card = allCards.back();
-            board.addCardToBoard(card);
+            board->addCardToBoard(card);
             allCards.pop_back();
            } 
         }
@@ -64,6 +64,10 @@ namespace state
         std::random_device rd;       // provides a source of entropy for a random generator.
         std::mt19937 g(rd());        // Generate random number based on Mersene Twister Algorithm 
         std::shuffle(allCards.begin(), allCards.end(), g);
+    }
+
+    const std::vector<Card>& CardsDeck::getAllCards() const {
+        return allCards;
     }
 }
 

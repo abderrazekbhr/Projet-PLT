@@ -40,6 +40,8 @@ namespace state {
     void addHoldedCard (Card card);
     void removeCardFromHand (Card card);
     ~Player ();
+    int getSizeCollectedCards ();
+    int getSizeHoldedCards ();
     // Setters and Getters
   };
 
