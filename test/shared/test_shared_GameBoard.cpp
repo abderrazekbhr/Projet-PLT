@@ -36,5 +36,5 @@ BOOST_AUTO_TEST_CASE(TestGameBoard)
     BOOST_CHECK_EQUAL(cards[0].getTypeCard(), TypeCard::carreau);  // card2's type should be "carreau".
 
     // Delete the GameBoard object at the end of the test to free memory.
-    delete gameBoard;  // Explicitly call the destructor to free the dynamically allocated memory.
+    delete gameBoard;
 }
