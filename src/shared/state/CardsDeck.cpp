@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include <random>
+#include<chrono>
 #include "Player.h"
 #include "GameBoard.h"
 
@@ -9,11 +10,10 @@ namespace state
 {
     CardsDeck::CardsDeck()
     {
-        for (int type = 1; type <= 4; type++)
-        {
-            for (int number = 1; number <= 10; number++)
-            {
-                allCards.emplace_back(static_cast<NumberCard>(number), static_cast<TypeCard>(type)); // Convert integer in correct type
+        for (int type = treffle; type <= coeur; ++type) {
+            for (int number = un; number <= roi; ++number) {
+                Card card(static_cast<NumberCard>(number), static_cast<TypeCard>(type));
+                allCards.push_back(card);
             }
         }
     }
@@ -24,9 +24,9 @@ namespace state
 
     void CardsDeck::distributeCards(std::vector<Player *> players, int nbCards)
     {
-        int sizeCards= allCards.size();
+
         int sizePlayers = players.size();
-        if (sizeCards< sizePlayers * nbCards) // Check if the number of cards on the deck is enough
+        if (getDeckSize()< sizePlayers * nbCards) // Check if the number of cards on the deck is enough
         {
             return;
         }
@@ -46,8 +46,8 @@ namespace state
 
     void CardsDeck::distributeCardsOnBoard(GameBoard &board, int nbCards)
     {
-        int sizeCards= allCards.size();
-        if (sizeCards < nbCards)
+
+        if (getDeckSize() < nbCards)
         {
             return;
         }
@@ -64,8 +64,16 @@ namespace state
 
     void CardsDeck::shuffleDeck()
     {
-        std::random_device rd; // provides a source of entropy for a random generator.
-        std::mt19937 g(rd());  // Generate random number based on Mersene Twister Algorithm
-        std::shuffle(allCards.begin(), allCards.end(), g);
+        unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+        std::mt19937 generator(seed);
+        std::shuffle(allCards.begin(), allCards.end(), generator);
     }
+
+    int CardsDeck::getDeckSize() {
+        return allCards.size();
+    }
+    std::vector<Card> CardsDeck::getAllCards() {
+        return allCards;
+    }
+
 }
