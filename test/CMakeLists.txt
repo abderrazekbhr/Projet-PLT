@@ -1,4 +1,5 @@
-# Add "test" target to make
+
+# Add "test" target to make
 enable_testing()
 
 # Custom "check" target that enable Boost unit test output on CTest failure.
@@ -8,6 +9,7 @@ add_custom_target(unittest DEPENDS check)
 
 # Find library Boost for unit test framework
 find_package(Boost 1.50 REQUIRED COMPONENTS unit_test_framework)
+
 message(STATUS "Boost libraries: ${Boost_LIBRARIES}")
 message(STATUS "Boost include directory: ${Boost_INCLUDE_DIRS}")
 
@@ -34,15 +36,15 @@ function(add_custom_test name)
   set(options "")
   set(one_value_args "")
   set(multi_values_args
-    SOURCES
-    TEST_LIBRARIES
-    TEST_INCLUDES
-    )
+          SOURCES
+          TEST_LIBRARIES
+          TEST_INCLUDES
+  )
   cmake_parse_arguments(ARG
-    "${options}"
-    "${one_value_args}"
-    "${multi_values_args}"
-    ${ARGN})
+          "${options}"
+          "${one_value_args}"
+          "${multi_values_args}"
+          ${ARGN})
 
   set(target_name "test_${name}")
   set(sources "test_${name}.cpp")
@@ -52,31 +54,30 @@ function(add_custom_test name)
   add_executable(${target_name} ${sources})
   add_dependencies(${target_name} generate-headers)
   target_compile_definitions(${target_name} PRIVATE
-    BOOST_TEST_MAIN
-    BOOST_TEST_DYN_LINK
-    BOOST_TEST_MODULE=${name}
-    )
+          BOOST_TEST_MAIN
+          BOOST_TEST_DYN_LINK
+          BOOST_TEST_MODULE=${name}
+  )
   target_link_libraries(${target_name} PRIVATE
-    ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
-    ${ARG_TEST_LIBRARIES}
-    $<TARGET_NAME:shared_static>
-    $<TARGET_NAME:client_static>
-    #$<TARGET_NAME:server_static>
-    )
+          ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+          ${ARG_TEST_LIBRARIES}
+          $<TARGET_NAME:shared_static>
+          $<TARGET_NAME:client_static>
+          #$<TARGET_NAME:server_static>
+  )
   target_include_directories(${target_name} PRIVATE
-    ${Boost_INCLUDE_DIRS}
-    ${ARG_TEST_INCLUDES}
-    )
+          ${Boost_INCLUDE_DIRS}
+          ${ARG_TEST_INCLUDES}
+  )
   set_target_properties(${target_name}
-    PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    )
+          PROPERTIES
+          RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  )
 
   # Add test to CTest
   add_test(NAME ${target_name}
-    COMMAND $<TARGET_FILE:${target_name}>
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    )
+          COMMAND $<TARGET_FILE:${target_name}>
+  )
 
   # Add dependency to build test target before code coverage
   if(BUILD_CODE_COVERAGE)
@@ -91,4 +92,3 @@ add_subdirectory(client)
 
 
 # vim: set sw=2 sts=2 et:
-
