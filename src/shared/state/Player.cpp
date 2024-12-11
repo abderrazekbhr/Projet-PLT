@@ -26,6 +26,10 @@ vector<Card> Player::getCollectCard() { return collectedCard; }
 // Returns the list of held cards
 vector<Card> Player::getHoldCard() { return holdedCard; }
 
+PlayerStatus Player::getPlayerStatus()
+{
+    return status;
+}
 // Setters
 // Sets the name of the player
 void Player::setName(string name) { this->name = name; }
@@ -66,6 +70,16 @@ void Player::addCollectedCard(Card card)
 void Player::addHoldCard(Card card)
 {
     holdedCard.push_back(card);
+}
+
+int Player::getSizeHoldedCards()
+{
+    return holdedCard.size();
+}
+
+int Player::getSizeCollectedCards()
+{
+    return collectedCard.size();
 }
 
 void Player::setPlayerStatus(PlayerStatus newStatus)
