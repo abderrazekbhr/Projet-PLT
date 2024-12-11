@@ -28,4 +28,5 @@ bool Card::equals(Card other)
 
 Card::~Card()
 {
+    
 }

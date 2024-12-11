@@ -2,14 +2,15 @@
 
 namespace engine
 {
-    Engine::Engine(){
+    Engine::Engine()
+    {
 
-        currentState =state::State();
+        currentState = state::State();
     };
 
-    Engine::~Engine(){};
+    Engine::~Engine() {};
 
-    state::State& Engine::getState()
+    state::State &Engine::getState()
     {
         return currentState;
     }
@@ -24,9 +25,10 @@ namespace engine
     {
         currentState.incrementTurn();
     }
-
-    state::Player Engine::getActualPlayer(){
-        return currentState.getAllPlayers().at(currentState.turn);
+    
+    state::Player &Engine::getActualPlayer()
+    {
+        return *(currentState.getAllPlayers().at(currentState.turn));
     }
 
 }

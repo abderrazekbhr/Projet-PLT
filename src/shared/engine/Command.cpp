@@ -1,18 +1,19 @@
 #include "Command.h"
 
-namespace engine {
-    
-    Command::Command() : typeId(CMDTypeId::SETUP_GAME) {}
-    Command::~Command() {}
+namespace engine
+{
 
-  
-    CMDTypeId Command::getCMDTypeId() {
-      return typeId;
-    }
+  Command::Command() : typeId(CMDTypeId::SETUP_GAME) {}
+  Command::~Command() {}
 
-    void Command::setNewCMD(CMDTypeId cmd) {
-      typeId = cmd;
-    }
+  CMDTypeId Command::getCMDTypeId()
+  {
+    return typeId;
+  }
+
+  void Command::setNewCMD(CMDTypeId cmd)
+  {
+    typeId = cmd;
+  }
 
 }
-

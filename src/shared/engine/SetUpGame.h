@@ -7,6 +7,11 @@
 
 namespace engine {
   class Engine;
+};
+namespace state {
+  class State;
+};
+namespace engine {
   class Command;
 }
 
@@ -16,11 +21,20 @@ namespace engine {
 
   /// class SetUpGame - 
   class SetUpGame : public engine::Command {
+    // Attributes
+  private:
+    int nbPlayer;
+    int maxScore;
+    std::vector<std::string>& playersName;
     // Operations
   public:
-    SetUpGame (int nbPlayer, int maxScore, std::vector<std::string> players);
-    ~SetUpGame ();
+    SetUpGame (int nbPlayer, int maxScore, std::vector<std::string>& players);
     bool execute (Engine* engine);
+    ~SetUpGame ();
+  private:
+    void validateNbPlayer ();
+    void validateMaxScore ();
+    void initPlayers (state::State & currentState);
     // Setters and Getters
   };
 

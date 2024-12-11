@@ -14,6 +14,9 @@ namespace engine {
 
   /// class RoundInitDistributeCards - 
   class RoundInitDistributeCards : public engine::Command {
+    // Attributes
+  private:
+    char response;
     // Operations
   public:
     RoundInitDistributeCards ();

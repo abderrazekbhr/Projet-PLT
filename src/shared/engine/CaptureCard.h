@@ -6,6 +6,11 @@
 
 namespace engine {
   class Engine;
+};
+namespace state {
+  class Player;
+};
+namespace engine {
   class Command;
 }
 
@@ -21,11 +26,14 @@ namespace engine {
     std::vector<int> indexsCardsBoard;
     // Operations
   public:
-    CaptureCard ();
+    CaptureCard (int indexCardHand, std::vector<int> indexsCardFromBoard);
     ~CaptureCard ();
     bool execute (Engine* engine);
-    bool validateCardHand ();
-    bool validateCardBoard ();
+  private:
+    bool validateCardHand (int indexCard, int maxIndex);
+    bool validateCardBoard (std::vector<int> indexsCards, int maxIndex);
+    bool verifyChkoba (state::GameBoard board);
+    void collectMultipleCard (state::GameBoard & board, std::vector<int> collectedCardIndexs, state::Player & player);
     // Setters and Getters
   };
 

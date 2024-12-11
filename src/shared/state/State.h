@@ -13,6 +13,7 @@ namespace state {
 
 #include "CardsDeck.h"
 #include "GameBoard.h"
+#include "Player.h"
 
 namespace state {
 
@@ -42,6 +43,7 @@ namespace state {
     int incrementTurn ();
     void initBoard ();
     void addPlayer (std::string namePlayer);
+    std::vector<Player *> getAllPlayers ();
     // Setters and Getters
   };
 

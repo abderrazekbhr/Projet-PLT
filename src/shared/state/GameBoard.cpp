@@ -5,7 +5,6 @@
 
 namespace state
 {
-
     GameBoard::GameBoard()
     {
     }
@@ -33,5 +32,10 @@ namespace state
                 cardsOnBoard.erase(it);
             }
         }
+    }
+
+    std::vector<Card> GameBoard::getCardBoard()
+    {
+        return cardsOnBoard;
     }
 }

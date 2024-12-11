@@ -11,14 +11,21 @@ file(GLOB_RECURSE shared_sources *.cpp)
 
 # Build the "shared" library and add required includes
 add_library(${lib_shared_target} STATIC ${shared_sources} ${jsoncpp_sources}
-        state/Game.cpp
-        state/WaitState.cpp
-        state/InitState.cpp
-        state/DistributeCardState.cpp
-        state/RoundState.cpp
-        state/CountScoreState.cpp
-        state/EndGameState.cpp
-        state/GameBoard.cpp)
+        state/Card.cpp
+        state/CardsDeck.cpp
+        state/GameBoard.cpp
+        state/Player.cpp
+        state/State.cpp
+
+        engine/ThrowCard.cpp
+        engine/CaptureCard.cpp
+        engine/CountScore.cpp
+        engine/SetUpGame.cpp
+        engine/RoundDistributeCards.cpp
+        engine/RoundInitDistributeCards.cpp
+        engine/Command.cpp
+        engine/Engine.cpp
+)
 add_dependencies(${lib_shared_target} generate-headers)
 target_include_directories(${lib_shared_target} PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
