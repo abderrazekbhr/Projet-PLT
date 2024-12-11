@@ -5,6 +5,8 @@
 state::State::State()
 {
     turn = -1;
+    maxScore=0;
+    nbPlayer=0;
     initBoard();
     initCards();
     board = new GameBoard();
@@ -38,6 +40,8 @@ void state::State::setNbPlayer(int newNbPlayer)
 int state::State::incrementTurn()
 {
     turn = (turn + 1) % nbPlayer;
+    return turn;
+
 }
 void state::State::initBoard()
 {
@@ -51,6 +55,9 @@ void state::State::addPlayer(std::string playerName)
 {
     Player *player = new Player(playerName);
     players.push_back(player);
+}
+std::vector<state::Player *> state::State::getAllPlayers() {
+    return players;
 }
 state::State::~State()
 {

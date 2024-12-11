@@ -1,7 +1,10 @@
 #include <boost/test/unit_test.hpp>
 #include "../../src/shared/state.h"
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> ac674e3b5f509e5dad953c4df9b71aabc40705e2
 using namespace state;
 
 BOOST_AUTO_TEST_SUITE(CardTests)
@@ -36,3 +39,7 @@ BOOST_AUTO_TEST_CASE(test_card_equals_different_card) {
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+<<<<<<< HEAD
+=======
+
+>>>>>>> ac674e3b5f509e5dad953c4df9b71aabc40705e2

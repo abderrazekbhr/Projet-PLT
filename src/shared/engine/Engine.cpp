@@ -4,11 +4,8 @@ namespace engine
 {
     Engine::Engine()
     {
-
         currentState = state::State();
     };
-
-    Engine::~Engine() {};
 
     state::State &Engine::getState()
     {
@@ -30,5 +27,7 @@ namespace engine
     {
         return *(currentState.getAllPlayers().at(currentState.turn));
     }
+
+    Engine::~Engine() {};
 
 }

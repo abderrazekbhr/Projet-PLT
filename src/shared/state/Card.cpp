@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include "state.h"
+#include "../state.h"
 
 using namespace state;
 using namespace std;
@@ -30,3 +30,5 @@ Card::~Card()
 {
     
 }
+
+
