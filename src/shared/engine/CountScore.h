@@ -23,7 +23,7 @@ namespace engine {
     // Operations
   public:
     CountScore ();
-    ~CountScore ();
+    ~CountScore () override;
     bool execute (Engine * engine);
   private:
     bool hasMaxCards (state::Player& player, state::State & currentState);

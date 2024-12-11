@@ -4,7 +4,7 @@ namespace engine
 {
 
   Command::Command() : typeId(CMDTypeId::SETUP_GAME) {}
-  Command::~Command() {}
+  Command::~Command() = default;
 
   CMDTypeId Command::getCMDTypeId()
   {

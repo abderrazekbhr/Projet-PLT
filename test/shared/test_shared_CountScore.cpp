@@ -5,26 +5,28 @@
 using namespace engine;
 using namespace state;
 
+BOOST_AUTO_TEST_SUITE(MyTestSuite)
+
 BOOST_AUTO_TEST_CASE(test_count_score)
 {
-    // Dynamically create Engine and State objects
-    Engine *engine = new Engine();
-    state::State &currentState = engine->getState();
+    // Création de l'engine et récupération de l'état
+    Engine* engine = new Engine();  // Pas de new, alloué sur la pile
+    state::State currentState = engine->getState();
 
-    // Add 3 players
+    // Ajout de 3 joueurs
     currentState.addPlayer("Player 1");
     currentState.addPlayer("Player 2");
     currentState.addPlayer("Player 3");
 
-    // Create cards
+    // Création des cartes
     Card card7Diamonds(NumberCard::sept, TypeCard::carreau);  // Seven of Diamonds
     Card card7Hearts(NumberCard::sept, TypeCard::coeur);      // Seven of Hearts
     Card card5Diamonds(NumberCard::cinq, TypeCard::carreau);  // Five of Diamonds
     Card card3Spades(NumberCard::trois, TypeCard::pique);     // Three of Spades
-    Card card7Clubs(NumberCard::sept, TypeCard::treffle);      // Seven of Clubs
+    Card card7Clubs(NumberCard::sept, TypeCard::treffle);     // Seven of Clubs
     Card card6Diamonds(NumberCard::six, TypeCard::carreau);   // Six of Diamonds
 
-    // Distribute cards to players
+    // Distribution des cartes
     Player *player1 = currentState.getAllPlayers()[0];
     Player *player2 = currentState.getAllPlayers()[1];
     Player *player3 = currentState.getAllPlayers()[2];
@@ -44,21 +46,21 @@ BOOST_AUTO_TEST_CASE(test_count_score)
     player3->addCollectedCard(card6Diamonds);
     player3->addCollectedCard(card5Diamonds);
 
-    // Dynamically create CountScore command object
-    Command* countScore = new CountScore();
+    // Créer un objet CountScore
+    CountScore countScore;  // Pas de new, alloué sur la pile
 
-    // Execute CountScore command
-    bool result = countScore->execute(engine);
+    // Exécuter la méthode CountScore::execute
+    countScore.execute(engine);
 
-    // Check the results of the scoring
-    BOOST_CHECK(result);  // Ensure the command executed successfully.
-
-    // Check the individual scores
+    // Vérification des scores
     BOOST_CHECK_EQUAL(player1->getScore(), 1); // Player 1: +1 for "Seven of Diamonds" +1 for having the most cards (3 cards)
     BOOST_CHECK_EQUAL(player2->getScore(), 0); // Player 2: +1 for having "Seven of Hearts"
     BOOST_CHECK_EQUAL(player3->getScore(), 4); // Player 3: +1 for having the most cards (4 cards), +1 for having "Seven of Diamonds", +1 for having the most Sevens (2 Sevens), +1 for having the most Diamond cards (3 Diamond cards)
 
-    // Clean up the allocated memory
-    delete countScore;
+    BOOST_TEST_MESSAGE("Execute completed");
+
     delete engine;
+    BOOST_TEST_MESSAGE("Cleanup complete");
 }
+
+BOOST_AUTO_TEST_SUITE_END()

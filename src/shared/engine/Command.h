@@ -21,7 +21,7 @@ namespace engine {
     // Operations
   public:
     Command ();
-    ~Command ();
+     virtual  ~Command () ;
     CMDTypeId getCMDTypeId ();
     virtual bool execute (Engine* engine) = 0;
     void setNewCMD (CMDTypeId cmd);

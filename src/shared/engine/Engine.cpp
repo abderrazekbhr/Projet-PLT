@@ -28,6 +28,6 @@ namespace engine
         return *(currentState.getAllPlayers().at(currentState.turn));
     }
 
-    Engine::~Engine() {};
+    Engine::~Engine() = default;
 
 }

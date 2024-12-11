@@ -63,4 +63,8 @@ state::State::~State()
 {
     delete board;
     delete allCards;
+    for (Player* player : players) {
+        delete player;
+    }
+    players.clear();
 }

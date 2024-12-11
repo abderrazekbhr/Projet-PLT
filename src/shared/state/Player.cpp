@@ -89,7 +89,9 @@ void Player::setPlayerStatus(PlayerStatus newStatus)
 
 Player::~Player()
 {
-    collectedCard.clear();
-    holdedCard.clear();
-    totalScore = 0;
+
+collectedCard.clear();
+holdedCard.clear();
+totalScore=0;
+
 }
