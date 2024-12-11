@@ -1,6 +1,6 @@
 #include <boost/test/unit_test.hpp>
-#include "state/Card.h"
-#include "state/State.h"
+#include "../../src/shared/state.h"
+
 
 using namespace state;
 
