@@ -25,6 +25,8 @@ namespace state {
     TypeCard getTypeCard ();
     bool equals (Card card);
     ~Card ();
+    bool operator== (Card& other);
+    bool operator!= (Card& other);
     // Setters and Getters
   };
 
