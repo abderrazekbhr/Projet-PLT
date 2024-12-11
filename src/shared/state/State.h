@@ -40,7 +40,7 @@ namespace state {
     void setMaxScore (int newMaxScore);
     void initCards ();
     CardsDeck * getAllCards ();
-    int incrementTurn ();
+    void incrementTurn ();
     void initBoard ();
     void addPlayer (std::string namePlayer);
     std::vector<Player *> getAllPlayers ();

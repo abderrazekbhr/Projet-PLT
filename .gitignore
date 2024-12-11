@@ -9,3 +9,5 @@ nbproject
 *.autosave
 testFucntions
 
+**/*.identifier
+**/*.h
