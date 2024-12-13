@@ -24,7 +24,7 @@ namespace engine {
     // Attributes
   private:
     state::State currentState;
-    Command * actualCmd;
+    Command * currentCmd;
     // Operations
   public:
     Engine ();
@@ -33,8 +33,8 @@ namespace engine {
     state::Player& getActualPlayer ();
     state::State& getState ();
     void setNextPlayer ();
-    Command getActualCommand ();
-    void setActualCmd (Command* newCmd);
+    Command* getCurrentCommand ();
+    void setCurrentCmd (Command* newCmd);
     // Setters and Getters
   };
 

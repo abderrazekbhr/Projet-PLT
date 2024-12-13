@@ -28,6 +28,17 @@ namespace engine
         return *(currentState.getAllPlayers().at(currentState.turn));
     }
 
+    Command* Engine::getCurrentCommand() {
+        return currentCmd;
+    }
+
+    void Engine::setCurrentCmd(Command* newCmd) {
+        if (currentCmd != nullptr) {
+            delete currentCmd;
+        }
+        currentCmd = newCmd;
+    }
+
     Engine::~Engine() {};
 
 }
