@@ -41,6 +41,9 @@ BOOST_AUTO_TEST_CASE(all_throwCard_tests)
     // Preparing Throw part
     int indexCard = 1;
     engine::ThrowCard *t = new engine::ThrowCard(indexCard);
+    
+    e->setActualCmd(t);
+    
     // Check CMDTypeId
     BOOST_CHECK_EQUAL(t->getCMDTypeId() , engine::THROW_CARD);
 }
