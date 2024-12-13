@@ -42,6 +42,7 @@ BOOST_AUTO_TEST_CASE(all_tests_Player)
         BOOST_CHECK_EQUAL(size, i + 1);
         BOOST_CHECK_EQUAL(p1->getSizeCollectedCards(), size);
     }
+    
 
     // test add to hold card
     for (int i = 0; i < 3; i++)
@@ -50,7 +51,7 @@ BOOST_AUTO_TEST_CASE(all_tests_Player)
         p1->addHoldCard(*c1);                  // Add card to collected cards
 
         // Check if the last card in collected cards matches
-        Card lastCard = p1->getHoldCard()[i];
+        Card lastCard = p1->selectCardFromHand(i);
         bool isEquals = lastCard.getNumberCard() == number && lastCard.getTypeCard() == types[i];
 
         // Correct assertions
@@ -61,6 +62,8 @@ BOOST_AUTO_TEST_CASE(all_tests_Player)
         BOOST_CHECK_EQUAL(size, i + 1);
         BOOST_CHECK_EQUAL(p1->getSizeHoldedCards(), size);
     }
+
+
 
     // Test removeCardFromHand method
     // Remove a card
@@ -73,6 +76,8 @@ BOOST_AUTO_TEST_CASE(all_tests_Player)
     // Test setPlayerStatus method
     p1->setPlayerStatus(PLAYING);
     BOOST_CHECK_EQUAL(p1->getPlayerStatus(), PLAYING);
+
+    // Test 
 
     delete p1;
     BOOST_CHECK(true);
