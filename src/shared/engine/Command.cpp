@@ -2,7 +2,7 @@
 
 namespace engine
 {
-
+  Command::Command() {}
   CMDTypeId Command::getCMDTypeId()
   {
     return typeId;
@@ -12,5 +12,6 @@ namespace engine
   {
     typeId = cmd;
   }
+  Command::~Command() {}
 
 }

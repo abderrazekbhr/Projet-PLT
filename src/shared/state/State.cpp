@@ -9,8 +9,6 @@ state::State::State()
     nbPlayer=0;
     initBoard();
     initCards();
-    board = new GameBoard();
-    allCards = new CardsDeck();
 }
 
 state::GameBoard *state::State::getBoard()

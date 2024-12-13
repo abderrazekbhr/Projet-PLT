@@ -35,4 +35,3 @@ BOOST_AUTO_TEST_CASE(test_card_equals_different_card) {
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
