@@ -9,8 +9,7 @@ state::State::State()
     nbPlayer=0;
     initBoard();
     initCards();
-    board = new GameBoard();
-    allCards = new CardsDeck();
+
 }
 
 state::GameBoard *state::State::getBoard()
@@ -59,12 +58,18 @@ void state::State::addPlayer(std::string playerName)
 std::vector<state::Player *> state::State::getAllPlayers() {
     return players;
 }
-state::State::~State()
-{
-    delete board;
-    delete allCards;
+state::State::~State() {
+    //todo destrcuteur state
+
+    //delete board;
+    //delete allCards;
+
+
+
     for (Player* player : players) {
+
         delete player;
     }
+
     players.clear();
 }

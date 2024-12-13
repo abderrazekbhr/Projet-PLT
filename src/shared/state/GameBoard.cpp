@@ -11,6 +11,10 @@ namespace state
 
     GameBoard::~GameBoard()
     {
+        std::cout << "Destructeur de GameBoard appelé" << std::endl;
+        cardsOnBoard.clear();
+        std::cout << "fin Destructeur de GameBoard appelé" << std::endl;
+
     }
 
     int GameBoard::getNumberCardBoard()

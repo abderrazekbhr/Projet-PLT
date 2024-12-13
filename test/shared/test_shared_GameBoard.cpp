@@ -1,64 +1,40 @@
 #include <boost/test/unit_test.hpp>
+#include <vector>
 #include "../../src/shared/state.h"
-#include "../../src/shared/engine.h"
 
-using namespace engine;
-using namespace state;
+using namespace ::state;
+using namespace std;
 
-BOOST_AUTO_TEST_CASE(test_count_score)
+BOOST_AUTO_TEST_CASE(TestGameBoard)
 {
-    // Dynamically create Engine and State objects
-    Engine *engine = new Engine();
-    state::State &currentState = engine->getState();
+    // Test GameBoard Initialization
+    GameBoard *gameBoard = new GameBoard();  // Dynamically create the GameBoard object
+    BOOST_CHECK_EQUAL(gameBoard->getNumberCardBoard(), 0);  // Ensure the number of cards is 0 initially.
 
-    // Add 3 players
-    currentState.addPlayer("Player 1");
-    currentState.addPlayer("Player 2");
-    currentState.addPlayer("Player 3");
+    // Test Adding a Card to the Board
+    Card card1{NumberCard::un, TypeCard::treffle};  // Create a card with number "un" and type "treffle"
+    gameBoard->addCardToBoard(card1);
+    BOOST_CHECK_EQUAL(gameBoard->getNumberCardBoard(), 1);  // After adding the card, the number of cards should be 1.
 
-    // Create cards
-    Card card7Diamonds(NumberCard::sept, TypeCard::carreau);  // Seven of Diamonds
-    Card card7Hearts(NumberCard::sept, TypeCard::coeur);      // Seven of Hearts
-    Card card5Diamonds(NumberCard::cinq, TypeCard::carreau);  // Five of Diamonds
-    Card card3Spades(NumberCard::trois, TypeCard::pique);     // Three of Spades
-    Card card7Clubs(NumberCard::sept, TypeCard::treffle);      // Seven of Clubs
-    Card card6Diamonds(NumberCard::six, TypeCard::carreau);   // Six of Diamonds
+    // Test Adding Another Card
+    Card card2{NumberCard::deux, TypeCard::carreau};  // Create a card with number "deux" and type "carreau"
+    gameBoard->addCardToBoard(card2);
+    BOOST_CHECK_EQUAL(gameBoard->getNumberCardBoard(), 2);  // After adding another card, the number of cards should be 2.
 
-    // Distribute cards to players
-    Player *player1 = currentState.getAllPlayers()[0];
-    Player *player2 = currentState.getAllPlayers()[1];
-    Player *player3 = currentState.getAllPlayers()[2];
+    // Test Removing a Card from the Board
+    gameBoard->removeCardBoard(card1);
+    BOOST_CHECK_EQUAL(gameBoard->getNumberCardBoard(), 1);  // After removing card1, the number of cards should be 1.
 
-    // Player 1 has 3 cards (including "Seven of Diamonds")
-    player1->addCollectedCard(card7Diamonds);
-    player1->addCollectedCard(card5Diamonds);
-    player1->addCollectedCard(card3Spades);
+    // Test Removing a Card That Does Not Exist
+    gameBoard->removeCardBoard(card1);  // card1 has already been removed, so no change should occur
+    BOOST_CHECK_EQUAL(gameBoard->getNumberCardBoard(), 1);  // The number of cards should remain 1.
 
-    // Player 2 has 2 cards (including "Seven of Hearts")
-    player2->addCollectedCard(card7Hearts);
-    player2->addCollectedCard(card5Diamonds);
+    // Test Retrieving the Cards on the Board
+    vector<Card> cards = gameBoard->getCardBoard();
+    BOOST_CHECK_EQUAL(cards.size(), 1);  // Only card2 should remain on the board.
+    BOOST_CHECK_EQUAL(cards[0].getNumberCard(), NumberCard::deux);  // card2's number should be "deux".
+    BOOST_CHECK_EQUAL(cards[0].getTypeCard(), TypeCard::carreau);  // card2's type should be "carreau".
 
-    // Player 3 has 4 cards (including "Seven of Diamonds" and "Seven of Clubs")
-    player3->addCollectedCard(card7Clubs);
-    player3->addCollectedCard(card7Diamonds);
-    player3->addCollectedCard(card6Diamonds);
-    player3->addCollectedCard(card5Diamonds);
-
-    // Dynamically create CountScore command object
-    Command* countScore = new CountScore();
-
-    // Execute CountScore command
-    bool result = countScore->execute(engine);
-
-    // Check the results of the scoring
-    BOOST_CHECK(result);  // Ensure the command executed successfully.
-
-    // Check the individual scores
-    BOOST_CHECK_EQUAL(player1->getScore(), 1); // Player 1: +1 for "Seven of Diamonds" +1 for having the most cards (3 cards)
-    BOOST_CHECK_EQUAL(player2->getScore(), 0); // Player 2: +1 for having "Seven of Hearts"
-    BOOST_CHECK_EQUAL(player3->getScore(), 4); // Player 3: +1 for having the most cards (4 cards), +1 for having "Seven of Diamonds", +1 for having the most Sevens (2 Sevens), +1 for having the most Diamond cards (3 Diamond cards)
-
-    // Clean up the allocated memory
-    delete countScore;
-    delete engine;
+    // Delete the GameBoard object at the end of the test to free memory.
+    delete gameBoard;
 }

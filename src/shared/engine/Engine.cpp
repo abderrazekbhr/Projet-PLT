@@ -1,5 +1,5 @@
 #include "Engine.h"
-
+#include <iostream>
 namespace engine
 {
     Engine::Engine()
@@ -12,11 +12,7 @@ namespace engine
         return currentState;
     }
 
-    void Engine::init()
-    {
-        currentState.initCards();
-        currentState.initBoard();
-    }
+
 
     void Engine::setNextPlayer()
     {
@@ -28,6 +24,11 @@ namespace engine
         return *(currentState.getAllPlayers().at(currentState.turn));
     }
 
-    Engine::~Engine() = default;
+    Engine::~Engine() {
+
+    }
+
 
 }
+
+
