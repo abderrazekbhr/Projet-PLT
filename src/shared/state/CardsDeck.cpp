@@ -20,6 +20,10 @@ namespace state
 
     CardsDeck::~CardsDeck()
     {
+        std::cout << "Destructeur de CardDeck appelé" << std::endl;
+        allCards.clear();
+        std::cout << "fin Destructeur de CardDeck appelé" << std::endl;
+
     }
 
     void CardsDeck::distributeCards(std::vector<Player *> players, int nbCards)
