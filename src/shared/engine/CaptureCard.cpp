@@ -8,6 +8,7 @@ std::vector<int> indexsCardsBoard;
 
 CaptureCard::CaptureCard(int indexCardHand, std::vector<int> indexsCardFromBoard)
 {
+    this->setNewCMD(CAPTURE_CARD);
     this->indexCardHand = indexCardHand;
     this->indexsCardsBoard = indexsCardFromBoard;
 }

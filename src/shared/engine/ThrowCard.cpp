@@ -5,6 +5,8 @@ using namespace engine;
 
 ThrowCard::ThrowCard(int indexCardHand)
 {
+    this->setNewCMD(
+        THROW_CARD);
     this->indexCardHand = indexCardHand;
 }
 bool ThrowCard::execute(Engine *engine)
