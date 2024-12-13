@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(StateManagementTest)
     state::State& currentState = engine.getState();
 
     // Vérification de l'état initial
-    BOOST_CHECK_EQUAL(currentState.getTurn(), 0);
+    BOOST_CHECK_EQUAL(currentState.Turn, 0);
 
     // Incrémenter le tour
     currentState.incrementTurn();
