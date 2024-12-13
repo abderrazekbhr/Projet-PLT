@@ -1,8 +1,8 @@
 #define BOOST_TEST_MODULE EngineTest
-#include <boost/test/included/unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 #include "../../src/shared/engine.h"
 
-using namespace engine; 
+using namespace engine;  
 
 BOOST_AUTO_TEST_SUITE(EngineTestSuite)
 
@@ -71,17 +71,17 @@ BOOST_AUTO_TEST_CASE(CommandManagementTest)
     engine::Engine engine;
 
     // Vérification initiale : la commande actuelle devrait être null
-    BOOST_CHECK(engine.getCurrentCommand() == nullptr);
+    BOOST_CHECK(engine.getCurrentCmd() == nullptr);
 
     // Création et affectation d'une commande ThrowCard
     engine::Command* throwCardCmd = new engine::ThrowCard(0); // Exemple d'index
     engine.setCurrentCmd(throwCardCmd);
 
     // Vérifier que la commande actuelle est bien throwCardCmd
-    BOOST_CHECK(engine.getCurrentCommand() == throwCardCmd);
+    BOOST_CHECK(engine.getCurrentCmd() == throwCardCmd);
 
     // Exécution de la commande ThrowCard
-    BOOST_CHECK_NO_THROW(engine.getCurrentCommand()->execute(&engine));
+    BOOST_CHECK_NO_THROW(engine.getCurrentCmd()->execute(&engine));
 
     // Création et affectation d'une commande CaptureCard
     std::vector<int> indicesBoard = {0}; // Exemple d'index pour les cartes du board
@@ -89,14 +89,14 @@ BOOST_AUTO_TEST_CASE(CommandManagementTest)
     engine.setCurrentCmd(captureCardCmd);
 
     // Vérifier que la commande actuelle est bien captureCardCmd
-    BOOST_CHECK(engine.getCurrentCommand() == captureCardCmd);
+    BOOST_CHECK(engine.getCurrentCmd() == captureCardCmd);
 
     // Exécution de la commande CaptureCard
-    BOOST_CHECK_NO_THROW(engine.getCurrentCommand()->execute(&engine));
+    BOOST_CHECK_NO_THROW(engine.getCurrentCmd()->execute(&engine));
 
     // Nettoyage (important pour éviter les fuites mémoire)
     engine.setCurrentCmd(nullptr);
-    BOOST_CHECK(engine.getCurrentCommand() == nullptr);
+    BOOST_CHECK(engine.getCurrentCmd() == nullptr);
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+ BOOST_AUTO_TEST_SUITE_END()
