@@ -25,6 +25,9 @@ BOOST_AUTO_TEST_CASE(all_throwCard_tests)
     {
         s1.addPlayer("User" + (i + 1));
     }
+    GameBoard *board = s1.getBoard();
+    int nbCardInBoardBefore = board->getNumberCardBoard();
+
     vector<Player *> players = s1.getAllPlayers();
     int size = 3;
     NumberCard numbersOfCards[] = {un, deux};
@@ -41,10 +44,20 @@ BOOST_AUTO_TEST_CASE(all_throwCard_tests)
     // Preparing Throw part
     int indexCard = 1;
     engine::ThrowCard *t = new engine::ThrowCard(indexCard);
-    
-    e->setActualCmd(t);
-    
     // Check CMDTypeId
-    BOOST_CHECK_EQUAL(t->getCMDTypeId() , engine::THROW_CARD);
+    BOOST_CHECK_EQUAL(t->getCMDTypeId(), engine::THROW_CARD);
+
+    cout<<"-----------------------------------------------------"<<endl;
+    // Check wrong logic
+    auto result_excep = t->execute(e);
+    BOOST_CHECK_THROW(result_excep, out_of_range);
+    // Check normale case when there is no exception
+    t->indexCardHand = 0;
+    bool result = t->execute(e);
+    BOOST_CHECK(result == true);
+    int nbCardInBoardAfter = board->getNumberCardBoard();
+    BOOST_CHECK(nbCardInBoardAfter == (nbCardInBoardBefore + 1));
+
+   
 }
 BOOST_AUTO_TEST_SUITE_END()

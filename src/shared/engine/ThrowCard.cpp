@@ -36,6 +36,6 @@ bool ThrowCard::validateCardHand(int indexCard, int maxIndex)
     }
     else
     {
-        throw std::invalid_argument("Invalid index of Card from Hand");
+        throw std::out_of_range("Invalid index of Card from Hand");
     }
 }
