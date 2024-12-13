@@ -19,7 +19,7 @@ namespace engine {
     char response;
     // Operations
   public:
-    RoundInitDistributeCards ();
+    RoundInitDistributeCards (char response);
     ~RoundInitDistributeCards ();
     bool execute (Engine * engine);
     // Setters and Getters

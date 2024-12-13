@@ -3,7 +3,9 @@
 
 namespace engine
 {
-    RoundInitDistributeCards::RoundInitDistributeCards() {}
+    RoundInitDistributeCards::RoundInitDistributeCards(char response) {
+        this->response = response;
+    }
     RoundInitDistributeCards::~RoundInitDistributeCards() {}
 
     bool RoundInitDistributeCards::execute(Engine *engine)
@@ -11,7 +13,7 @@ namespace engine
         state::State &currentState = engine->getState();
 
         state::CardsDeck *allCards = currentState.getAllCards();
-        allCards->shuffleDeck();
+       // allCards->shuffleDeck();
 
         if (response == 'y' || response == 'Y')
         {
