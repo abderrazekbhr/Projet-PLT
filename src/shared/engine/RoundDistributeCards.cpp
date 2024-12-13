@@ -3,7 +3,10 @@
 namespace engine
 {
 
-    RoundDistributeCards::RoundDistributeCards() {}
+    RoundDistributeCards::RoundDistributeCards()
+    {
+        this->setNewCMD(DISTRIBUTE_CARD);
+    }
     RoundDistributeCards::~RoundDistributeCards() {}
 
     bool RoundDistributeCards::execute(Engine *engine)

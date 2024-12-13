@@ -3,7 +3,9 @@
 
 namespace engine
 {
-    RoundInitDistributeCards::RoundInitDistributeCards() {}
+    RoundInitDistributeCards::RoundInitDistributeCards() {
+        this->setNewCMD(FIRST_DISTRIBUTION);
+    }
     RoundInitDistributeCards::~RoundInitDistributeCards() {}
 
     bool RoundInitDistributeCards::execute(Engine *engine)

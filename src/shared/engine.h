@@ -2,9 +2,9 @@
 #ifndef __ENGINE__H
 #define __ENGINE__H
 
+#include "engine/Engine.h"
 #include "engine/CMDTypeId.h"
 #include "engine/Command.h"
-#include "engine/Engine.h"
 #include "engine/SetUpGame.h"
 #include "engine/ThrowCard.h"
 #include "engine/CountScore.h"

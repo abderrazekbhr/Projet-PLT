@@ -8,6 +8,7 @@ std::vector<int> indexsCardsBoard;
 
 CaptureCard::CaptureCard(int indexCardHand, std::vector<int> indexsCardFromBoard)
 {
+    this->setNewCMD(CAPTURE_CARD);
     this->indexCardHand = indexCardHand;
     this->indexsCardsBoard = indexsCardFromBoard;
 }
@@ -46,7 +47,7 @@ bool CaptureCard::validateCardHand(int indexCard, int maxIndex)
     }
     else
     {
-        throw std::invalid_argument("Invalid index of Card from Hand");
+        throw std::out_of_range("Invalid index of Card from Hand");
     }
 }
 bool CaptureCard::validateCardBoard(std::vector<int> indexsCards, int maxIndex)
@@ -56,7 +57,7 @@ bool CaptureCard::validateCardBoard(std::vector<int> indexsCards, int maxIndex)
     {
         if (indexsCards[i] < 0 || indexsCards[i] >= maxIndex)
         {
-            throw std::invalid_argument("Invalid index of Card from Board : index = " + indexsCards[i]);
+            throw std::out_of_range("Invalid index of Card from Board : index = " + indexsCards[i]);
         }
     }
     return true;

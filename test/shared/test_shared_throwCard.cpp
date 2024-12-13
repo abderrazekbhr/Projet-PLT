@@ -1,4 +1,3 @@
-#define BOOST_TEST_MODULE ThrowCard
 #include <boost/test/included/unit_test.hpp>
 #include <iostream>
 #include "state.h"
@@ -6,10 +5,10 @@
 
 using namespace state;
 using namespace std;
-BOOST_AUTO_TEST_SUITE(ThrowCard)
+BOOST_AUTO_TEST_SUITE(ThrowCard_test)
 
 // test execute method
-BOOST_AUTO_TEST_CASE(all_throwCard_tests)
+BOOST_AUTO_TEST_CASE(all_test)
 {
     // Preparing new state
     engine::Engine *e = new engine::Engine();
@@ -25,6 +24,11 @@ BOOST_AUTO_TEST_CASE(all_throwCard_tests)
     {
         s1.addPlayer("User" + (i + 1));
     }
+    cout<<"*******88888888888**"<<endl;
+
+    GameBoard *board = s1.getBoard();
+    int nbCardInBoardBefore = board->getNumberCardBoard();
+
     vector<Player *> players = s1.getAllPlayers();
     int size = 3;
     NumberCard numbersOfCards[] = {un, deux};
@@ -41,10 +45,17 @@ BOOST_AUTO_TEST_CASE(all_throwCard_tests)
     // Preparing Throw part
     int indexCard = 1;
     engine::ThrowCard *t = new engine::ThrowCard(indexCard);
-    
-    e->setActualCmd(t);
-    
     // Check CMDTypeId
-    BOOST_CHECK_EQUAL(t->getCMDTypeId() , engine::THROW_CARD);
+    cout << "-----------------------"<<t->getCMDTypeId()<<"------------------------------" << endl;
+    BOOST_CHECK_EQUAL(t->getCMDTypeId(), engine::THROW_CARD);
+
+    // Check wrong logic
+    BOOST_CHECK_THROW(t->execute(e), out_of_range);
+    // Check normale case when there is no exception
+    t->indexCardHand = 0;
+    bool result = t->execute(e);
+    BOOST_CHECK(result == true);
+    int nbCardInBoardAfter = board->getNumberCardBoard();
+    BOOST_CHECK(nbCardInBoardAfter == (nbCardInBoardBefore + 1));
 }
 BOOST_AUTO_TEST_SUITE_END()

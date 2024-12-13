@@ -12,12 +12,6 @@ namespace engine
         return currentState;
     }
 
-    void Engine::init()
-    {
-        currentState.initCards();
-        currentState.initBoard();
-    }
-
     void Engine::setNextPlayer()
     {
         currentState.incrementTurn();
@@ -28,12 +22,11 @@ namespace engine
         return *(currentState.getAllPlayers().at(currentState.turn));
     }
 
-    Command* Engine::getCurrentCmd() {
-        return currentCmd;
+    Command * Engine::getActualCommand(){
+        return actualCmd;
     }
-
-    void Engine::setCurrentCmd(Command* newCmd) {
-        currentCmd = newCmd;
+    void Engine::setActualCmd(Command* newCmd) {
+        actualCmd = newCmd;
     }
 
     Engine::~Engine() {};

@@ -6,8 +6,10 @@
 namespace engine
 {
 
-    CountScore::CountScore() {}
-
+    CountScore::CountScore()
+    {
+        this->setNewCMD(COUNT_SCORE);
+    }
     CountScore::~CountScore() {}
 
     // Main execution function to count and assign scores based on the player's collected cards

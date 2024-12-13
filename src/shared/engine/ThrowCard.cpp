@@ -5,6 +5,8 @@ using namespace engine;
 
 ThrowCard::ThrowCard(int indexCardHand)
 {
+    this->setNewCMD(
+        THROW_CARD);
     this->indexCardHand = indexCardHand;
 }
 bool ThrowCard::execute(Engine *engine)
@@ -34,6 +36,6 @@ bool ThrowCard::validateCardHand(int indexCard, int maxIndex)
     }
     else
     {
-        throw std::invalid_argument("Invalid index of Card from Hand");
+        throw std::out_of_range("Invalid index of Card from Hand");
     }
 }
