@@ -60,8 +60,7 @@ BOOST_AUTO_TEST_CASE(test_count_score)
 
     BOOST_TEST_MESSAGE("Execute completed");
 
-    // Cleanup is now automatically managed, no delete necessary
-    BOOST_TEST_MESSAGE("Cleanup complete");
+
 }
 
 BOOST_AUTO_TEST_SUITE_END()

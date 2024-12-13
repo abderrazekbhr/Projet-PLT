@@ -10,6 +10,7 @@ state::State::State()
     initBoard();
     initCards();
 
+
 }
 
 state::GameBoard *state::State::getBoard()
@@ -42,14 +43,18 @@ int state::State::incrementTurn()
     return turn;
 
 }
-void state::State::initBoard()
-{
-    board = new GameBoard();
+void state::State::initBoard() {
+    if (board == nullptr) {
+        board = new GameBoard();
+    }
 }
-void state::State::initCards()
-{
-    allCards = new CardsDeck();
+
+void state::State::initCards() {
+    if (allCards == nullptr) {
+        allCards = new CardsDeck();
+    }
 }
+
 void state::State::addPlayer(std::string playerName)
 {
     Player *player = new Player(playerName);
@@ -59,10 +64,9 @@ std::vector<state::Player *> state::State::getAllPlayers() {
     return players;
 }
 state::State::~State() {
-    //todo destrcuteur state
 
-    //delete board;
-    //delete allCards;
+
+
 
 
 

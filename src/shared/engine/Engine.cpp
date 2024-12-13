@@ -5,6 +5,7 @@ namespace engine
     Engine::Engine()
     {
         currentState = state::State();
+
     };
 
     state::State &Engine::getState()
