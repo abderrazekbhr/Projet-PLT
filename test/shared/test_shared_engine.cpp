@@ -1,6 +1,7 @@
 #define BOOST_TEST_MODULE EngineTest
 #include <boost/test/unit_test.hpp>
 #include "../../src/shared/engine.h"
+#include <vector>
 
 using namespace engine;  
 
