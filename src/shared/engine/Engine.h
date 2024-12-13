@@ -34,7 +34,7 @@ namespace engine {
     state::State& getState ();
     void setNextPlayer ();
     Command getActualCommand ();
-    void setActualCmd (Command newCmd);
+    void setActualCmd (Command* newCmd);
     // Setters and Getters
   };
 
