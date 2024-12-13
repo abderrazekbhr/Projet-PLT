@@ -18,9 +18,6 @@ BOOST_AUTO_TEST_CASE(InitializationTest)
     BOOST_CHECK_NO_THROW(currentState.initCards());
     BOOST_CHECK_NO_THROW(currentState.initBoard());
 
-    // Initialiser les données
-    engine.init();
-
     // Vérifier que le plateau (board) contient des cartes
     BOOST_CHECK(engine.getState().getBoard()->getCardBoard().size() == 0); // Board initialisé, mais vide
 

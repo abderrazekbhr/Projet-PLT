@@ -28,7 +28,6 @@ namespace engine {
   public:
     Engine ();
     ~Engine ();
-    void init ();
     state::Player& getActualPlayer ();
     state::State& getState ();
     void setNextPlayer ();

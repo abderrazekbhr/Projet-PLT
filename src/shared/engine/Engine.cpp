@@ -12,12 +12,6 @@ namespace engine
         return currentState;
     }
 
-    void Engine::init()
-    {
-        currentState.initCards();
-        currentState.initBoard();
-    }
-
     void Engine::setNextPlayer()
     {
         currentState.incrementTurn();
