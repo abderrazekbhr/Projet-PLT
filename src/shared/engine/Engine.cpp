@@ -22,7 +22,6 @@ namespace engine
         return *(currentState.getAllPlayers().at(currentState.turn));
     }
 
-<<<<<<< HEAD
     Command * Engine::getActualCommand(){
         return actualCmd;
     }
@@ -31,12 +30,6 @@ namespace engine
     }
 
     Engine::~Engine() {};
-=======
-    Engine::~Engine() {
-
-    }
-
->>>>>>> 5eae01bb4ecc8428310bbb3cbd3446161ed05c1b
 
 }
 
