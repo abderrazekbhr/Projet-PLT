@@ -5,4 +5,5 @@ add_custom_test(shared_CardDeck)
 add_custom_test(shared_GameBoard)
 add_custom_test(shared_Card)
 add_custom_test(shared_RoundInitDistributeCard)
+add_custom_test(shared_RoundDistributeCard)
 # vim: set sw=2 sts=2 et:
