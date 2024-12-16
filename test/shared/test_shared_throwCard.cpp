@@ -32,6 +32,9 @@ BOOST_AUTO_TEST_CASE(all_test)
 
     // Get the game board and initial card count
     GameBoard *board = s1.getBoard();
+    if(board == nullptr) {
+        cout << "Board is null" << endl;
+    }
     BOOST_REQUIRE(board != nullptr); // Ensure board is properly initialized
     int nbCardInBoardBefore = board->getNumberCardBoard();
 

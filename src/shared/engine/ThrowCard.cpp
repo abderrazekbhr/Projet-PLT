@@ -43,3 +43,5 @@ bool ThrowCard::validateCardHand(int indexCard, int maxIndex)
         throw std::out_of_range("Invalid index of Card from Hand");
     }
 }
+
+ThrowCard::~ThrowCard (){}

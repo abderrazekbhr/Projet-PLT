@@ -1,8 +1,8 @@
 // Created by khakha on 11/12/24.
 
 #include <boost/test/unit_test.hpp>
-#include "../../src/shared/engine.h"
-#include "../../src/shared/state.h"
+#include "engine.h"
+#include "state.h"
 
 BOOST_AUTO_TEST_CASE(TestRoundInitDistributeCards_Execute_Y)
 {

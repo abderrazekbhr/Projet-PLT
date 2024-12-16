@@ -3,7 +3,9 @@
 
 namespace engine
 {
-    RoundInitDistributeCards::RoundInitDistributeCards() {
+    RoundInitDistributeCards::RoundInitDistributeCards(char response)
+    {
+        this->response = response;
         this->setNewCMD(FIRST_DISTRIBUTION);
     }
     RoundInitDistributeCards::~RoundInitDistributeCards() {}
