@@ -12,7 +12,11 @@ state::State::State()
 <<<<<<< HEAD
 =======
 
+<<<<<<< HEAD
 >>>>>>> 7c2ab0729647b252ef440a147121404067deb108
+=======
+
+>>>>>>> 9488189cf02f95e2318cce19863fbd21282d9ff7
 }
 
 state::GameBoard *state::State::getBoard()
@@ -46,12 +50,20 @@ int state::State::incrementTurn()
 }
 void state::State::initBoard()
 {
-    board = new GameBoard();
+    if (board == nullptr)
+    {
+        board = new GameBoard();
+    }
 }
+
 void state::State::initCards()
 {
-    allCards = new CardsDeck();
+    if (allCards == nullptr)
+    {
+        allCards = new CardsDeck();
+    }
 }
+
 void state::State::addPlayer(std::string playerName)
 {
     Player *player = new Player(playerName);
@@ -63,16 +75,5 @@ std::vector<state::Player *> state::State::getAllPlayers()
 }
 state::State::~State()
 {
-    // todo destrcuteur state
-    // std::cout << "------------------msg delete State" << std::endl;
-    // if (allCards != nullptr)
-    // {
-    //     delete allCards;
-    // }
-    // if (board != nullptr)
-    // {
-    //     delete board;
-    // }
-    // delete board;
     players.clear();
 }
