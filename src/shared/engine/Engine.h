@@ -22,7 +22,7 @@ namespace engine {
   class Engine {
     // Attributes
   private:
-    state::State currentState;
+    state::State  currentState;
     Command * actualCmd;
     // Operations
   public:

@@ -87,8 +87,8 @@ void Player::setPlayerStatus(PlayerStatus newStatus)
     status = newStatus;
 }
 
-Player::~Player() {
-
-
-
+Player::~Player()
+{
+    collectedCard.clear();
+    holdedCard.clear();
 }

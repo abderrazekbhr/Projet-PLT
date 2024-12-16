@@ -33,7 +33,8 @@ namespace engine {
     bool validateCardHand (int indexCard, int maxIndex);
     bool validateCardBoard (std::vector<int> indexsCards, int maxIndex);
     bool verifyChkoba (state::GameBoard board);
-    void collectMultipleCard (state::GameBoard & board, std::vector<int> collectedCardIndexs, state::Player & player);
+    void collectMultipleCard (state::GameBoard & board, std::vector<state::Card>  cardToCollectedFromBoard , state::Player & player);
+    bool validateSum (state::Card  cardFromHand,  std::vector<state::Card>  cardBoard);
     // Setters and Getters
   };
 

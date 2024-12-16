@@ -5,8 +5,8 @@
 state::State::State()
 {
     turn = -1;
-    maxScore=0;
-    nbPlayer=0;
+    maxScore = 0;
+    nbPlayer = 0;
     initBoard();
     initCards();
 }
@@ -39,7 +39,6 @@ int state::State::incrementTurn()
 {
     turn = (turn + 1) % nbPlayer;
     return turn;
-
 }
 void state::State::initBoard()
 {
@@ -54,21 +53,22 @@ void state::State::addPlayer(std::string playerName)
     Player *player = new Player(playerName);
     players.push_back(player);
 }
-std::vector<state::Player *> state::State::getAllPlayers() {
+std::vector<state::Player *> state::State::getAllPlayers()
+{
     return players;
 }
-state::State::~State() {
-    //todo destrcuteur state
-
-    //delete board;
-    //delete allCards;
-
-
-
-    for (Player* player : players) {
-
-        delete player;
-    }
-
+state::State::~State()
+{
+    // todo destrcuteur state
+    // std::cout << "------------------msg delete State" << std::endl;
+    // if (allCards != nullptr)
+    // {
+    //     delete allCards;
+    // }
+    // if (board != nullptr)
+    // {
+    //     delete board;
+    // }
+    // delete board;
     players.clear();
 }

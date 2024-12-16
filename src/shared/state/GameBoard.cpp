@@ -11,10 +11,7 @@ namespace state
 
     GameBoard::~GameBoard()
     {
-        std::cout << "Destructeur de GameBoard appelé" << std::endl;
         cardsOnBoard.clear();
-        std::cout << "fin Destructeur de GameBoard appelé" << std::endl;
-
     }
 
     int GameBoard::getNumberCardBoard()
@@ -29,11 +26,15 @@ namespace state
 
     void GameBoard::removeCardBoard(Card card)
     {
-        for (auto it = cardsOnBoard.begin(); it != cardsOnBoard.end(); it++)
+        for (auto it = cardsOnBoard.begin(); it != cardsOnBoard.end();)
         {
             if (it->equals(card))
             {
-                cardsOnBoard.erase(it);
+                it = cardsOnBoard.erase(it); // Met à jour l'itérateur après suppression
+            }
+            else
+            {
+                ++it; // Incrémente si pas de suppression
             }
         }
     }

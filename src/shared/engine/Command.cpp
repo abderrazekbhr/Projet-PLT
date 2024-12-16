@@ -12,6 +12,8 @@ namespace engine
   {
     typeId = cmd;
   }
-  Command::~Command() {}
+  Command::~Command() {
+    
+  }
 
 }
