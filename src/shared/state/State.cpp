@@ -9,6 +9,10 @@ state::State::State()
     nbPlayer = 0;
     initBoard();
     initCards();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7c2ab0729647b252ef440a147121404067deb108
 }
 
 state::GameBoard *state::State::getBoard()

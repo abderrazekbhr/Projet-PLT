@@ -3,7 +3,7 @@ set(lib_client_target client_static)
 
 # Generate header files from dia UML files
 generate_dia_header("${CMAKE_CURRENT_SOURCE_DIR}/../client.dia")
-#generate_dia_header("${CMAKE_CURRENT_SOURCE_DIR}/../render.dia")
+generate_dia_header("${CMAKE_CURRENT_SOURCE_DIR}/../render.dia")
 
 # Find all source files to include in library
 file(GLOB_RECURSE client_sources *.cpp)
@@ -26,6 +26,7 @@ target_link_libraries(${lib_client_target} PUBLIC
 # Compile "client" executable
 set(client_target client)
 add_executable(${client_target} main.cpp
+        render/SceneData.cpp
 )
 target_link_libraries(${client_target} ${lib_client_target})
 if(BUILD_CODE_COVERAGE)
