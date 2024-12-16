@@ -4,7 +4,7 @@
 
 state::State::State()
 {
-    turn = -1;
+    turn = 0;
     maxScore=0;
     nbPlayer=0;
     initBoard();
@@ -59,6 +59,6 @@ std::vector<state::Player *> state::State::getAllPlayers() {
 }
 state::State::~State()
 {
-    delete board;
-    delete allCards;
+    // delete board;
+    // delete allCards;
 }
