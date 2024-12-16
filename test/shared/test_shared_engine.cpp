@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE(test_increment_turn)
     state.setMaxScore(11);
     state.setNbPlayer(2);
 
-    // Test pass to new palyer
+    // Test pass to new player
     state::Player p = e.getActualPlayer();
     BOOST_CHECK_EQUAL(p.getName(), n1); // Le premier tour doit être 1
     e.setNextPlayer();
