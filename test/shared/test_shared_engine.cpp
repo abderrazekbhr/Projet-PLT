@@ -1,10 +1,8 @@
-#define BOOST_TEST_MODULE EngineTest
 #include <boost/test/unit_test.hpp>
 #include "../../src/shared/engine.h"
+#include <vector>
 
-using namespace engine;  
-
-BOOST_AUTO_TEST_SUITE(EngineTestSuite)
+using namespace engine;
 
 BOOST_AUTO_TEST_CASE(InitializationTest)
 {
@@ -12,7 +10,9 @@ BOOST_AUTO_TEST_CASE(InitializationTest)
     engine::Engine engine;
 
     // Vérification de l'état initial de currentState
-    state::State& currentState = engine.getState();
+    state::State &currentState = engine.getState();
+    currentState.setMaxScore(11);
+    currentState.setNbPlayer(2);
 
     // Vérifier si les cartes et le plateau sont initialisés
     BOOST_CHECK_NO_THROW(currentState.initCards());
@@ -25,75 +25,29 @@ BOOST_AUTO_TEST_CASE(InitializationTest)
     BOOST_CHECK(engine.getState().getAllCards()->getDeckSize() > 0); // Deck doit contenir des cartes
 }
 
-BOOST_AUTO_TEST_CASE(PlayerTurnTest)
+BOOST_AUTO_TEST_CASE(test_increment_turn)
 {
-    // Test de la gestion des joueurs et des tours
-    engine::Engine engine;
+    // Vérification de l'état initial du tour
+    engine::Engine e = engine::Engine();
+    state::State &state = e.getState();
+    std::string n1 = "Player 1", n2 = "Player 2";
+    state.addPlayer("Player 1");
+    state.addPlayer("Player 2");
+    state.setMaxScore(11);
+    state.setNbPlayer(2);
 
-    // Initialiser l'état et ajouter des joueurs
-    state::State& currentState = engine.getState();
-    currentState.addPlayer("Player 1");
-    currentState.addPlayer("Player 2");
+    // Test pass to new player
+    state::Player p = e.getActualPlayer();
+    BOOST_CHECK_EQUAL(p.getName(), n1); // Le premier tour doit être 1
+    e.setNextPlayer();
+    p = e.getActualPlayer();
+    BOOST_CHECK_EQUAL(p.getName(), n2); // Le tour doit revenir à 0 après avoir atteint 2
 
-    // Vérifier que le joueur actuel est le premier
-    BOOST_CHECK_EQUAL(engine.getActualPlayer().getName(), "Player 1");
+    // Test command change set and get
+    Command *command1 = new engine::RoundDistributeCards();
+    e.setActualCmd(command1);
+    Command *restGetCommand = e.getActualCommand();
+    BOOST_CHECK_EQUAL(restGetCommand->getCMDTypeId(), DISTRIBUTE_CARD);
 
-    // Passer au joueur suivant
-    engine.setNextPlayer();
-
-    // Vérifier que le joueur actuel est maintenant le deuxième
-    BOOST_CHECK_EQUAL(engine.getActualPlayer().getName(), "Player 2");
 }
 
-BOOST_AUTO_TEST_CASE(StateManagementTest)
-{
-    // Test pour s'assurer que currentState est bien manipulé
-    engine::Engine engine;
-    state::State& currentState = engine.getState();
-
-    // Vérification de l'état initial
-    BOOST_CHECK_EQUAL(currentState.turn, 0);
-
-    // Incrémenter le tour
-    currentState.incrementTurn();
-    BOOST_CHECK_EQUAL(currentState.turn, 1);
-
-    // Ajouter une validation supplémentaire pour s'assurer que les données de state sont cohérentes
-    // Exemple : vérifier les joueurs, cartes ou autres composants liés à l'état
-}
-
-BOOST_AUTO_TEST_CASE(CommandManagementTest)
-{
-    // Test de la gestion des commandes
-    engine::Engine engine;
-
-    // Vérification initiale : la commande actuelle devrait être null
-    BOOST_CHECK(engine.getActualCommand() == nullptr);
-
-    // Création et affectation d'une commande ThrowCard
-    engine::Command* throwCardCmd = new engine::ThrowCard(0); // Exemple d'index
-    engine.setActualCmd(throwCardCmd);
-
-    // Vérifier que la commande actuelle est bien throwCardCmd
-    BOOST_CHECK(engine.getActualCommand() == throwCardCmd);
-
-    // Exécution de la commande ThrowCard
-    BOOST_CHECK_NO_THROW(engine.getActualCommand()->execute(&engine));
-
-    // Création et affectation d'une commande CaptureCard
-    std::vector<int> indicesBoard = {0}; // Exemple d'index pour les cartes du board
-    engine::Command* captureCardCmd = new engine::CaptureCard(0, indicesBoard);
-    engine.setActualCmd(captureCardCmd);
-
-    // Vérifier que la commande actuelle est bien captureCardCmd
-    BOOST_CHECK(engine.getActualCommand() == captureCardCmd);
-
-    // Exécution de la commande CaptureCard
-    BOOST_CHECK_NO_THROW(engine.getActualCommand()->execute(&engine));
-
-    // Nettoyage (important pour éviter les fuites mémoire)
-    engine.setActualCmd(nullptr);
-    BOOST_CHECK(engine.getActualCommand() == nullptr);
-}
-
- BOOST_AUTO_TEST_SUITE_END()

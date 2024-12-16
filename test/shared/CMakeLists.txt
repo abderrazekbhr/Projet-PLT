@@ -2,6 +2,7 @@
 
 add_custom_test(shared_Card)
 add_custom_test(shared_captureCard)
+add_custom_test(shared_throwCard)
 add_custom_test(shared_engine)
 add_custom_test(shared_Player)
 add_custom_test(shared_State)

@@ -4,9 +4,15 @@
 
 state::State::State()
 {
+<<<<<<< HEAD
     turn = -1;
     maxScore = 0;
     nbPlayer = 0;
+=======
+    turn = 0;
+    maxScore = 0;
+    nbPlayer = 0;
+>>>>>>> 3fe0b4a0f226e96f3ff5220681d08597e52d4a69
     initBoard();
     initCards();
 <<<<<<< HEAD
