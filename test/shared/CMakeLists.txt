@@ -8,6 +8,7 @@ add_custom_test(shared_State)
 
 
 add_custom_test(shared_engine)
+add_custom_test(shared_setup)
 add_custom_test(shared_RoundInitDistributeCard)
 add_custom_test(shared_RoundDistributeCard)
 add_custom_test(shared_throwCard)
