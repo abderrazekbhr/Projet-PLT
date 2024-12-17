@@ -48,10 +48,10 @@ BOOST_AUTO_TEST_CASE(test_count_score)
     player3->addCollectedCard(card5Diamonds);
 
     // Create a CountScore object
-    CountScore countScore;  // No need for new, allocated on the stack
+    Command* countScore = new CountScore();  // No need for new, allocated on the stack
 
     // Execute the CountScore::execute method
-    countScore.execute(&engine);
+    countScore->execute(&engine);
 
     // Check the scores
     BOOST_CHECK_EQUAL(player1->getScore(), 1); // Player 1: +1 for "Seven of Diamonds" +1 for having the most cards (3 cards)

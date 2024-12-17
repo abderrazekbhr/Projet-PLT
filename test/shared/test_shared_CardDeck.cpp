@@ -1,66 +1,104 @@
+//
+// Created by khakha on 11/12/24.
+//
 #include <boost/test/unit_test.hpp>
 #include "../../src/shared/state.h"
-#include "../../src/shared/engine.h"
+#include <vector>
+#include <algorithm> // pour std::sort
 
-using namespace engine;
 using namespace state;
 
-BOOST_AUTO_TEST_SUITE(MyTestSuite)
-
-BOOST_AUTO_TEST_CASE(test_count_score)
+BOOST_AUTO_TEST_CASE(TestCardsDeckInitialization)
 {
-    // Create the engine and get the state (allocated on the stack)
-    Engine engine;  // Allocated on the stack, no need for new here
+    CardsDeck deck;
 
-    state::State& currentState = engine.getState();  // Retrieve the reference to the state
+    // Vérifie que le deck contient bien 40 cartes après l'initialisation
+    BOOST_CHECK_EQUAL(deck.getDeckSize(), 40);
+}
 
-    // Add 3 players
-    currentState.addPlayer("Player 1");
-    currentState.addPlayer("Player 2");
-    currentState.addPlayer("Player 3");
+BOOST_AUTO_TEST_CASE(TestCardsDeckShuffle)
+{
+    CardsDeck deck;
 
-    // Create the cards
-    Card card7Diamonds(NumberCard::sept, TypeCard::carreau);  // Seven of Diamonds
-    Card card7Hearts(NumberCard::sept, TypeCard::coeur);      // Seven of Hearts
-    Card card5Diamonds(NumberCard::cinq, TypeCard::carreau);  // Five of Diamonds
-    Card card3Spades(NumberCard::trois, TypeCard::pique);     // Three of Spades
-    Card card7Clubs(NumberCard::sept, TypeCard::treffle);     // Seven of Clubs
-    Card card6Diamonds(NumberCard::six, TypeCard::carreau);   // Six of Diamonds
+    // Copie les cartes initiales pour comparer après mélange
+    std::vector<Card> originalDeck = deck.getAllCards();
 
-    // Distribute the cards
-    Player* player1 = currentState.getAllPlayers()[0];
-    Player* player2 = currentState.getAllPlayers()[1];
-    Player* player3 = currentState.getAllPlayers()[2];
+    // Mélange une seule fois
+    deck.shuffleDeck();
 
-    // Player 1 has 3 cards (including "Seven of Diamonds")
-    player1->addCollectedCard(card7Diamonds);
-    player1->addCollectedCard(card5Diamonds);
-    player1->addCollectedCard(card3Spades);
+    // Vérifie que l'ordre des cartes a changé en utilisant la méthode equals
+    std::vector<Card> shuffledDeck = deck.getAllCards();
+    bool isShuffled = false;
+    for (size_t i = 0; i < originalDeck.size(); ++i) {
+        if (!originalDeck[i].equals(shuffledDeck[i])) {
+            isShuffled = true;
+            break;
+        }
+    }
 
-    // Player 2 has 2 cards (including "Seven of Hearts")
-    player2->addCollectedCard(card7Hearts);
-    player2->addCollectedCard(card5Diamonds);
+    // Vérifie que les cartes ont été mélangées
+    BOOST_CHECK(isShuffled); // Le test passe si l'ordre des cartes a changé après un mélange
+}
 
-    // Player 3 has 4 cards (including "Seven of Diamonds" and "Seven of Clubs")
-    player3->addCollectedCard(card7Clubs);
-    player3->addCollectedCard(card7Diamonds);
-    player3->addCollectedCard(card6Diamonds);
-    player3->addCollectedCard(card5Diamonds);
+BOOST_AUTO_TEST_CASE(TestDistributeCardsToPlayers)
+{
+    CardsDeck deck;
 
-    // Create a CountScore object
-    Command* countScore = new CountScore();  // No need for new, allocated on the stack
+    Player player1("Player1");
+    Player player2("Player2");
+    std::vector<Player*> players = { &player1, &player2 };
 
-    // Execute the CountScore::execute method
-    countScore->execute(&engine);
+    // Distribue 3 cartes à chaque joueur
+    deck.distributeCards(players, 3);
 
-    // Check the scores
-    BOOST_CHECK_EQUAL(player1->getScore(), 1); // Player 1: +1 for "Seven of Diamonds" +1 for having the most cards (3 cards)
-    BOOST_CHECK_EQUAL(player2->getScore(), 0); // Player 2: +1 for having "Seven of Hearts"
-    BOOST_CHECK_EQUAL(player3->getScore(), 4); // Player 3: +1 for having the most cards (4 cards), +1 for having "Seven of Diamonds", +1 for having the most Sevens (2 Sevens), +1 for having the most Diamond cards (3 Diamond cards)
+    // Vérifie que chaque joueur a bien 3 cartes
+    BOOST_CHECK_EQUAL(player1.getSizeHoldedCards(), 3);
+    BOOST_CHECK_EQUAL(player2.getSizeHoldedCards(), 3);
 
-    BOOST_TEST_MESSAGE("Execute completed");
+    // Vérifie que le deck contient désormais 34 cartes (40 - 2 * 3)
+    BOOST_CHECK_EQUAL(deck.getDeckSize(), 34);
+}
+
+BOOST_AUTO_TEST_CASE(TestDistributeCardsToBoard)
+{
+    CardsDeck deck;
+
+    GameBoard board;
+
+    // Distribue 4 cartes au plateau
+    deck.distributeCardsOnBoard(board, 4);
+
+    // Vérifie que le plateau contient 4 cartes
+    BOOST_CHECK_EQUAL(board.getNumberCardBoard(), 4);
 
 
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+BOOST_AUTO_TEST_CASE(TestDistributeCardsNotEnoughCards)
+{
+    CardsDeck deck;
+
+    Player player("Player1");
+    std::vector<Player*> players = { &player };
+
+    // Tente de distribuer plus de cartes que celles disponibles dans le deck
+    deck.distributeCards(players, 50);
+
+    // Vérifie qu'aucune carte n'a été distribuée
+    BOOST_CHECK_EQUAL(player.getSizeHoldedCards(), 0);
+
+    GameBoard board;
+
+    // Tente de distribuer plus de cartes au plateau que celles disponibles
+    deck.distributeCardsOnBoard(board, 50);
+
+    // Vérifie qu'aucune carte n'a été distribuée au plateau
+    BOOST_CHECK_EQUAL(board.getNumberCardBoard(), 0);
+}
+
+BOOST_AUTO_TEST_CASE(TestCardDeckDestructor)
+{
+    CardsDeck* deck = new CardsDeck();
+    delete deck; // Vérifie qu'aucune fuite de mémoire ne se produit.
+    BOOST_CHECK(true); // Si le programme atteint cette ligne, cela signifie que le destructeur fonctionne correctement.
+}

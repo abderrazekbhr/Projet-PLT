@@ -1,5 +1,4 @@
 # List of test functions
-
 add_custom_test(shared_Card)
 add_custom_test(shared_Player)
 add_custom_test(shared_CardDeck)
