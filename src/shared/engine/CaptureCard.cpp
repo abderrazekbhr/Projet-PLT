@@ -80,6 +80,7 @@ bool CaptureCard::validateCardHand(int indexCard, int maxIndex)
 
 bool CaptureCard::validateCardBoard(std::vector<int> indexsCards, int maxIndex)
 {
+    
     for (int index : indexsCards)
     {
         if (index < 0 || index >= maxIndex)
