@@ -4,26 +4,6 @@
 
 using namespace engine;
 
-// BOOST_AUTO_TEST_CASE(InitializationTest)
-// {
-//     // Test de l'initialisation de l'objet Engine
-//     engine::Engine engine;
-
-//     // Vérification de l'état initial de currentState
-//     state::State &currentState = engine.getState();
-//     currentState.setMaxScore(11);
-//     currentState.setNbPlayer(2);
-
-//     // Vérifier si les cartes et le plateau sont initialisés
-//     BOOST_CHECK_NO_THROW(currentState.initCards());
-//     BOOST_CHECK_NO_THROW(currentState.initBoard());
-
-//     // Vérifier que le plateau (board) contient des cartes
-//     BOOST_CHECK(engine.getState().getBoard()->getCardBoard().size() == 0); // Board initialisé, mais vide
-
-//     // Vérifier que le deck contient toutes les cartes
-//     BOOST_CHECK(engine.getState().getAllCards()->getDeckSize() > 0); // Deck doit contenir des cartes
-// }
 
 BOOST_AUTO_TEST_CASE(test_increment_turn)
 {
