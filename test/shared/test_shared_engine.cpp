@@ -46,6 +46,7 @@ BOOST_AUTO_TEST_CASE(test_increment_turn)
     // Test command change set and get
     Command *command1 = new engine::RoundDistributeCards();
     e.setActualCmd(command1);
+    e.runCommand();
     Command *restGetCommand = e.getActualCommand();
     BOOST_CHECK_EQUAL(restGetCommand->getCMDTypeId(), DISTRIBUTE_CARD);
 }

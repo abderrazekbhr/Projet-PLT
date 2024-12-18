@@ -2,6 +2,5 @@
 #ifndef __CLIENT__H
 #define __CLIENT__H
 
-#include "client/Client.h"
-#include "client/MouseListener.h"
+#include "client/Example.h"
 #endif
