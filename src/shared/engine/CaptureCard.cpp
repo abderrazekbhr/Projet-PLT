@@ -3,39 +3,66 @@
 #include "CaptureCard.h"
 
 using namespace engine;
-int indexCardHand;
-std::vector<int> indexsCardsBoard;
 
 CaptureCard::CaptureCard(int indexCardHand, std::vector<int> indexsCardFromBoard)
 {
     this->setNewCMD(CAPTURE_CARD);
     this->indexCardHand = indexCardHand;
-    this->indexsCardsBoard = indexsCardFromBoard;
+    this->indexsCardsBoard = std::move(indexsCardFromBoard); // Use move to avoid unnecessary copying
 }
 
 bool CaptureCard::execute(Engine *engine)
 {
     try
     {
-        state::State currentState = engine->getState();
-        state::Player player = engine->getActualPlayer();
+        // Get the current state and player
+        state::State &currentState = engine->getState();
+        state::Player &player = engine->getActualPlayer();
         state::GameBoard *board = currentState.getBoard();
-        this->validateCardHand(indexCardHand, player.getHoldCard().size()); // TODO: create a function to return the number of cards in the hand
+
+        // Ensure board is not null
+        if (!board)
+        {
+            throw std::runtime_error("GameBoard pointer is null");
+        }
+
+        // Validate indices before performing any operation
+        this->validateCardHand(indexCardHand, player.getSizeHoldedCards());
         this->validateCardBoard(indexsCardsBoard, board->getNumberCardBoard());
+
+        // Capture card from hand
         state::Card card = player.getHoldCard()[indexCardHand];
+        std::vector<state::Card> cardBoard;
+        for (int index : indexsCardsBoard)
+        {
+            cardBoard.push_back(board->getCardBoard()[index]);
+        }
+
+        if (!validateSum(card, cardBoard))
+        {
+            return false;
+        }
+
         player.removeCardFromHand(card);
         player.addCollectedCard(card);
-        this->collectMultipleCard(*board, indexsCardsBoard, player);
+
+        // Capture cards from board
+        this->collectMultipleCard(*board, cardBoard, player);
+
+        // Check chkoba condition
         if (this->verifyChkoba(*board))
         {
             player.addToScore(1);
         }
+
+        // Update to next player
         engine->setNextPlayer();
         return true;
     }
-    catch (const std::invalid_argument &e)
+    catch (const std::exception &e)
     {
-        throw e;
+        std::cerr << "Exception in execute: " << e.what() << std::endl;
+        return false;
     }
 }
 
@@ -50,24 +77,34 @@ bool CaptureCard::validateCardHand(int indexCard, int maxIndex)
         throw std::out_of_range("Invalid index of Card from Hand");
     }
 }
+
 bool CaptureCard::validateCardBoard(std::vector<int> indexsCards, int maxIndex)
 {
-    int size = indexsCards.size();
-    for (int i = 0; i < size; i++)
+    
+    for (int index : indexsCards)
     {
-        if (indexsCards[i] < 0 || indexsCards[i] >= maxIndex)
+        if (index < 0 || index >= maxIndex)
         {
-            throw std::out_of_range("Invalid index of Card from Board : index = " + indexsCards[i]);
+            throw std::out_of_range("Invalid index of Card from Board");
         }
     }
     return true;
 }
-void CaptureCard::collectMultipleCard(state::GameBoard &board, std::vector<int> collectedCardIndexs, state::Player &player)
+
+bool CaptureCard::validateSum(state::Card cardFromHand, std::vector<state::Card> cardBoard)
 {
-    int size = collectedCardIndexs.size();
-    for (int i = 0; i < size; i++)
+    int sum = 0;
+    for (auto &card : cardBoard) // Use const reference to avoid unnecessary copies
     {
-        state::Card card = board.getCardBoard()[collectedCardIndexs[i]];
+        sum += card.getNumberCard();
+    }
+    return sum == cardFromHand.getNumberCard();
+}
+
+void CaptureCard::collectMultipleCard(state::GameBoard &board, std::vector<state::Card> cardToCollectedFromBoard, state::Player &player)
+{
+    for (const state::Card &card : cardToCollectedFromBoard)
+    {
         player.addCollectedCard(card);
         board.removeCardBoard(card);
     }
@@ -75,14 +112,11 @@ void CaptureCard::collectMultipleCard(state::GameBoard &board, std::vector<int> 
 
 bool CaptureCard::verifyChkoba(state::GameBoard board)
 {
-    if (board.getNumberCardBoard() == 0)
-    {
-        return true;
-    }
-    return false;
+    return board.getNumberCardBoard() == 0;
 }
 
 CaptureCard::~CaptureCard()
 {
+    // The vector clears automatically in the destructor
     indexsCardsBoard.clear();
 }

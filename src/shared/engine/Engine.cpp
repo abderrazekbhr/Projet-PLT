@@ -1,13 +1,14 @@
 #include "Engine.h"
 #include <stdexcept> // Nécessaire pour std::out_of_range
 
+#include "Command.h"
 
 namespace engine
 {
     Engine::Engine()
     {
         currentState = state::State();
-        actualCmd=nullptr;
+        actualCmd = nullptr;
     };
 
     void Engine::setNextPlayer()
@@ -15,32 +16,39 @@ namespace engine
         currentState.incrementTurn();
     }
 
-    state::State& Engine::getState() {
-        
+    state::State &Engine::getState()
+    {
+
         return currentState;
     }
 
-    
-    state::Player &Engine::getActualPlayer(){
+    state::Player &Engine::getActualPlayer()
+    {
 
-        if (currentState.turn >= static_cast<int>(currentState.getAllPlayers().size())){
+        if (currentState.turn >= static_cast<int>(currentState.getAllPlayers().size()))
+        {
 
             throw std::out_of_range("Turn index out of bounds in getActualPlayer");
-
         }
-    return *(currentState.getAllPlayers().at(currentState.turn));
+        return *(currentState.getAllPlayers().at(currentState.turn));
     }
 
-    Command * Engine::getActualCommand(){
+    Command *Engine::getActualCommand()
+    {
         return actualCmd;
     }
 
-    void Engine::setActualCmd(Command* newCmd) {
+    void Engine::setActualCmd(Command *newCmd)
+    {
         actualCmd = newCmd;
     }
 
     Engine::~Engine() {
-        //delete &currentState;
+        // delete &currentState;
     };
+    void Engine::runCommand() {
+        actualCmd->execute(this);
+    }
+
 
 }

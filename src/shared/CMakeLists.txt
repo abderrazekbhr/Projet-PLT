@@ -16,7 +16,6 @@ add_library(${lib_shared_target} STATIC ${shared_sources} ${jsoncpp_sources}
         state/GameBoard.cpp
         state/Player.cpp
         state/State.cpp
-
         engine/ThrowCard.cpp
         engine/CaptureCard.cpp
         engine/CountScore.cpp

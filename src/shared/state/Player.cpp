@@ -91,5 +91,4 @@ Player::~Player()
 {
     collectedCard.clear();
     holdedCard.clear();
-    totalScore = 0;
 }

@@ -20,6 +20,8 @@ namespace state
 
     CardsDeck::~CardsDeck()
     {
+        allCards.clear();
+
     }
 
     void CardsDeck::distributeCards(std::vector<Player *> players, int nbCards)
