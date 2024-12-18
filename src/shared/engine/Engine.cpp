@@ -1,6 +1,8 @@
 #include "Engine.h"
 #include <stdexcept> // Nécessaire pour std::out_of_range
 
+#include "Command.h"
+
 namespace engine
 {
     Engine::Engine()
@@ -44,5 +46,9 @@ namespace engine
     Engine::~Engine() {
         // delete &currentState;
     };
+    void Engine::runCommand() {
+        actualCmd->execute(this);
+    }
+
 
 }
