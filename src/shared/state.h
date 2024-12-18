@@ -8,6 +8,10 @@
 #include "state/PlayerStatus.h"
 #include "state/Player.h"
 #include "state/GameBoard.h"
+#include "state/Observer.h"
+#include "state/Observable.h"
 #include "state/CardsDeck.h"
 #include "state/State.h"
+#include "state/StateEventId.h"
+#include "state/StateEvent.h"
 #endif
