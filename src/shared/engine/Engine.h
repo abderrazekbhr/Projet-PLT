@@ -31,6 +31,7 @@ namespace engine {
     state::Player& getActualPlayer ();
     state::State& getState ();
     void setNextPlayer ();
+    void runCommand ();
     Command* getActualCommand ();
     void setActualCmd (Command* newCmd);
     // Setters and Getters
