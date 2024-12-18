@@ -3,5 +3,4 @@
 #define __CLIENT__H
 
 #include "client/Client.h"
-#include "client/MouseListener.h"
 #endif
