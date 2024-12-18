@@ -30,7 +30,6 @@ jobs:
         set -x
         sudo apt-get update
         sudo apt-get install -yy libsfml-dev libboost-test-dev libmicrohttpd-dev libxml2-dev xvfb lcov gcovr
-        sudo apt-get install xvfb
 
     - name: switch to gcc-12 on linux
       run: |
