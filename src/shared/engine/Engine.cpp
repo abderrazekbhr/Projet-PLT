@@ -1,6 +1,6 @@
 #include "Engine.h"
 #include <stdexcept> // Nécessaire pour std::out_of_range
-
+#include <iostream>
 #include "Command.h"
 
 namespace engine
@@ -42,13 +42,18 @@ namespace engine
     {
         actualCmd = newCmd;
     }
+    bool Engine::runCommand(Engine* e) {
+        if(actualCmd == nullptr) {
+            std::cout << "No command to execute" << std::endl;
+            return false;
+        }
+        return actualCmd->execute(e);
+    }
+
 
     Engine::~Engine() {
         // delete &currentState;
     };
-    void Engine::runCommand() {
-        actualCmd->execute(this);
-    }
-
+    
 
 }

@@ -11,6 +11,9 @@ namespace engine {
 };
 namespace state {
   class Player;
+};
+namespace engine {
+  class Engine;
 }
 
 #include "state/State.h"
@@ -31,7 +34,7 @@ namespace engine {
     state::Player& getActualPlayer ();
     state::State& getState ();
     void setNextPlayer ();
-    void runCommand ();
+    bool runCommand (Engine * e);
     Command* getActualCommand ();
     void setActualCmd (Command* newCmd);
     // Setters and Getters
