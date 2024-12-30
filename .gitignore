@@ -1,13 +1,36 @@
-*~
-build
-cmake-build-debug
-bin
-nbproject
+# Build directories
+build/
+cmake-build-debug/
+bin/
+nbproject/
 
-.idea
-.vscode
+# IDE and editor files
+.idea/
+.vscode/
 *.autosave
-testFucntions
 
-**/*.identifier
-**/*.h
+# Temporary or miscellaneous files
+testFucntions
+*.identifier
+
+# C++ files (specific extensions to ignore)
+**/*.o       # Object files
+**/*.a       # Static library files
+**/*.so      # Shared object files
+**/*.h.gch   # Precompiled headers
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+*.bak
+
+# Other
+*.DS_Store    # macOS metadata files
+Thumbs.db     # Windows metadata files
