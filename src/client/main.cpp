@@ -23,6 +23,7 @@ int main()
         c->initDistribute();
         for (int i = 0; i < nbRound; i++)
         {
+            
             for (int j = 0; i < nbTours; j++)
             {
                 for (int k = 0; k < nbPlayer; k++)
