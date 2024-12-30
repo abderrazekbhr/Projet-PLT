@@ -9,8 +9,10 @@ namespace state {
   class Player;
   class GameBoard;
   class CardsDeck;
+  class Observable;
 }
 
+#include "Observable.h"
 #include "CardsDeck.h"
 #include "GameBoard.h"
 #include "Player.h"
@@ -18,7 +20,7 @@ namespace state {
 namespace state {
 
   /// class State - 
-  class State {
+  class State : public state::Observable {
     // Associations
     // Attributes
   public:
