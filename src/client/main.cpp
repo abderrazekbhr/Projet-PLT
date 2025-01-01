@@ -12,7 +12,7 @@ int main()
 {
     cout << "Welcome to the game of CHKOBA!" << endl;
     Client *c = new Client();
-    
+
     c->setUp();
 
     int nbPlayer = c->getNbPlayerAndIA();
@@ -21,13 +21,15 @@ int main()
     while (!c->isEndOfGame())
     {
         c->initDistribute();
+
         for (int i = 0; i < nbRound; i++)
         {
             for (int j = 0; i < nbTours; j++)
             {
                 for (int k = 0; k < nbPlayer; k++)
                 {
-
+                    cout << "--------------------------------------" << endl;
+                    cout << "Tour of player" << k + 1 << endl;
                     if (c->chooseAction() == Throwing)
                     {
                         c->playThrowCard();
