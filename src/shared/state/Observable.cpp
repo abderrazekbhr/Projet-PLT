@@ -12,7 +12,7 @@ using namespace state;
 
     void Observable::notifyObserver(StateEvent& event, State* state){
         for(auto observer:observers){
-            observer->StateChanged(event,*state);
+            observer->stateChanged(event,*state);
         }
     }
 
