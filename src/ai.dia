@@ -87,10 +87,17 @@
   <dia:layer name="Background" visible="true" connectable="true" active="true">
     <dia:object type="UML - LargePackage" version="0" id="O0">
       <dia:attribute name="obj_pos">
+<<<<<<< HEAD
         <dia:point val="13.1522,8"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
         <dia:rectangle val="13.1022,6.95;43.9,25.4"/>
+=======
+        <dia:point val="14.8522,7.74685"/>
+      </dia:attribute>
+      <dia:attribute name="obj_bb">
+        <dia:rectangle val="14.8022,6.69685;45.5257,29.2928"/>
+>>>>>>> add3516d348853e0398fe28558657a928f5643af
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -1350,14 +1357,13 @@
       <dia:attribute name="obj_bb">
         <dia:rectangle val="27.474,13.8816;37.9267,19.4516"/>
       </dia:attribute>
-      <dia:attribute name="meta">
-        <dia:composite type="dict"/>
-      </dia:attribute>
-      <dia:attribute name="orth_points">
-        <dia:point val="28.324,13.9316"/>
         <dia:point val="28.324,17.0666"/>
         <dia:point val="37.8767,17.0666"/>
         <dia:point val="37.8767,19.4016"/>
+        <dia:point val="30.024,14.2316"/>
+        <dia:point val="30.024,17.3666"/>
+        <dia:point val="39.5767,17.3666"/>
+        <dia:point val="39.5767,19.7016"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="1"/>
