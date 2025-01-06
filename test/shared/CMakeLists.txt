@@ -10,4 +10,5 @@ add_custom_test(shared_RoundInitDistributeCard)
 add_custom_test(shared_RoundDistributeCard)
 add_custom_test(shared_throwCard)
 add_custom_test(shared_captureCard)
+add_custom_test(shared_EndRound)
 # vim: set sw=2 sts=2 et:
