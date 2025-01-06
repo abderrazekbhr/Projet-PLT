@@ -2,52 +2,52 @@
 
 // The following lines are here to check that SFML is installed and working
 #include <SFML/Graphics.hpp>
-
-void testSFML()
-{
-    sf::Texture texture;
-}
-// end of test SFML
-
-#include "../shared/state.h"
+#include "client.h"
+#include "engine.h"
 using namespace std;
+using namespace client;
+using namespace engine;
 
 int main()
 {
-    int x = 1080;
-    int y = 720;
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Hello Window");
-    sf::Texture texture;
-    std::string path = "ressources.png";
-    if (!texture.loadFromFile(path))
-    {
-        std::cout << "Could not load enemy texture" << std::endl;
-        return 0;
-    }
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-        window.clear(sf::Color::Black);
-        sf::Sprite image;
-        image.setTexture(texture);
-        image.setPosition(sf::Vector2f(x, y));
-        image.scale(sf::Vector2f(1, 1.5));
-        window.clear();
-        window.draw(image);
-        window.display();
-    }
+    cout << "Welcome to the game of CHKOBA!" << endl;
+    Client *c = new Client();
 
+    c->setUp();
+
+    int nbPlayer = c->getNbPlayerAndIA();
+    int nbRound = 36 / nbPlayer;
+    int nbTours = 3;
+    while (!c->isEndOfGame())
+    {
+        c->initDistribute();
+
+        for (int i = 0; i < nbRound; i++)
+        {
+            for (int j = 0; i < nbTours; j++)
+            {
+                for (int k = 0; k < nbPlayer; k++)
+                {
+                    cout << "--------------------------------------" << endl;
+                    cout << "Tour of player" << k + 1 << endl;
+                    if (c->chooseAction() == Throwing)
+                    {
+                        c->playThrowCard();
+                    }
+                    else
+                    {
+                        c->playCaptureCard();
+                    }
+                }
+            }
+            c->distributeCard();
+        }
+        cout << "do you want to continue the game ? (y/n)" << endl;
+        char response = c->getValidatedChar("Do you want to continue the game ? (y/n): ");
+        if (response == 'n' || response == 'N')
+        {
+            break;
+        }
+    }
     return 0;
 }
-
-// int main(int argc, char *argv[])
-// {
-//     cout << "Bonjour, c'est jeux du carte CHKOBA!" << endl;
-
-//     return 0;
-// }
