@@ -31,10 +31,10 @@ namespace state {
     int maxScore;
     GameBoard* board;
     CardsDeck* allCards;
+    int playerIndexForLastCapturedCard;
     // Operations
   public:
     State ();
-    ~State ();
     int getMaxScore ();
     int getNbPlayer ();
     GameBoard * getBoard ();
@@ -46,6 +46,9 @@ namespace state {
     void initBoard ();
     void addPlayer (std::string namePlayer);
     std::vector<Player *> getAllPlayers ();
+    void setPlayerIndexForLastCapturedCard (int newIndexPlayer);
+    int getPlayerIndexForLastCapturedCard ();
+    ~State ();
     // Setters and Getters
   };
 

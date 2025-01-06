@@ -30,13 +30,14 @@ namespace engine {
     // Operations
   public:
     Engine ();
-    ~Engine ();
     state::Player& getActualPlayer ();
     state::State& getState ();
     void setNextPlayer ();
     bool runCommand (Engine * e);
     Command* getActualCommand ();
     void setActualCmd (Command* newCmd);
+    void setPlayerIndexForLastCapturedCard ();
+    ~Engine ();
     // Setters and Getters
   };
 

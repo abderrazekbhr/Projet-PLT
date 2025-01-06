@@ -11,4 +11,5 @@
 #include "engine/RoundDistributeCards.h"
 #include "engine/CaptureCard.h"
 #include "engine/RoundInitDistributeCards.h"
+#include "engine/EndRound.h"
 #endif

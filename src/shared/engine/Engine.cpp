@@ -42,18 +42,21 @@ namespace engine
     {
         actualCmd = newCmd;
     }
-    bool Engine::runCommand(Engine* e) {
-        if(actualCmd == nullptr) {
+    bool Engine::runCommand(Engine *e)
+    {
+        if (actualCmd == nullptr)
+        {
             std::cout << "No command to execute" << std::endl;
             return false;
         }
         return actualCmd->execute(e);
     }
-
-
+    void Engine::setPlayerIndexForLastCapturedCard (){
+        int index = currentState.turn;
+        currentState.setPlayerIndexForLastCapturedCard(index);  
+    }
     Engine::~Engine() {
         // delete &currentState;
     };
-    
 
 }

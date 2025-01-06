@@ -57,6 +57,16 @@ std::vector<state::Player *> state::State::getAllPlayers()
 {
     return players;
 }
+
+void state::State::setPlayerIndexForLastCapturedCard(int newIndexPlayer)
+{
+    playerIndexForLastCapturedCard = newIndexPlayer;
+}
+int state::State::getPlayerIndexForLastCapturedCard()
+{
+    return playerIndexForLastCapturedCard;
+}
+
 state::State::~State()
 {
     // delete board;
