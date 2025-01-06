@@ -54,7 +54,7 @@ bool CaptureCard::execute(Engine *engine)
         {
             player.addToScore(1);
         }
-
+        engine->setPlayerIndexForLastCapturedCard();
         // Update to next player
         engine->setNextPlayer();
         return true;
@@ -80,7 +80,7 @@ bool CaptureCard::validateCardHand(int indexCard, int maxIndex)
 
 bool CaptureCard::validateCardBoard(std::vector<int> indexsCards, int maxIndex)
 {
-    
+
     for (int index : indexsCards)
     {
         if (index < 0 || index >= maxIndex)

@@ -6,6 +6,7 @@ state::State::State()
 {
     turn = 0;
     maxScore = 0;
+    playerIndexForLastCapturedCard = -1;
     nbPlayer = 0;
     initBoard();
     initCards();
