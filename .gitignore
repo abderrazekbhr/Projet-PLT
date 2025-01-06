@@ -5,6 +5,7 @@ bin
 nbproject
 
 .idea
+.id1ea
 .vscode
 *.autosave
 testFucntions
