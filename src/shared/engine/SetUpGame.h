@@ -22,13 +22,16 @@ namespace engine {
   /// class SetUpGame - 
   class SetUpGame : public engine::Command {
     // Attributes
+  public:
+    char playerIsIA;
+    int level;
   private:
     int nbPlayer;
     int maxScore;
     std::vector<std::string>& playersName;
     // Operations
   public:
-    SetUpGame (int nbPlayer, int maxScore, std::vector<std::string>& players);
+    SetUpGame (int nbPlayer, int maxScore, std::vector<std::string>& players, char playerIsIA, int level);
     bool execute (Engine* engine);
     ~SetUpGame ();
   private:
