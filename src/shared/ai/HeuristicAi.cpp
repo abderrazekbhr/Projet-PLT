@@ -59,7 +59,7 @@ int findSeptDinari(vector<Card> &cards)
 }
 
 // Function to find possible moves for Chkobba
-std::map<std::string, std::vector<int>> checkPossibleChkoba(std::vector<state::Card> hand, std::vector<state::Card> cardsOnBoard)
+std::map<std::string, std::vector<int>> HeuristicAi::checkPossibleChkoba(std::vector<state::Card> hand, std::vector<state::Card> cardsOnBoard)
 {
     map<string, vector<int>> result;
 
@@ -128,7 +128,7 @@ std::map<std::string, std::vector<int>> HeuristicAi::checkPossible7Carreau(std::
 }
 
 // Function to determine the best move to maximize profit
-std::map<std::string, std::vector<int>> maximiseProfit(std::vector<state::Card> hand, std::vector<state::Card> cardsOnBoard)
+std::map<std::string, std::vector<int>> HeuristicAi::maximiseProfit(std::vector<state::Card> hand, std::vector<state::Card> cardsOnBoard)
 {
     map<string, vector<int>> bestMove;
     int maxScore = 0;
