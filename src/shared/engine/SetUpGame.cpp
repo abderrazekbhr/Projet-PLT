@@ -5,15 +5,15 @@
 namespace engine
 {
 
-    SetUpGame::SetUpGame(int nbPlayer, int maxScore, std::vector<std::string> &players) : playersName(players)
+    SetUpGame::SetUpGame(int nbPlayer, int maxScore, std::vector<std::string> &players, char playerIsIA, int level) : playersName(players)
     {
 
         this->setNewCMD(SETUP_GAME);
         this->nbPlayer = nbPlayer;
         this->maxScore = maxScore;
+        this->playerIsIA = playerIsIA;
+        this->level = level;
     }
-
-    SetUpGame::~SetUpGame() {}
 
     void SetUpGame::validateNbPlayer()
     {
@@ -38,10 +38,16 @@ namespace engine
         {
             throw std::invalid_argument("The number of players does not match the number of names provided.");
         }
+        currentState.addPlayer(playersName.at(0));
+        if(playerIsIA=='y' || playerIsIA=='Y'){
 
-        for (int i = 0; i < nbPlayer; i++)
-        {
-            currentState.addPlayer(playersName.at(i));
+            currentState.addPlayer("AI");
+        }
+        else{
+            for (int i = 1; i < nbPlayer; i++)
+            {
+                currentState.addPlayer(playersName.at(i));
+            }
         }
     }
 
@@ -67,5 +73,6 @@ namespace engine
             throw e;
         }
     }
+    SetUpGame::~SetUpGame() {}
 
 }

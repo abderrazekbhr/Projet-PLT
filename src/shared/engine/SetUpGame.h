@@ -5,36 +5,44 @@
 #include <string>
 #include <vector>
 
-namespace engine {
+namespace engine
+{
   class Engine;
 };
-namespace state {
+namespace state
+{
   class State;
 };
-namespace engine {
+namespace engine
+{
   class Command;
 }
 
 #include "Command.h"
 
-namespace engine {
+namespace engine
+{
 
-  /// class SetUpGame - 
-  class SetUpGame : public engine::Command {
+  /// class SetUpGame -
+  class SetUpGame : public engine::Command
+  {
     // Attributes
   private:
     int nbPlayer;
     int maxScore;
-    std::vector<std::string>& playersName;
+    char playerIsIA;
+    int level;
+    std::vector<std::string> &playersName;
     // Operations
   public:
-    SetUpGame (int nbPlayer, int maxScore, std::vector<std::string>& players);
-    bool execute (Engine* engine);
-    ~SetUpGame ();
+    SetUpGame(int nbPlayer, int maxScore, std::vector<std::string> &players, char playerIsIA, int level);
+    bool execute(Engine *engine);
+    ~SetUpGame();
+
   private:
-    void validateNbPlayer ();
-    void validateMaxScore ();
-    void initPlayers (state::State & currentState);
+    void validateNbPlayer();
+    void validateMaxScore();
+    void initPlayers(state::State &currentState);
     // Setters and Getters
   };
 

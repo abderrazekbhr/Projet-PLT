@@ -70,7 +70,7 @@ std::map<std::string, std::vector<int>> checkPossibleChkoba(std::vector<state::C
         if (cardSum(cardsOnBoard) == chosenCard.getNumberCard())
         {
             // Return the indices of the chosen card and all cards on the board
-            result["hand"] = {static_cast<int>(i)};
+            result["hand"] = {(int)i};
             result["board"].resize(cardsOnBoard.size());
             iota(result["board"].begin(), result["board"].end(), 0); // All indices on the board
             return result;
@@ -176,16 +176,17 @@ std::map<std::string, std::vector<int>> maximiseProfit(std::vector<state::Card> 
 }
 
 // Function to decide the card to throw
-Card HeuristicAi::throwStrategy(vector<Card> hand)
+int HeuristicAi::throwStrategy(vector<Card> hand)
 {
-    Card minCard = hand[0];
-    for (Card c : hand)
+    int minCard = 0;
+    for (size_t i = 0; i < hand.size(); i++)
     {
-        if (minCard.getNumberCard() > c.getNumberCard())
+        if (hand[i].getNumberCard() < hand[minCard].getNumberCard())
         {
-            minCard = c;
+            minCard = i;
         }
     }
+
     return minCard;
 }
 
@@ -194,16 +195,26 @@ void HeuristicAi::run(engine::Engine *eng)
 {
     State state = eng->getState();
     Player player = eng->getActualPlayer();
-
     vector<Card> hand = player.getHoldCard();
     vector<Card> cardsOnBoard = state.getBoard()->getCardBoard();
-
-    if (!checkPossibleChkoba(hand, cardsOnBoard).empty() || !checkPossible7Dianri(hand, cardsOnBoard).empty() || !maximiseProfit(hand, cardsOnBoard).empty())
+    map<string, vector<int>> vals = checkPossibleChkoba(hand, cardsOnBoard);
+    if (vals["hand"].size() != 0 && vals["board"].size() != 0)
     {
-        return;
+        CaptureCard captureAction(vals["hand"][0], vals["board"]);
+    }
+    vals = checkPossible7Dianri(hand, cardsOnBoard);
+    if (vals["hand"].size() != 0 && vals["board"].size() != 0)
+    {
+        CaptureCard captureAction(vals["hand"][0], vals["board"]);
+    }
+    vals = maximiseProfit(hand, cardsOnBoard);
+    if (vals["hand"].size() != 0 && vals["board"].size() != 0)
+    {
+        CaptureCard captureAction(vals["hand"][0], vals["board"]);
     }
 
-    Card throwCard = throwStrategy(hand);
+    int throwCard = throwStrategy(hand);
+    ThrowCard throwAction(throwCard);
     // Execute the throw card logic (implementation dependent)
 }
 
