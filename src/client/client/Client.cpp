@@ -4,7 +4,7 @@
 #include <limits>
 #define MAX_PLAYERS 4
 #define MIN_PLAYERS 2
-#define MAX_SCORE 22
+#define MAX_SCORE 21
 #define MIN_SCORE 11
 
 using namespace std;
@@ -21,13 +21,21 @@ void Client::setUp()
     bool isValidSetUp = false;
     while (!isValidSetUp)
     {
+
         int nbPlayer = this->enterNbPlayer();
         int maxScore = this->enterMaxScore();
+        char playerIsIA = this->wantToPlayWithIA();
+        int level = -1;
+        if (playerIsIA)
+        {
+            int level = this->enterIALevel();
+        }
         std::vector<std::string> playersNames = this->enterPlayersNames(nbPlayer);
-        SetUpGame setUpCommand = SetUpGame(nbPlayer, maxScore, playersNames);
-        cout << "Game is set up!" << endl;
-        this->engine.setActualCmd(&setUpCommand);
-        isValidSetUp = this->engine.runCommand(&engine);
+
+
+        // SetUpGame setUpCommand = SetUpGame(nbPlayer, maxScore, playersNames, playerIsIA, level);
+        // this->engine.setActualCmd(&setUpCommand);
+        // isValidSetUp = this->engine.runCommand(&engine);
     }
 }
 
@@ -38,11 +46,25 @@ int Client::enterNbPlayer()
     return nbPlayer;
 }
 
+char Client::wantToPlayWithIA()
+{
+    std::string prompt = "Do you want to play with IA ? (y/n): ";
+    int resp = this->getValidatedChar(prompt);
+    return resp;
+}
+
 int Client::enterMaxScore()
 {
-    std::string prompt = "Enter the maximum score (11 or 22): ";
+    std::string prompt = "Enter the maximum score (11 or 21): ";
     int maxScore = this->getValidatedInteger(prompt);
     return maxScore;
+}
+
+int Client::enterIALevel()
+{
+    std::string prompt = "Enter the level of the AI (1 or 2): ";
+    int level = this->getValidatedInteger(prompt);
+    return level;
 }
 
 int Client::getValidatedInteger(std::string prompt)
