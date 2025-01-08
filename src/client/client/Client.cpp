@@ -99,7 +99,7 @@ void Client::displayHandCards()
 {
     cout << "Your cards are :" << endl;
     state::Player player = engine.getActualPlayer();
-    for (int i = 0; i < player.getHoldCard().size(); i++)
+    for (size_t i = 0; i < player.getHoldCard().size(); i++)
     {
         cout << i << "[" << player.getHoldCard()[i].getNumberCard() << "|" << player.getHoldCard()[i].getTypeCard() << "]" << endl;
     }
