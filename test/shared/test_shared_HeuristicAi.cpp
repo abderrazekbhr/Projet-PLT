@@ -14,7 +14,7 @@ BOOST_AUTO_TEST_CASE(test_heuristic_ai)
     // Initialisation de l'état et de l'IA
     Engine e; // Constructeur simple
     State &state = e.getState();
-    HeuristicAi ai;
+    HeuristicAi ai("Heuristic AI");
 
     // Création de joueurs et configuration du jeu
     state.addPlayer("Player 1");

@@ -10,7 +10,9 @@ using namespace state;
 using namespace engine;
 
 // Constructor
-HeuristicAi::HeuristicAi() {}
+HeuristicAi::HeuristicAi(string name) : AI(name)
+{
+}
 
 // Utility function to calculate the sum of card values
 int cardSum(vector<Card> &cards, vector<int> &indices)
@@ -179,7 +181,7 @@ std::map<std::string, std::vector<int>> HeuristicAi::maximiseProfit(std::vector<
 int HeuristicAi::throwStrategy(vector<Card> hand)
 {
     int minCard = 0;
-    for (size_t i=0 ;i<hand.size();i++)
+    for (size_t i = 0; i < hand.size(); i++)
     {
         if (hand[minCard].getNumberCard() > hand[i].getNumberCard())
         {
