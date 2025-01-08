@@ -35,6 +35,7 @@ namespace engine {
     bool verifyChkoba (state::GameBoard board);
     void collectMultipleCard (state::GameBoard & board, std::vector<state::Card>  cardToCollectedFromBoard , state::Player & player);
     bool validateSum (state::Card  cardFromHand,  std::vector<state::Card>  cardBoard);
+     friend class RandomAi;
     // Setters and Getters
   };
 
