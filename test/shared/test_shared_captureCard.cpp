@@ -95,4 +95,4 @@ BOOST_AUTO_TEST_CASE(all_test)
     BOOST_CHECK_EQUAL(players[0]->getScore(), 1); // Score increment due to chkoba
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+BOOST_AUTO_TEST_SUITE_END();

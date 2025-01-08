@@ -9,7 +9,8 @@ namespace engine
         this->setNewCMD(FIRST_DISTRIBUTION);
     }
     RoundInitDistributeCards::~RoundInitDistributeCards() {}
-
+    
+    // TODO: Correct logic in this method : we get the first card and then ask the player if he wants to take it or not
     bool RoundInitDistributeCards::execute(Engine *engine)
     {
         state::State &currentState = engine->getState();
@@ -19,7 +20,6 @@ namespace engine
 
         if (response == 'y' || response == 'Y')
         {
-
             allCards->distributeCards(currentState.getAllPlayers(), 3);
             allCards->distributeCardsOnBoard(*(currentState.getBoard()), 4);
         }

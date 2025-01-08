@@ -11,6 +11,9 @@ namespace engine {
 };
 namespace state {
   class Player;
+};
+namespace engine {
+  class Engine;
 }
 
 #include "state/State.h"
@@ -27,13 +30,14 @@ namespace engine {
     // Operations
   public:
     Engine ();
-    ~Engine ();
     state::Player& getActualPlayer ();
     state::State& getState ();
     void setNextPlayer ();
-    void runCommand ();
+    bool runCommand (Engine * e);
     Command* getActualCommand ();
     void setActualCmd (Command* newCmd);
+    void setPlayerIndexForLastCapturedCard ();
+    ~Engine ();
     // Setters and Getters
   };
 

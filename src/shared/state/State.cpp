@@ -6,6 +6,7 @@ state::State::State()
 {
     turn = 0;
     maxScore = 0;
+    playerIndexForLastCapturedCard = -1;
     nbPlayer = 0;
     initBoard();
     initCards();
@@ -57,6 +58,16 @@ std::vector<state::Player *> state::State::getAllPlayers()
 {
     return players;
 }
+
+void state::State::setPlayerIndexForLastCapturedCard(int newIndexPlayer)
+{
+    playerIndexForLastCapturedCard = newIndexPlayer;
+}
+int state::State::getPlayerIndexForLastCapturedCard()
+{
+    return playerIndexForLastCapturedCard;
+}
+
 state::State::~State()
 {
     // delete board;
