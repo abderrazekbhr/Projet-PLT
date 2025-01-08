@@ -95,6 +95,29 @@ char Client::getValidatedChar(std::string prompt)
     return response;
 }
 
+void Client::displayHandCards()
+{
+    cout << "Your cards are :" << endl;
+    state::Player player = engine.getActualPlayer();
+    for (int i = 0; i < player.getHoldCard().size(); i++)
+    {
+        cout << i << "[" << player.getHoldCard()[i].getNumberCard() << "|" << player.getHoldCard()[i].getTypeCard() << "]" << endl;
+    }
+    cout << "--------------------------------------" << endl;
+}
+
+void Client::displayBoardCards()
+{
+    cout << "Cards on the board are :" << endl;
+    state::GameBoard *board = engine.getState().getBoard();
+
+    for (state::Card c : board->getCardBoard())
+    {
+        cout << "[" << c.getNumberCard() << "|" << c.getTypeCard() << "]" << endl;
+    }
+    cout << "--------------------------------------" << endl;
+}
+
 std::vector<std::string> Client::enterPlayersNames(int nbPlayers)
 {
     std::vector<std::string> playersNames;
