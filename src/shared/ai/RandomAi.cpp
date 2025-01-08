@@ -29,7 +29,7 @@ void RandomAi::run(engine::Engine eng) {
     std::vector<state::Card> handCards = player.getHoldCard();
     std::vector<state::Card> boardCards = board->getCardBoard();
 
-    for (int i = 0; i < handCards.size(); i++) {
+    for (size_t i = 0; i < handCards.size(); i++) {
         for (int j = 0; j < boardCards.size(); j++) {
             if (handCards[i].equals(boardCards[j])) {
 
