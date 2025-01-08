@@ -30,6 +30,7 @@ int main()
                 {
                     cout << "--------------------------------------" << endl;
                     cout << "Tour of player" << k + 1 << endl;
+                    // c->displayCards(c->engine.getState().getAllPlayers()[k]->getHoldCard());
                     if (c->chooseAction() == Throwing)
                     {
                         c->playThrowCard();
