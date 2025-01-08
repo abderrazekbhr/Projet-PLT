@@ -1210,8 +1210,8 @@
       </dia:attribute>
       <dia:attribute name="orth_points">
         <dia:point val="29.5163,13.2722"/>
-        <dia:point val="29.5163,17.1389"/>
-        <dia:point val="22.5416,17.1389"/>
+        <dia:point val="29.5163,17.139"/>
+        <dia:point val="22.5416,17.139"/>
         <dia:point val="22.5416,20.2057"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">

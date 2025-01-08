@@ -32,9 +32,10 @@ void Client::setUp()
         }
         std::vector<std::string> playersNames = this->enterPlayersNames(nbPlayer);
 
-        SetUpGame setUpCommand = SetUpGame(nbPlayer, maxScore, playersNames, playerIsIA, level);
-        this->engine.setActualCmd(&setUpCommand);
-        isValidSetUp = this->engine.runCommand(&engine);
+
+        // SetUpGame setUpCommand = SetUpGame(nbPlayer, maxScore, playersNames, playerIsIA, level);
+        // this->engine.setActualCmd(&setUpCommand);
+        // isValidSetUp = this->engine.runCommand(&engine);
     }
 }
 
