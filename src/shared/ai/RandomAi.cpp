@@ -29,11 +29,12 @@ void RandomAi::run(engine::Engine eng) {
     std::vector<state::Card> handCards = player.getHoldCard();
     std::vector<state::Card> boardCards = board->getCardBoard();
 
+    // Utilisation de size_t pour les indices dans les boucles
     for (size_t i = 0; i < handCards.size(); i++) {
-        for (int j = 0; j < boardCards.size(); j++) {
+        for (size_t j = 0; j < boardCards.size(); j++) {
             if (handCards[i].equals(boardCards[j])) {
 
-                CaptureCard captureAction(i, {j});
+                CaptureCard captureAction(static_cast<int>(i), {static_cast<int>(j)});
 
                 if (captureAction.execute(&eng)) {
                     return; 
@@ -42,9 +43,9 @@ void RandomAi::run(engine::Engine eng) {
         }
     }
 
-    int randomIndex = std::rand() % handCards.size();
+    size_t randomIndex = std::rand() % handCards.size();
     ThrowCard throwAction(randomIndex);
     throwAction.execute(&eng);
 }
 
-} 
+}
