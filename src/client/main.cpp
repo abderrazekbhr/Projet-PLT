@@ -67,5 +67,8 @@ int main()
         }
     }
 
+    // Proper memory management
+    delete c;
+
     return 0;
 }

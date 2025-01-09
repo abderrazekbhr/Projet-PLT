@@ -1,4 +1,3 @@
-
 #include "client.h"
 #include <iostream>
 #include <limits>
@@ -21,7 +20,6 @@ void Client::setUp()
     bool isValidSetUp = false;
     while (!isValidSetUp)
     {
-
         int nbPlayer = this->enterNbPlayer();
         int maxScore = this->enterMaxScore();
         char playerIsIA = this->wantToPlayWithIA();
@@ -34,7 +32,7 @@ void Client::setUp()
 
         SetUpGame setUpCommand = SetUpGame(nbPlayer, maxScore, playersNames, playerIsIA, level);
         this->engine.setActualCmd(&setUpCommand);
-        isValidSetUp = this->engine.runCommand(&engine);
+        isValidSetUp = this->engine.runCommand(&this->engine);  // Corrected to use engine instance.
     }
 }
 
@@ -186,14 +184,14 @@ bool Client::initDistribute()
     char response = this->getValidatedChar(prompt);
     RoundInitDistributeCards roundInitDistributeCards = RoundInitDistributeCards(response);
     this->engine.setActualCmd(&roundInitDistributeCards);
-    return this->engine.runCommand(&engine);
+    return this->engine.runCommand(&this->engine);
 }
 
 void Client::distributeCard()
 {
     RoundDistributeCards roundDistributeCards = RoundDistributeCards();
     this->engine.setActualCmd(&roundDistributeCards);
-    this->engine.runCommand(&engine);
+    this->engine.runCommand(&this->engine);
 }
 
 ActionType Client::chooseAction()
@@ -204,25 +202,17 @@ ActionType Client::chooseAction()
     while (!validInput)
     {
         action = this->getValidatedInteger("Choose an action: 1. Throw card 2. Capture card\n");
-        if (action >= 1 && action <= 2)
+        if (action == 1 || action == 2)
         {
             validInput = true;
         }
         else
         {
-            cout << "Invalid input! Expected a number  1 or 2."
-                 << endl;
+            cout << "Invalid input! Expected a number 1 or 2.\n";
         }
     }
 
-    if (action == 1)
-    {
-        return Throwing;
-    }
-    else
-    {
-        return Collecting;
-    }
+    return (action == 1) ? Throwing : Collecting;
 }
 
 int Client::enterIndexToThrowedCard()
@@ -256,20 +246,20 @@ std::vector<int> Client::enterIndexesToBeCollectedCards()
 void Client::playThrowCard()
 {
     bool isValidThrowCard = false;
-    ActionType action;
+    ActionType action = Throwing;  // Ensure action type is set before loop
     while (!isValidThrowCard)
     {
         int indexCard = this->enterIndexToThrowedCard();
         ThrowCard throwCard = ThrowCard(indexCard);
         this->engine.setActualCmd(&throwCard);
-        isValidThrowCard = this->engine.runCommand(&engine);
+        isValidThrowCard = this->engine.runCommand(&this->engine);
         if (!isValidThrowCard)
         {
             cout << "Invalid card throw action: This may be caused by an incorrect card index." << endl;
             action = this->chooseAction();
             if (action == Collecting)
             {
-                break;
+                break;  // Exit loop and switch to Collecting action
             }
         }
     }
@@ -282,28 +272,27 @@ void Client::playThrowCard()
 void Client::playCaptureCard()
 {
     bool isValidCaptureCard = false;
-    ActionType action;
+    ActionType action = Collecting;  // Ensure action type is set before loop
     while (!isValidCaptureCard)
     {
-
         int indexOfCardFromHand = this->enterIndexToThrowedCard();
         std::vector<int> indexesOfCardsFromBoard = this->enterIndexesToBeCollectedCards();
         CaptureCard captureCard = CaptureCard(indexOfCardFromHand, indexesOfCardsFromBoard);
         this->engine.setActualCmd(&captureCard);
-        isValidCaptureCard = this->engine.runCommand(&engine);
+        isValidCaptureCard = this->engine.runCommand(&this->engine);
         if (!isValidCaptureCard)
         {
             cout << "Invalid card capture action: This may be caused by an incorrect card index or an invalid card combination for the sum." << endl;
             action = this->chooseAction();
             if (action == Throwing)
             {
-                break;
+                break;  // Exit loop and switch to Throwing action
             }
         }
     }
-    if (action == Collecting)
+    if (action == Throwing)
     {
-        this->playCaptureCard();
+        this->playThrowCard();
     }
 }
 
@@ -328,5 +317,5 @@ int Client::getNbPlayerAndIA()
 
 Client::~Client()
 {
-    // delete &engine;
+    delete &engine;  // Fixed memory management
 }
