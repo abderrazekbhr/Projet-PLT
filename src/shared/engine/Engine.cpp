@@ -25,7 +25,7 @@ namespace engine
     state::Player &Engine::getActualPlayer()
     {
 
-        if (currentState.turn >= static_cast<int>(currentState.getAllPlayers().size()))
+        if (currentState.turn >= (int)(currentState.getAllPlayers().size()))
         {
 
             throw std::out_of_range("Turn index out of bounds in getActualPlayer");
@@ -51,9 +51,10 @@ namespace engine
         }
         return actualCmd->execute(e);
     }
-    void Engine::setPlayerIndexForLastCapturedCard (){
+    void Engine::setPlayerIndexForLastCapturedCard()
+    {
         int index = currentState.turn;
-        currentState.setPlayerIndexForLastCapturedCard(index);  
+        currentState.setPlayerIndexForLastCapturedCard(index);
     }
     Engine::~Engine() {
         // delete &currentState;

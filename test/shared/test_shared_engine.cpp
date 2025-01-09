@@ -3,7 +3,7 @@
 #include <vector>
 
 using namespace engine;
-
+using namespace std;
 
 BOOST_AUTO_TEST_CASE(test_increment_turn)
 {
@@ -17,10 +17,11 @@ BOOST_AUTO_TEST_CASE(test_increment_turn)
     state.setNbPlayer(2);
 
     // Test pass to new player
-    state::Player p = e.getActualPlayer();
+    state::Player& p = e.getActualPlayer();
     BOOST_CHECK_EQUAL(p.getName(), n1); 
     e.setNextPlayer();
     p = e.getActualPlayer();
+    cout<<p.getName()<<endl;
     BOOST_CHECK_EQUAL(p.getName(), n2); 
 
     // Test command change set and get
