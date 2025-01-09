@@ -14,7 +14,7 @@ bool ThrowCard::execute(Engine *engine)
 {
     try
     {
-        state::Player player = engine->getActualPlayer();
+        state::Player& player = engine->getActualPlayer();
         this->validateCardHand(indexCardHand, player.getHoldCard().size());
         engine->setNextPlayer();
 
@@ -24,6 +24,7 @@ bool ThrowCard::execute(Engine *engine)
 
         player.removeCardFromHand(card);
         board->addCardToBoard(card);
+        //std::cout << "Card added to board" << std::endl;
         return true;
     }
     catch (std::exception &e) // Catch all exceptions

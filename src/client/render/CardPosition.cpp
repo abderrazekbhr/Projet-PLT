@@ -1,27 +1,39 @@
-// CardPosition.cpp
+#include "render.h"
 #include "CardPosition.h"
 #include <SFML/Graphics.hpp>
 
-namespace render {
+namespace render
+{
+
+    // Default constructor initializing position to (0, 0)
     CardPosition::CardPosition() : x(0.0), y(0.0) {}
 
+    // Destructor
     CardPosition::~CardPosition() {}
 
-    void CardPosition::changePos() {
-        x += 5;
-        y += 3;
+    // Method to adjust position by fixed increments
+    void CardPosition::changePos()
+    {
+        x += 5.0; // Increment x-coordinate
+        y += 3.0; // Increment y-coordinate
     }
 
-    void CardPosition::setPosition(double newX, double newY) {
+    // Setter for position
+    void CardPosition::setPosition(double newX, double newY)
+    {
         x = newX;
         y = newY;
     }
 
-    double CardPosition::getX() {
+    // Getter for x-coordinate
+    double CardPosition::getX()
+    {
         return x;
     }
 
-    double CardPosition::getY() {
+    // Getter for y-coordinate
+    double CardPosition::getY()
+    {
         return y;
     }
 

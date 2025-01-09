@@ -1,11 +1,11 @@
-
 #include "client.h"
 #include <iostream>
 #include <limits>
 #define MAX_PLAYERS 4
 #define MIN_PLAYERS 2
-#define MAX_SCORE 22
-#define MIN_SCORE 11
+#define MAX_SCORE 21
+// #define MIN_SCORE 11
+#define MIN_SCORE 5
 
 using namespace std;
 using namespace client;
@@ -23,11 +23,17 @@ void Client::setUp()
     {
         int nbPlayer = this->enterNbPlayer();
         int maxScore = this->enterMaxScore();
+        char playerIsIA = this->wantToPlayWithIA();
+        int level = -1;
+        if (playerIsIA == 'y' || playerIsIA == 'Y')
+        {
+            level = this->enterIALevel();
+        }
         std::vector<std::string> playersNames = this->enterPlayersNames(nbPlayer);
-        SetUpGame setUpCommand = SetUpGame(nbPlayer, maxScore, playersNames);
-        cout << "Game is set up!" << endl;
+
+        SetUpGame setUpCommand = SetUpGame(nbPlayer, maxScore, playersNames, playerIsIA, level);
         this->engine.setActualCmd(&setUpCommand);
-        isValidSetUp = this->engine.runCommand(&engine);
+        isValidSetUp = this->engine.runCommand(&this->engine); // Corrected to use engine instance.
     }
 }
 
@@ -38,11 +44,25 @@ int Client::enterNbPlayer()
     return nbPlayer;
 }
 
+char Client::wantToPlayWithIA()
+{
+    std::string prompt = "Do you want to play with IA ? (y/n): ";
+    int resp = this->getValidatedChar(prompt);
+    return resp;
+}
+
 int Client::enterMaxScore()
 {
-    std::string prompt = "Enter the maximum score (11 or 22): ";
+    std::string prompt = "Enter the maximum score (11 or 21): ";
     int maxScore = this->getValidatedInteger(prompt);
     return maxScore;
+}
+
+int Client::enterIALevel()
+{
+    std::string prompt = "Enter the level of the AI (1 or 2): ";
+    int level = this->getValidatedInteger(prompt);
+    return level;
 }
 
 int Client::getValidatedInteger(std::string prompt)
@@ -95,6 +115,80 @@ char Client::getValidatedChar(std::string prompt)
     return response;
 }
 
+std::string numberCardToString(state::NumberCard number)
+{
+    switch (number)
+    {
+    case state::un:
+        return "un";
+    case state::deux:
+        return "deux";
+    case state::trois:
+        return "trois";
+    case state::quatre:
+        return "quatre";
+    case state::cinq:
+        return "cinq";
+    case state::six:
+        return "six";
+    case state::sept:
+        return "sept";
+    case state::dame:
+        return "dame";
+    case state::valet:
+        return "valet";
+    case state::roi:
+        return "roi";
+    default:
+        return "inconnu";
+    }
+}
+
+std::string typeCardToString(state::TypeCard type)
+{
+    switch (type)
+    {
+    case state::treffle:
+        return "treffle";
+    case state::carreau:
+        return "carreau";
+    case state::pique:
+        return "pique";
+    case state::coeur:
+        return "coeur";
+    default:
+        return "inconnu";
+    }
+}
+
+void Client::displayHandCards()
+{
+    std::cout << "Your cards are :" << std::endl;
+    state::Player player = engine.getActualPlayer();
+    for (size_t i = 0; i < player.getHoldCard().size(); i++)
+    {
+        std::string cardNumber = numberCardToString(player.getHoldCard()[i].getNumberCard());
+        std::string cardType = typeCardToString(player.getHoldCard()[i].getTypeCard());
+        std::cout << i << " : " << " [" << cardNumber << " | " << cardType << "]" << std::endl;
+    }
+    std::cout << "--------------------------------------" << std::endl;
+}
+
+void Client::displayBoardCards()
+{
+    std::cout << "Cards on the board are :" << std::endl;
+    state::GameBoard *board = engine.getState().getBoard();
+    int i = 0;
+    for (state::Card c : board->getCardBoard())
+    {
+        std::string cardNumber = numberCardToString(c.getNumberCard());
+        std::string cardType = typeCardToString(c.getTypeCard());
+        std::cout << i << " : " << " [" << cardNumber << " | " << cardType << "]" << std::endl;
+        i++;
+    }
+    std::cout << "--------------------------------------" << std::endl;
+}
+
 std::vector<std::string> Client::enterPlayersNames(int nbPlayers)
 {
     std::vector<std::string> playersNames;
@@ -110,18 +204,18 @@ std::vector<std::string> Client::enterPlayersNames(int nbPlayers)
 
 bool Client::initDistribute()
 {
-    string prompt = "Do you want to gard the keep your first card ? (y/n): ";
+    string prompt = "Do you want to keep the first card ? (y/n): ";
     char response = this->getValidatedChar(prompt);
     RoundInitDistributeCards roundInitDistributeCards = RoundInitDistributeCards(response);
     this->engine.setActualCmd(&roundInitDistributeCards);
-    return this->engine.runCommand(&engine);
+    return this->engine.runCommand(&this->engine);
 }
 
 void Client::distributeCard()
 {
     RoundDistributeCards roundDistributeCards = RoundDistributeCards();
     this->engine.setActualCmd(&roundDistributeCards);
-    this->engine.runCommand(&engine);
+    this->engine.runCommand(&this->engine);
 }
 
 ActionType Client::chooseAction()
@@ -132,30 +226,22 @@ ActionType Client::chooseAction()
     while (!validInput)
     {
         action = this->getValidatedInteger("Choose an action: 1. Throw card 2. Capture card\n");
-        if (action >= 1 && action <= 2)
+        if (action == 1 || action == 2)
         {
             validInput = true;
         }
         else
         {
-            cout << "Invalid input! Expected a number  1 or 2."
-                 << endl;
+            cout << "Invalid input! Expected a number 1 or 2.\n";
         }
     }
 
-    if (action == 1)
-    {
-        return Throwing;
-    }
-    else
-    {
-        return Collecting;
-    }
+    return (action == 1) ? Throwing : Collecting;
 }
 
 int Client::enterIndexToThrowedCard()
 {
-    int indexCard = this->getValidatedInteger("Enter the index of the card to throw: ");
+    int indexCard = this->getValidatedInteger("Enter the index of the card you wish to play from your hand (indices start from 0): ");
     return indexCard;
 }
 
@@ -165,12 +251,16 @@ std::vector<int> Client::enterIndexesToBeCollectedCards()
     bool isDone = false;
     do
     {
-        int index = this->getValidatedInteger("Enter the index of the card to collect: ");
+        int index = this->getValidatedInteger("Enter the index of the card you wish to collect from the board (indices start from 0): ");
         indexes.push_back(index);
-        char response = this->getValidatedChar("Do you want to collect another card? (y/n): ");
-        if (response == 'n' || response == 'N')
+        char response = this->getValidatedChar("Do you want to select another card to collect from the board? (y/n):");
+        if (response == 'y' || response == 'Y')
         {
             isDone = true;
+        }
+        else
+        {
+            isDone = false;
         }
 
     } while (isDone);
@@ -180,17 +270,32 @@ std::vector<int> Client::enterIndexesToBeCollectedCards()
 void Client::playThrowCard()
 {
     bool isValidThrowCard = false;
+    ActionType action = Throwing; // Ensure action type is set before loop
     while (!isValidThrowCard)
     {
         int indexCard = this->enterIndexToThrowedCard();
         ThrowCard throwCard = ThrowCard(indexCard);
         this->engine.setActualCmd(&throwCard);
-        isValidThrowCard = this->engine.runCommand(&engine);
+        isValidThrowCard = this->engine.runCommand(&this->engine);
+        if (!isValidThrowCard)
+        {
+            cout << "Invalid card throw action: This may be caused by an incorrect card index." << endl;
+            action = this->chooseAction();
+            if (action == Collecting)
+            {
+                break; // Exit loop and switch to Collecting action
+            }
+        }
+    }
+    if (action == Collecting)
+    {
+        this->playCaptureCard();
     }
 }
 
 void Client::playCaptureCard()
 {
+    ActionType action = Collecting; // Ensure action type is set before loop
     bool isValidCaptureCard = false;
     while (!isValidCaptureCard)
     {
@@ -198,7 +303,20 @@ void Client::playCaptureCard()
         std::vector<int> indexesOfCardsFromBoard = this->enterIndexesToBeCollectedCards();
         CaptureCard captureCard = CaptureCard(indexOfCardFromHand, indexesOfCardsFromBoard);
         this->engine.setActualCmd(&captureCard);
-        isValidCaptureCard = this->engine.runCommand(&engine);
+        isValidCaptureCard = this->engine.runCommand(&this->engine);
+        if (!isValidCaptureCard)
+        {
+            cout << "Invalid card capture action: You must capture a card on the board with the same number as your selected card." << endl;
+            action = this->chooseAction();
+            if (action == Throwing)
+            {
+                break; // Exit loop and switch to Collecting action
+            }
+        }
+    }
+    if (action == Throwing)
+    {
+        this->playThrowCard();
     }
 }
 
@@ -221,7 +339,48 @@ int Client::getNbPlayerAndIA()
     return currentState.getNbPlayer();
 }
 
+void Client::countScore() {
+    // Appelle la commande CountScore pour calculer les scores
+    engine::CountScore countScoreCmd;
+    countScoreCmd.execute(&this->engine);
+
+    // Affiche les scores des joueurs actuels
+    std::cout << "Current scores:" << std::endl;
+    auto players = engine.getState().getAllPlayers();
+    for (const auto& player : players) {
+        std::cout << "Player: " << player->getName() << ", Score: " << player->getScore() << std::endl;
+    }
+}
+
+
+// Appelle la commande EndRound pour attribuer les cartes restantes au dernier gagnant
+void Client::endRound()
+{
+    engine::EndRound endRoundCmd;
+    endRoundCmd.execute(&this->engine);
+}
+
+// Affiche le gagnant à la fin du jeu
+void Client::displayWinner()
+{
+    auto players = engine.getState().getAllPlayers();
+    int maxScore = -1;
+    std::string winnerName;
+
+    // Trouver le joueur avec le score maximum
+    for (const auto &player : players)
+    {
+        if (player->getScore() > maxScore)
+        {
+            maxScore = player->getScore();
+            winnerName = player->getName();
+        }
+    }
+
+    std::cout << " Winner Name : " << winnerName << " with a score of : " << maxScore << " points. Congratulations! " << std::endl;
+}
+
 Client::~Client()
 {
-    // delete &engine;
+    delete &engine; // Fixed memory management
 }

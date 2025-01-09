@@ -14,7 +14,7 @@ namespace engine
     bool RoundInitDistributeCards::execute(Engine *engine)
     {
         state::State &currentState = engine->getState();
-
+        currentState.initCards();
         state::CardsDeck *allCards = currentState.getAllCards();
         allCards->shuffleDeck();
 

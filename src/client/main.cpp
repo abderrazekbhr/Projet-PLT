@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "client.h"
 #include "engine.h"
+
 using namespace std;
 using namespace client;
 using namespace engine;
@@ -11,25 +12,39 @@ using namespace engine;
 int main()
 {
     cout << "Welcome to the game of CHKOBA!" << endl;
-    Client *c = new Client();
 
+    // Initialize the client
+    Client *c = new Client();
     c->setUp();
 
+    // Game configuration
     int nbPlayer = c->getNbPlayerAndIA();
-    int nbRound = 36 / nbPlayer;
-    int nbTours = 3;
+    int nbTours = 3;             // Number of turns per round
+
+    int nbRound = 36 / (nbPlayer*nbTours); // Number of rounds based on total cards
+
+    // Main game loop
     while (!c->isEndOfGame())
     {
+        // Distribute cards to players
         c->initDistribute();
 
-        for (int i = 0; i < nbRound; i++)
+        for (int i = 0; i < nbRound; i++) // Iterate through all rounds
         {
-            for (int j = 0; i < nbTours; j++)
+            for (int j = 0; j < nbTours; j++) // Iterate through all turns in a round
             {
-                for (int k = 0; k < nbPlayer; k++)
+                for (int k = 0; k < nbPlayer; k++) // Iterate through all players
                 {
                     cout << "--------------------------------------" << endl;
-                    cout << "Tour of player" << k + 1 << endl;
+                    cout << "Turn of Player " << k + 1 << endl;
+
+                    // Display player's hand and the board
+                    cout << "CARDS IN YOUR HAND:" << endl;
+                    c->displayHandCards();
+                    cout << "CARDS ON THE BOARD:" << endl;
+                    c->displayBoardCards();
+
+                    // Let the player choose an action
                     if (c->chooseAction() == Throwing)
                     {
                         c->playThrowCard();
@@ -40,14 +55,34 @@ int main()
                     }
                 }
             }
-            c->distributeCard();
+
+
+
+            c->distributeCard(); // Distribute cards for the next round
         }
-        cout << "do you want to continue the game ? (y/n)" << endl;
-        char response = c->getValidatedChar("Do you want to continue the game ? (y/n): ");
-        if (response == 'n' || response == 'N')
-        {
+
+        // End of round processing
+        c->endRound();   // Handle end of round cards
+        c->countScore(); // Calculate scores
+
+        // Ask if the user wants to continue playing
+        if (c->chooseAction()) {
             break;
+        }else {
+            char response = c->getValidatedChar("Do you want to continue the game? (y/n): ");
+            if (response == 'n' || response == 'N')
+            {
+                break; // Exit the game loop
+            }
         }
+
     }
+
+    // Display the winner at the end of the game
+    c->displayWinner();
+
+    // Proper memory management
+   // delete c;
+
     return 0;
 }
