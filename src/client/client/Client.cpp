@@ -4,7 +4,8 @@
 #define MAX_PLAYERS 4
 #define MIN_PLAYERS 2
 #define MAX_SCORE 21
-#define MIN_SCORE 11
+// #define MIN_SCORE 11
+#define MIN_SCORE 5
 
 using namespace std;
 using namespace client;
@@ -272,7 +273,6 @@ void Client::playThrowCard()
 void Client::playCaptureCard()
 {
     bool isValidCaptureCard = false;
-    ActionType action = Collecting;  // Ensure action type is set before loop
     while (!isValidCaptureCard)
     {
         int indexOfCardFromHand = this->enterIndexToThrowedCard();
@@ -282,17 +282,9 @@ void Client::playCaptureCard()
         isValidCaptureCard = this->engine.runCommand(&this->engine);
         if (!isValidCaptureCard)
         {
-            cout << "Invalid card capture action: This may be caused by an incorrect card index or an invalid card combination for the sum." << endl;
-            action = this->chooseAction();
-            if (action == Throwing)
-            {
-                break;  // Exit loop and switch to Throwing action
-            }
+            cout << "Invalid card capture action: You must capture a card on the board with the same number as your selected card." << endl;
+            cout << "Please try again." << endl;
         }
-    }
-    if (action == Throwing)
-    {
-        this->playThrowCard();
     }
 }
 

@@ -19,7 +19,7 @@ int main()
 
     // Game configuration
     int nbPlayer = c->getNbPlayerAndIA();
-    int nbRound = 36 / nbPlayer; // Number of rounds based on total cards
+    int nbRound = 12 / nbPlayer; // Number of rounds based on total cards
     int nbTours = 3;             // Number of turns per round
 
     // Main game loop
