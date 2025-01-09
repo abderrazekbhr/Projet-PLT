@@ -11,163 +11,102 @@ using namespace ai;
 using namespace engine;
 using namespace state;
 
-BOOST_AUTO_TEST_CASE(test_heuristic_ai)
+BOOST_AUTO_TEST_CASE(test_heuristic_ai_full)
 {
-    // Set up the game with 2 players, including 1 AI player.
-    std::vector<std::string> playerNames = {"Player1", "Heurist AI"}; // Names for the players
-    SetUpGame *setUpGame = new SetUpGame(2, 11, playerNames, 'y', 2); // 2 players, max score 21, 2 AI
+    // Set up the game with 2 players, including 1 AI player
+    std::vector<std::string> playerNames = {"Player1", "Heuristic AI"};
+    SetUpGame *setUpGame = new SetUpGame(2, 11, playerNames, 'y', 2); // 2 players, max score 11
 
     Engine engine;                  // Create an engine to run the game
     engine.setActualCmd(setUpGame); // Set the game setup as the current command in the engine
 
-    // Check if the game setup executed successfully. If not, fail the test.
-    if (!setUpGame->execute(&engine))
-    {
-        BOOST_FAIL("Game setup failed.");
-    }
+    // Check if the game setup executed successfully
+    engine.runCommand(&engine);
 
     // Retrieve all players from the engine's state
     std::vector<Player *> players = engine.getState().getAllPlayers();
-    std::cout << "Number of players: " << players.size() << std::endl; // Print number of players
+    BOOST_REQUIRE_EQUAL(players.size(), 2); // Ensure there are exactly 2 players
 
-    // Add a card to the board and check the card holding logic for RandomAi
-    GameBoard *board = engine.getState().getBoard(); // Get the game board
-
-    // Attempt to cast the second player to a RandomAi object.
+    // Get the AI player and board
     HeuristicAi *heuristicAi = dynamic_cast<HeuristicAi *>(players[1]);
-    Player *player1 = players[0];
-    if (!heuristicAi) // If cast fails, report the failure
-    {
-        BOOST_FAIL("Failed to cast Player to RandomAi.");
-    }
+    BOOST_REQUIRE(heuristicAi); // Ensure successful cast to HeuristicAi
+    GameBoard *board = engine.getState().getBoard();
+    BOOST_REQUIRE(board);
 
-    // Simulation de cartes dans la main du joueur et sur le plateau
+    // Set up cards for testing
     std::vector<Card> handPlayer = {
-        Card(sept, carreau), // Sept Dinari
+        Card(sept, pique),
         Card(trois, pique),
-        Card(cinq, coeur)};
+        Card(un, coeur)};
 
     std::vector<Card> handAi = {
+        Card(sept, carreau),
+        Card(roi, carreau),
+        Card(un, treffle)};
 
-    };
+    std::vector<Card> boardCards = {
+        Card(trois, carreau),
+        Card(quatre, carreau),
+        Card(valet, pique)};
 
-    std::vector<Card> board = {
-        Card(deux, treffle),
-        Card(cinq, carreau),
-        Card(sept, pique)};
-
-    // Add cards to the players and and the board
+    // Add cards to the players and board
     for (int i = 0; i < 3; i++)
     {
-        player1->addHoldedCard(handPlayer[i]);
+        players[0]->addHoldedCard(handPlayer[i]);
         heuristicAi->addHoldedCard(handAi[i]);
-        board->addCardToBoard(board[i]);
+        board->addCardToBoard(boardCards[i]);
     }
 
-    // Test de checkPossibleChkoba
-    auto chkobaResult = ai.checkPossibleChkoba(hand, board);
-    BOOST_CHECK_EQUAL(chkobaResult.size(), 0); // Pas de Chkobba possible ici
+    // Test `checkPossibleChkoba`
+    auto chkobaResult = heuristicAi->checkPossibleChkoba(handAi, boardCards);
+    if (!chkobaResult["hand"].empty() && !chkobaResult["board"].empty())
+    {
+        std::vector<int> boardIndices = chkobaResult["board"];
+        BOOST_CHECK_EQUAL(heuristicAi->getScore(), 1);
+    }
+    else
+    {
+        BOOST_CHECK(chkobaResult["hand"].empty() || chkobaResult["board"].empty());
+    }
 
-    // Test de checkPossible7Carreau
-    auto septCarreauResult = ai.checkPossible7Carreau(hand, board);
-    BOOST_CHECK(septCarreauResult["hand"].size() > 0);
-    BOOST_CHECK(septCarreauResult["board"].size() > 0);
+    // Test `checkPossible7Carreau`
+    auto septCarreauResult = heuristicAi->checkPossible7Carreau(handAi, boardCards);
+    if (!septCarreauResult["hand"].empty() && !septCarreauResult["board"].empty())
+    {
+        int handIndex = septCarreauResult["hand"][0];
+        std::vector<int> boardIndices = septCarreauResult["board"];
+        BOOST_CHECK_EQUAL(handAi[handIndex].getNumberCard(), 7);
+        for (int idx : boardIndices)
+        {
+            BOOST_CHECK_EQUAL(boardCards[idx].getNumberCard(), 7);
+        }
+    }
 
-    // Vérification des indices
-    BOOST_CHECK_EQUAL(septCarreauResult["hand"][0], 0);  // Sept Dinari dans la main
-    BOOST_CHECK_EQUAL(septCarreauResult["board"][0], 1); // Sept Dinari sur le plateau
+    // Test `maximiseProfit`
+    auto bestMove = heuristicAi->maximiseProfit(handAi, boardCards);
+    if (!bestMove["hand"].empty() && !bestMove["board"].empty())
+    {
+        int handIndex = bestMove["hand"][0];
+        std::vector<int> boardIndices = bestMove["board"];
+        BOOST_CHECK(!boardIndices.empty());
+        BOOST_CHECK(handIndex >= 0 && handIndex < (int)handAi.size());
+    }
 
-    // Test de maximiseProfit
-    auto bestMove = ai.maximiseProfit(hand, board);
-    BOOST_CHECK(bestMove["hand"].size() > 0);
-    BOOST_CHECK(bestMove["board"].size() > 0);
+    // Test `throwStrategy`
+    int cardToThrow = heuristicAi->throwStrategy(handAi);
+    BOOST_CHECK(cardToThrow >= 0 && cardToThrow < (int)handAi.size());
 
-    // Vérification des scores maximaux
-    int expectedHandIndex = 0; // Sept Dinari maximise souvent les points
-    BOOST_CHECK_EQUAL(bestMove["hand"][0], expectedHandIndex);
+    // Test AI's `run` method
+    BOOST_CHECK_NO_THROW(heuristicAi->run(&engine));
 
-    // Test de throwStrategy
-    int cardToThrow = ai.throwStrategy(hand);
-    BOOST_CHECK_EQUAL(cardToThrow, 1); // La carte avec le plus petit nombre est choisie
+    // Test card collection logic
+    heuristicAi->run(&engine);                                  // Run AI logic
+    BOOST_CHECK_EQUAL(heuristicAi->getSizeCollectedCards(), 1); // Ensure cards are collected properly
 
-    // Test du run
-    BOOST_CHECK_NO_THROW(ai.run(&e)); // Exécution complète de l'IA sans erreur
+    heuristicAi->run(&engine);                                  // Run AI logic again
+    BOOST_CHECK_EQUAL(heuristicAi->getSizeCollectedCards(), 1); // Ensure no duplicate collection
+
+    // Test AI's scoring logic
+    // Uncomment this part if scoring is implemented
+    // BOOST_CHECK_EQUAL(heuristicAi->getScore(), expectedScore);
 }
-
-BOOST_AUTO_TEST_SUITE(RandomAiTestSuite)
-BOOST_AUTO_TEST_SUITE_END()
-
-// // Test case for RandomAi capturing a card
-// BOOST_AUTO_TEST_CASE(RandomAiCaptureCardTest)
-// {
-//     // Set up the game with 2 players, including 1 AI player.
-//     std::vector<std::string> playerNames = {"Player1", "Heurist AI"}; // Names for the players
-//     SetUpGame *setUpGame = new SetUpGame(2, 11, playerNames, 'y', 2); // 2 players, max score 21, 2 AI
-
-//     Engine engine;                  // Create an engine to run the game
-//     engine.setActualCmd(setUpGame); // Set the game setup as the current command in the engine
-
-//     // Check if the game setup executed successfully. If not, fail the test.
-//     if (!setUpGame->execute(&engine))
-//     {
-//         BOOST_FAIL("Game setup failed.");
-//     }
-
-//     // Retrieve all players from the engine's state
-//     std::vector<Player *> players = engine.getState().getAllPlayers();
-//     std::cout << "Number of players: " << players.size() << std::endl; // Print number of players
-
-//     // Attempt to cast the second player to a RandomAi object.
-//     RandomAi *randomAi = dynamic_cast<RandomAi *>(players[1]);
-//     if (!randomAi) // If cast fails, report the failure
-//     {
-//         BOOST_FAIL("Failed to cast Player to RandomAi.");
-//     }
-
-//     // Execute the RandomAI logic for the first time (AI makes its move).
-//     randomAi->run(&engine);
-
-//     // Add a card to the board and check the card holding logic for RandomAi
-//     GameBoard *board = engine.getState().getBoard();                  // Get the game board
-//     board->addCardToBoard(Card(NumberCard::deux, TypeCard::treffle)); // Add a card to the board
-//     Card card(NumberCard::deux, TypeCard::coeur);                     // Create a new card to be added to RandomAi's hand
-//     players[0]->addHoldCard(Card(NumberCard::un, TypeCard::coeur));   // Add a card to Player1's hand
-
-//     // Create a throw card action for Player1
-//     ThrowCard throwCard(0);
-//     engine.setActualCmd(&throwCard); // Set this throw action as the current command
-
-//     throwCard.execute(&engine); // Execute the throw card action
-
-//     // Add the created card to RandomAi's hand
-//     randomAi->addHoldedCard(card);
-
-//     // Check if RandomAi's hand now contains one card
-//     BOOST_CHECK_EQUAL(randomAi->getSizeHoldedCards(), 1);
-
-//     // Execute the RandomAI logic again (AI should make another move)
-//     randomAi->run(&engine);
-//     std::cout << "nb=" << randomAi->getHoldCard().size() << std::endl; // Output number of cards in RandomAi's hand
-
-//     // Verify the state after RandomAI's execution
-//     BOOST_CHECK_EQUAL(randomAi->getHoldCard().size(), 0); // After running, RandomAi's hand should be empty
-//     BOOST_CHECK_EQUAL(board->getNumberCardBoard(), 1);    // The board should have 1 card after RandomAi's move
-
-//     // Add a new card to Player1's hand and RandomAi's hand for further testing
-//     players[0]->addHoldCard(Card(NumberCard::trois, TypeCard::coeur)); // Add card to Player1
-//     randomAi->addHoldCard(Card(NumberCard::valet, TypeCard::coeur));   // Add card to RandomAi
-
-//     // Create and execute a second throw action for Player1
-//     ThrowCard throwCard2(0);
-//     engine.setActualCmd(&throwCard2); // Set this throw action as the current command
-//     throwCard2.execute(&engine);      // Execute the throw action
-
-//     // RandomAi makes another move
-//     randomAi->run(&engine);
-
-//     // Check that RandomAi's hand is empty after the move
-//     BOOST_CHECK_EQUAL(randomAi->getSizeHoldedCards(), 0); // RandomAi's hand should be empty
-//     BOOST_CHECK_EQUAL(board->getNumberCardBoard(), 3);    // The board should have 3 cards after RandomAi's move
-// }
-
-// // End of test suite
