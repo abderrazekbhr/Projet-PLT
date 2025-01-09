@@ -307,6 +307,35 @@ int Client::getNbPlayerAndIA()
     return currentState.getNbPlayer();
 }
 
+// Appelle la commande CountScore pour calculer le score
+void Client::countScore() {
+    engine::CountScore countScoreCmd;
+    countScoreCmd.execute(&this->engine);
+}
+
+// Appelle la commande EndRound pour attribuer les cartes restantes au dernier gagnant
+void Client::endRound() {
+    engine::EndRound endRoundCmd;
+    endRoundCmd.execute(&this->engine);
+}
+
+// Affiche le gagnant à la fin du jeu
+void Client::displayWinner() {
+    auto players = engine.getState().getAllPlayers();
+    int maxScore = -1;
+    std::string winnerName;
+
+    // Trouver le joueur avec le score maximum
+    for (const auto& player : players) {
+        if (player->getScore() > maxScore) {
+            maxScore = player->getScore();
+            winnerName = player->getName();
+        }
+    }
+
+    std::cout << " Winner Name : " << winnerName << " with a score of : " << maxScore << " points. Congratulations! " << std::endl;
+}
+
 Client::~Client()
 {
     delete &engine;  // Fixed memory management
