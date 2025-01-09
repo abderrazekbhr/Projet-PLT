@@ -56,8 +56,9 @@ int main()
             }
 
             // End of round processing
-            c->countScore(); // Calculate scores
             c->endRound();   // Handle end of round cards
+            c->countScore(); // Calculate scores
+
             c->distributeCard(); // Distribute cards for the next round
         }
 

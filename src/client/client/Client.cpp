@@ -306,11 +306,19 @@ int Client::getNbPlayerAndIA()
     return currentState.getNbPlayer();
 }
 
-// Appelle la commande CountScore pour calculer le score
 void Client::countScore() {
+    // Appelle la commande CountScore pour calculer les scores
     engine::CountScore countScoreCmd;
     countScoreCmd.execute(&this->engine);
+
+    // Affiche les scores des joueurs actuels
+    std::cout << "Current scores:" << std::endl;
+    auto players = engine.getState().getAllPlayers();
+    for (const auto& player : players) {
+        std::cout << "Player: " << player->getName() << ", Score: " << player->getScore() << std::endl;
+    }
 }
+
 
 // Appelle la commande EndRound pour attribuer les cartes restantes au dernier gagnant
 void Client::endRound() {
