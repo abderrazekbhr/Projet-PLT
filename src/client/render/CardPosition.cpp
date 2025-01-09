@@ -1,45 +1,59 @@
-// CardPosition.cpp
+#include "render.h"
 #include "CardPosition.h"
 #include <SFML/Graphics.hpp>
 
-namespace render {
+namespace render
+{
+
+    // Default constructor initializing position to (0, 0)
     CardPosition::CardPosition() : x(0.0), y(0.0) {}
 
+    // Destructor
     CardPosition::~CardPosition() {}
 
-    void CardPosition::changePos() {
-        x += 5;
-        y += 3;
+    // Method to adjust position by fixed increments
+    void CardPosition::changePos()
+    {
+        x += 5.0; // Increment x-coordinate
+        y += 3.0; // Increment y-coordinate
     }
 
-    void CardPosition::setPosition(double newX, double newY) {
+    // Setter for position
+    void CardPosition::setPosition(double newX, double newY)
+    {
         x = newX;
         y = newY;
     }
 
-    double CardPosition::getX() {
+    // Getter for x-coordinate
+    double CardPosition::getX()
+    {
         return x;
     }
 
-    double CardPosition::getY() {
+    // Getter for y-coordinate
+    double CardPosition::getY()
+    {
         return y;
     }
 
-    // Méthode mise à jour pour renvoyer la position d'une carte selon son index
-    sf::Vector2f CardPosition::getCardPosition(int index, double cardWidth, double cardHeight) {
-        double spacing = 15.0;  // Espacement entre les cartes
-        double cardPosX = x + (index * (spacing + cardWidth));  // Calcul de la position en X en fonction de l'index
-        double cardPosY = y;  // Position Y constante
+    // Method to calculate the position of a card based on its index
+    // sf::Vector2f CardPosition::getCardPosition(int index, double cardWidth, double cardHeight)
+    // {
+    //     double spacing = 15.0;                                 // Space between cards
+    //     double cardPosX = x + (index * (spacing + cardWidth)); // Calculate X position
+    //     double cardPosY = y;                                   // Y position remains constant
 
-        return sf::Vector2f(cardPosX, cardPosY);
-    }
+    //     return sf::Vector2f(static_cast<float>(cardPosX), static_cast<float>(cardPosY));
+    // }
 
-    sf::Vector2f CardPosition::getBoardPosition(int index, double cardWidth, double cardHeight) {
-        // Par exemple, les cartes peuvent être alignées horizontalement
-        // ou en forme de grille, donc la position est calculée selon l'index.
-        double xPos = x + (index * (cardWidth + 10));  // Ajouter un espace entre les cartes
-        double yPos = y;
+    // // Method to calculate the position of a card on the board based on its index
+    // sf::Vector2f CardPosition::getBoardPosition(int index, double cardWidth, double cardHeight)
+    // {
+    //     double spacing = 10.0;                                  // Space between cards on the board
+    //     double boardPosX = x + (index * (cardWidth + spacing)); // Calculate X position
+    //     double boardPosY = y;                                   // Y position remains constant
 
-        return sf::Vector2f(xPos, yPos);
-    }
+    //     return sf::Vector2f(static_cast<float>(boardPosX), static_cast<float>(boardPosY));
+    // }
 }

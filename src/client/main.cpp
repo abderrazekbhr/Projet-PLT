@@ -57,7 +57,7 @@ int main()
             // Distribute cards for the next round
             c->distributeCard();
         }
-
+        
         // Ask if the user wants to continue playing
         cout << "Do you want to continue the game? (y/n)" << endl;
         char response = c->getValidatedChar("Do you want to continue the game? (y/n): ");
