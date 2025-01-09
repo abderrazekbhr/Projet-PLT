@@ -19,8 +19,9 @@ int main()
 
     // Game configuration
     int nbPlayer = c->getNbPlayerAndIA();
-    int nbRound = 12 / nbPlayer; // Number of rounds based on total cards
     int nbTours = 3;             // Number of turns per round
+
+    int nbRound = 36 / (nbPlayer*nbTours); // Number of rounds based on total cards
 
     // Main game loop
     while (!c->isEndOfGame())
@@ -55,26 +56,33 @@ int main()
                 }
             }
 
-            // End of round processing
-            c->countScore(); // Calculate scores
-            c->endRound();   // Handle end of round cards
+
+
             c->distributeCard(); // Distribute cards for the next round
         }
-        
+
+        // End of round processing
+        c->endRound();   // Handle end of round cards
+        c->countScore(); // Calculate scores
+
         // Ask if the user wants to continue playing
-        cout << "Do you want to continue the game? (y/n)" << endl;
-        char response = c->getValidatedChar("Do you want to continue the game? (y/n): ");
-        if (response == 'n' || response == 'N')
-        {
-            break; // Exit the game loop
+        if (c->chooseAction()) {
+            break;
+        }else {
+            char response = c->getValidatedChar("Do you want to continue the game? (y/n): ");
+            if (response == 'n' || response == 'N')
+            {
+                break; // Exit the game loop
+            }
         }
+
     }
 
     // Display the winner at the end of the game
     c->displayWinner();
 
     // Proper memory management
-    delete c;
+   // delete c;
 
     return 0;
 }

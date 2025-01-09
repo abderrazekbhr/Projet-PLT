@@ -25,6 +25,7 @@ namespace engine
 
     void SetUpGame::validateMaxScore()
     {
+
         if (maxScore != 11 && maxScore != 21)
         // if (maxScore != 5 && maxScore != 21)
         {
