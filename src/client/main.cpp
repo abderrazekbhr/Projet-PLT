@@ -39,7 +39,11 @@ int main()
                     cout << "--------------------------------------" << endl;
                     cout << "Turn of Player " << k + 1 << endl;
 
-                   
+                    // Display player's hand and the board
+                    cout << "CARDS IN YOUR HAND:" << endl;
+                    c->displayHandCards();
+                    cout << "CARDS ON THE BOARD:" << endl;
+                    c->displayBoardCards();
 
                     // Let the player choose an action
                     if (c->chooseAction() == Throwing)

@@ -330,6 +330,8 @@ void Client::playThrowCard()
     }
     if (action == Collecting)
     {
+        cout << "CARDS ON THE BOARD:" << endl;
+        this->displayBoardCards();
         this->playCaptureCard();
     }
 }
