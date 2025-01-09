@@ -4,10 +4,12 @@
 #include <SFML/Graphics.hpp>
 #include "client.h"
 #include "engine.h"
+#include "ai.h"
 
 using namespace std;
 using namespace client;
 using namespace engine;
+using namespace ai;
 
 int main()
 {
@@ -19,9 +21,9 @@ int main()
 
     // Game configuration
     int nbPlayer = c->getNbPlayerAndIA();
-    int nbTours = 3;             // Number of turns per round
+    int nbTours = 3; // Number of turns per round
 
-    int nbRound = 36 / (nbPlayer*nbTours); // Number of rounds based on total cards
+    int nbRound = 36 / (nbPlayer * nbTours); // Number of rounds based on total cards
 
     // Main game loop
     while (!c->isEndOfGame())
@@ -38,12 +40,6 @@ int main()
                     cout << "--------------------------------------" << endl;
                     cout << "Turn of Player " << k + 1 << endl;
 
-                    // Display player's hand and the board
-                    cout << "CARDS IN YOUR HAND:" << endl;
-                    c->displayHandCards();
-                    cout << "CARDS ON THE BOARD:" << endl;
-                    c->displayBoardCards();
-
                     // Let the player choose an action
                     if (c->chooseAction() == Throwing)
                     {
@@ -56,8 +52,6 @@ int main()
                 }
             }
 
-
-
             c->distributeCard(); // Distribute cards for the next round
         }
 
@@ -66,23 +60,25 @@ int main()
         c->countScore(); // Calculate scores
 
         // Ask if the user wants to continue playing
-        if (c->chooseAction()) {
+        if (c->chooseAction())
+        {
             break;
-        }else {
+        }
+        else
+        {
             char response = c->getValidatedChar("Do you want to continue the game? (y/n): ");
             if (response == 'n' || response == 'N')
             {
                 break; // Exit the game loop
             }
         }
-
     }
 
     // Display the winner at the end of the game
     c->displayWinner();
 
     // Proper memory management
-   // delete c;
+    // delete c;
 
     return 0;
 }
