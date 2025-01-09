@@ -254,7 +254,7 @@ ActionType Client::chooseAction()
     }
     while (!validInput)
     {
-
+        std::cout << std::endl;
         std::cout << "Name of player : " << player.getName() << std::endl;
         cout << "CARDS IN YOUR HAND:" << endl;
         this->displayHandCards();
