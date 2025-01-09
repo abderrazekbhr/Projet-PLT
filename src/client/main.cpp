@@ -38,19 +38,16 @@ int main()
                 for (int k = 0; k < nbPlayer; k++) // Iterate through all players
                 {
                     // Let the player choose an action
-                    if (c->chooseAction() == Throwing)
+                    ActionType action = c->chooseAction(); // Call once and store result
+
+                    if (action == Throwing)
                     {
                         c->playThrowCard();
                     }
-                    else if(c->chooseAction() == Collecting)
+                    else if (action == Collecting)
                     {
                         c->playCaptureCard();
                     }
-                    else{
-                        continue;
-                    }
-
-                
                 }
             }
 
@@ -61,29 +58,19 @@ int main()
         c->endRound();   // Handle end of round cards
         c->countScore(); // Calculate scores
 
-
-        // Ask if the user wants to continue playing
-        if (c->isEndOfGame())
+        // Check if the user wants to continue the game
+        char response = c->getValidatedChar("Do you want to continue the game? (y/n): ");
+        if (response == 'n' || response == 'N')
         {
-            break;
-        }
-        else
-        {
-            char response = c->getValidatedChar("Do you want to continue the game? (y/n): ");
-            if (response == 'n' || response == 'N')
-            {
-                break; // Exit the game loop
-            }
+            break; // Exit the game loop
         }
     }
-
-
 
     // Display the winner at the end of the game
     c->displayWinner();
 
     // Proper memory management
-    // delete c;
+    delete c;
 
     return 0;
 }

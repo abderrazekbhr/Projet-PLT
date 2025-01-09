@@ -232,59 +232,55 @@ void Client::distributeCard()
 
 ActionType Client::chooseAction()
 {
-    int action;
-    bool validInput = false;
+    int action = -1; // Initialize action with an invalid value
     state::Player &player = engine.getActualPlayer();
     RandomAi *ai1 = dynamic_cast<RandomAi *>(&player);
     HeuristicAi *ai2 = dynamic_cast<HeuristicAi *>(&player);
-    // Display player's hand and the board
 
+    // Handle AI players
     if (ai1 != nullptr)
     {
-        std::cout << "Name of Random AI Player : " << player.getName() << std::endl;
-
-        ai1->run(&engine);
-        validInput = true;
+        std::cout << "Name of Random AI Player: " << player.getName() << std::endl;
+        ai1->run(&engine); // Corrected to pass engine pointer
+        return Nothing;    // AI has no action prompt for human input
     }
     else if (ai2 != nullptr)
     {
-        std::cout << "Name of Heuristic AI Player : " << player.getName() << std::endl;
-        ai2->run(&engine);
-        validInput = true;
+        std::cout << "Name of Heuristic AI Player: " << player.getName() << std::endl;
+        ai2->run(&engine); // Corrected to pass engine pointer
+        return Nothing;    // AI has no action prompt for human input
     }
-    while (!validInput)
-    {
 
-        std::cout << "Name of player : " << player.getName() << std::endl;
-        cout << "CARDS IN YOUR HAND:" << endl;
+    // For human players, prompt for an action
+    while (true)
+    {
+        std::cout << "\nName of player: " << player.getName() << std::endl;
+
+        std::cout << "CARDS IN YOUR HAND:" << std::endl;
         this->displayHandCards();
+
         std::cout << "\n--------------------------------------\n"
                   << std::endl;
-        cout << "CARDS ON THE BOARD:"
-             << endl;
-        this->displayBoardCards();
 
+        std::cout << "CARDS ON THE BOARD:" << std::endl;
+        this->displayBoardCards();
+        std::cout << std::endl;
+
+        // Prompt for action
         action = this->getValidatedInteger("Choose an action: 1. Throw card 2. Capture card\n");
-        if (action == 1 || action == 2)
+
+        if (action == 1)
         {
-            validInput = true;
+            return Throwing;
+        }
+        else if (action == 2)
+        {
+            return Collecting;
         }
         else
         {
-            cout << "Invalid input! Expected a number 1 or 2.\n";
+            std::cout << "Invalid input! Expected 1 (Throw card) or 2 (Capture card).\n";
         }
-    }
-    if (action == 1)
-    {
-        return Throwing;
-    }
-    else if (action == 2)
-    {
-        return Collecting;
-    }
-    else
-    {
-        return Nothing;
     }
 }
 
