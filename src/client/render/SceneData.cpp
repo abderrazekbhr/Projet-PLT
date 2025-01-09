@@ -7,21 +7,21 @@ namespace render {
 
     // Constructeur de la classe SceneData
     SceneData::SceneData()
-        : bordWidth(800), boardHeight(600), cardWidth(80), cardHeight(120), selectedCardIndex(-1)
+        : bordWidth(800), boardHeight(600), cardWidth(80)
     {}
 
     // Destructeur de la classe SceneData
-    SceneData::~SceneData() {}
+    SceneData::~SceneData() = default;
 
     // Initialisation de la scène, chargement de la police, et paramétrage du plateau
     void SceneData::init(sf::RenderWindow& window, SceneComponent& id) {
         // Charger la police pour le texte (assurez-vous que le fichier "arial.ttf" existe dans votre dossier de projet)
-        font.loadFromFile("arial.ttf");
+        /*font.loadFromFile("arial.ttf");
         board.setSize(sf::Vector2f(bordWidth, boardHeight)); // Définir la taille du plateau
         board.setFillColor(sf::Color(200, 200, 255)); // Couleur du plateau
 
         // Position initiale des cartes sur le plateau et les mains (ajuster selon le jeu)
-        cardPos = CardPosition();  // Position des cartes (l'objet CardPosition peut gérer la position sur le plateau)
+        cardPos = CardPosition();  // Position des cartes (l'objet CardPosition peut gérer la position sur le plateau)*/
     }
 
     // Mise à jour de la scène, par exemple, pour mettre à jour le score et les informations de la carte
@@ -62,11 +62,11 @@ namespace render {
     }
 
     // Dessiner les cartes sur la main du joueur
-    void SceneData::drawCardsOnHand(sf::RenderWindow& window, state::Player& player) const {
+    void SceneData::drawCardsOnHand(sf::RenderWindow& window, state::Player& player)  {
         // Récupérer les cartes en main du joueur
         std::vector<state::Card> heldCards = player.getHoldCard();  // Utiliser l'instance player ici
-
-        for (size_t i = 0; i < heldCards.size(); ++i) {
+        int size = heldCards.size();
+        for (int i = 0; i < size; ++i) {
             state::Card card = heldCards[i];
 
             // Création d'un rectangle pour la carte
@@ -95,6 +95,25 @@ namespace render {
     }
 
 
+    void render::SceneData::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+        // Exemple : Dessiner le plateau et les cartes graphiques
+        target.draw(board, states); // Dessine le plateau
+
+        // Dessiner toutes les cartes sur le plateau
+        for (const auto& cardShape : boardCardShapes) {
+            target.draw(cardShape, states);
+        }
+
+        // Dessiner toutes les cartes dans la main
+        for (const auto& handShape : handCardShapes) {
+            target.draw(handShape, states);
+        }
+
+        // Dessiner le texte associé (si besoin)
+        for (const auto& txt : text) {
+            target.draw(txt, states);
+        }
+    }
     // Dessiner les cartes sur le plateau
     void SceneData::drawCardsOnBoard(sf::RenderWindow& window , state::Player& player) {
         std::vector<state::Card> collectedCards = player.getCollectCard(); // Récupérer les cartes sur le plateau
@@ -218,7 +237,7 @@ namespace render {
 
     void SceneData::removeCardFromHand(state::Card& card) {
         // Chercher et supprimer la carte logique et sa carte graphique correspondante
-        auto it = std::find_if(handCardShapes.begin(), handCardShapes.end(),
+       /* auto it = std::find_if(handCardShapes.begin(), handCardShapes.end(),
                                [&card]( std::pair<sf::RectangleShape, state::Card>& p) {
                                    return p.second.equals(card);  // Comparer la carte logique
                                });
@@ -226,14 +245,15 @@ namespace render {
         if (it != handCardShapes.end()) {
             // Retirer la carte graphique et la carte logique
             handCardShapes.erase(it);
-        }
+        }*/
     }
 
 
 
     // Sélectionner une carte de la main du joueur en fonction de son index
     void SceneData::selectCardFromHand(int cardIndex) {
-        if (cardIndex >= 0 && cardIndex < handCardShapes.size()) {
+        int size =handCardShapes.size();
+        if (cardIndex >= 0 && cardIndex < size) {
             selectedCardIndex = cardIndex;  // Marquer l'index de la carte sélectionnée
         } else {
             selectedCardIndex = -1;  // Aucune carte sélectionnée si l'index est invalide
@@ -242,12 +262,13 @@ namespace render {
 
 
     // Sélectionner plusieurs cartes sur le plateau de jeu
-    void SceneData::selectCardsFromBoard(const std::vector<int>& cardIndexes) {
+    void SceneData::selectCardsFromBoard( std::vector<int>& cardIndexes) {
         selectedBoardCards.clear();  // Réinitialiser les cartes sélectionnées précédemment
 
         // Ajouter les indices des cartes sélectionnées
         for (int idx : cardIndexes) {
-            if (idx >= 0 && idx < boardCardShapes.size()) {
+            int size =boardCardShapes.size();
+            if (idx >= 0 && idx < size) {
                 selectedBoardCards.push_back(idx);  // Ajouter l'index de la carte sélectionnée
             }
         }

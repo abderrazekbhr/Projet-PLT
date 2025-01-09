@@ -26,20 +26,14 @@ namespace render {
     }
 
     // Méthode mise à jour pour renvoyer la position d'une carte selon son index
-    sf::Vector2f CardPosition::getCardPosition(int index, double cardWidth, double cardHeight) {
-        double spacing = 15.0;  // Espacement entre les cartes
-        double cardPosX = x + (index * (spacing + cardWidth));  // Calcul de la position en X en fonction de l'index
-        double cardPosY = y;  // Position Y constante
-
-        return sf::Vector2f(cardPosX, cardPosY);
+    void getCardPosition(int index, double cardWidth, double cardHeight, int &x, int &y) {
+        x = static_cast<int>(index * cardWidth);
+        y = static_cast<int>(cardHeight * 0.5);  // Exemple d'un calcul simple pour la hauteur
     }
 
-    sf::Vector2f CardPosition::getBoardPosition(int index, double cardWidth, double cardHeight) {
-        // Par exemple, les cartes peuvent être alignées horizontalement
-        // ou en forme de grille, donc la position est calculée selon l'index.
-        double xPos = x + (index * (cardWidth + 10));  // Ajouter un espace entre les cartes
-        double yPos = y;
-
-        return sf::Vector2f(xPos, yPos);
+    // Fonction qui affecte la position du tableau (x, y) selon l'index
+    void getBoardPosition(int index, double cardWidth, double cardHeight, int &x, int &y) {
+        x = static_cast<int>(index * cardWidth * 1.5);
+        y = static_cast<int>(cardHeight * 1.2);  // Exemple d'un autre calcul
     }
 }

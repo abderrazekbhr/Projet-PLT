@@ -18,7 +18,7 @@ namespace engine
         {
             state::State &currentState = engine->getState();
 
-            if (currentState.getAllCards()->getDeckSize() != 0)
+            if (currentState.getAllCards()->getDeckSize() != 0 )
             {
                 throw std::runtime_error("The deck is not empty. Cannot end the round.");
             }
@@ -26,6 +26,13 @@ namespace engine
             size_t lastCaptureIndex = currentState.getPlayerIndexForLastCapturedCard();
             std::vector<state::Player *> players = currentState.getAllPlayers();
 
+            for (const auto &player : players)
+            {
+                if (!player->getHoldCard().empty())
+                {
+                    throw std::runtime_error("One or more players still have holded cards. Cannot end the round.");
+                }
+            }
             if (lastCaptureIndex >= players.size())
             {
                 throw std::out_of_range("Invalid index for the last captured card.");
