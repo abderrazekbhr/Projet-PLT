@@ -168,7 +168,6 @@ std::string typeCardToString(state::TypeCard type)
 
 void Client::displayHandCards()
 {
-    std::cout << "Your cards are :" << std::endl;
     state::Player player = engine.getActualPlayer();
     for (size_t i = 0; i < player.getHoldCard().size(); i++)
     {
@@ -176,13 +175,10 @@ void Client::displayHandCards()
         std::string cardType = typeCardToString(player.getHoldCard()[i].getTypeCard());
         std::cout << i << " : " << " [" << cardNumber << " | " << cardType << "]" << std::endl;
     }
-    std::cout << "\n--------------------------------------\n"
-              << std::endl;
 }
 
 void Client::displayBoardCards()
 {
-    std::cout << "Cards on the board are :" << std::endl;
     state::GameBoard *board = engine.getState().getBoard();
     int i = 0;
     for (state::Card c : board->getCardBoard())
@@ -192,8 +188,6 @@ void Client::displayBoardCards()
         std::cout << i << " : " << " [" << cardNumber << " | " << cardType << "]" << std::endl;
         i++;
     }
-    std::cout << "\n--------------------------------------\n"
-              << std::endl;
 }
 
 std::vector<std::string> Client::enterPlayersNames(int nbPlayers)
@@ -244,26 +238,35 @@ ActionType Client::chooseAction()
     RandomAi *ai1 = dynamic_cast<RandomAi *>(&player);
     HeuristicAi *ai2 = dynamic_cast<HeuristicAi *>(&player);
     // Display player's hand and the board
-    
+
     if (ai1 != nullptr)
     {
-        std::cout << "Turn of Random AI Player: " << player.getName() << std::endl;
+        std::cout << "Name of Random AI Player : " << player.getName() << std::endl;
+
         ai1->run(&engine);
-        std::cout << "\n--------------------------------------\n"
-                  << std::endl;
         validInput = true;
     }
     else if (ai2 != nullptr)
     {
-        std::cout << "Turn of Heuristic AI Player: " << player.getName() << std::endl;
+        std::cout << "Name of Heuristic AI Player : " << player.getName() << std::endl;
         ai2->run(&engine);
-        std::cout << "\n--------------------------------------\n"
-                  << std::endl;
         validInput = true;
     }
     while (!validInput)
     {
-        std::cout << "Turn of : " << player.getName() << std::endl;
+        std::cout << "\n*************************************\n"
+                  << std::endl;
+        std::cout << "Name of player : " << player.getName() << std::endl;
+        cout << "CARDS IN YOUR HAND:" << endl;
+        this->displayHandCards();
+        std::cout << "\n--------------------------------------\n"
+                  << std::endl;
+        cout << "CARDS ON THE BOARD:"
+             << endl;
+        this->displayBoardCards();
+        std::cout << "\n*************************************\n"
+                  << std::endl;
+
         action = this->getValidatedInteger("Choose an action: 1. Throw card 2. Capture card\n");
         if (action == 1 || action == 2)
         {
@@ -309,9 +312,9 @@ std::vector<int> Client::enterIndexesToBeCollectedCards()
 
 void Client::playThrowCard()
 {
-    
+
     bool isValidThrowCard = false;
-    ActionType action = Throwing; // Ensure action type is set before loop
+    ActionType action = Nothing; // Ensure action type is set before loop
     while (!isValidThrowCard)
     {
         int indexCard = this->enterIndexToThrowedCard();
@@ -330,8 +333,6 @@ void Client::playThrowCard()
     }
     if (action == Collecting)
     {
-        cout << "CARDS ON THE BOARD:" << endl;
-        this->displayBoardCards();
         this->playCaptureCard();
     }
 }
