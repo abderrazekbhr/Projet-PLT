@@ -7,11 +7,9 @@
 
 BOOST_AUTO_TEST_CASE(TestRoundDistributeCards_Execute)
 {
-    // Crée une instance d'Engine
+    // Crée une instance d'Engine et de RoundDistributeCards
     engine::Engine engine;
-
-    // Polymorphisme : déclare un pointeur vers la classe de base Command
-    engine::Command* roundDistribute = new engine::RoundDistributeCards();
+    engine::RoundDistributeCards roundDistribute;
 
     // Ajout de joueurs à l'état du jeu
     engine.getState().addPlayer("Player 1");
@@ -26,8 +24,8 @@ BOOST_AUTO_TEST_CASE(TestRoundDistributeCards_Execute)
     size_t initialDeckSize = cardsDeck->getDeckSize(); // Stocke la taille initiale du deck
     BOOST_CHECK_GT(initialDeckSize, 0); // Vérifie que le deck contient des cartes
 
-    // Exécute la commande RoundDistributeCards via le pointeur de la classe de base
-    BOOST_CHECK(roundDistribute->execute(&engine)); // Vérifie que l'exécution retourne true
+    // Exécute la commande RoundDistributeCards
+    BOOST_CHECK(roundDistribute.execute(&engine)); // Vérifie que l'exécution retourne true
 
     // Vérification de l'état après distribution
     auto playersAfter = engine.getState().getAllPlayers();
@@ -37,7 +35,4 @@ BOOST_AUTO_TEST_CASE(TestRoundDistributeCards_Execute)
     // Vérifie que le deck a diminué de la bonne quantité (6 cartes retirées pour 2 joueurs)
     size_t cardsDistributed = 2 * 3; // 2 joueurs x 3 cartes
     BOOST_CHECK_EQUAL(cardsDeck->getDeckSize(), initialDeckSize - cardsDistributed);
-
-    // Libère la mémoire allouée dynamiquement
-    //delete roundDistribute;
 }
