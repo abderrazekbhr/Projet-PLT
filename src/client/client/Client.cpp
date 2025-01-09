@@ -1,6 +1,7 @@
 #include "client.h"
 #include <iostream>
 #include <limits>
+#include "ai.h"
 #define MAX_PLAYERS 4
 #define MIN_PLAYERS 2
 #define MAX_SCORE 21
@@ -10,9 +11,11 @@
 using namespace std;
 using namespace client;
 using namespace engine;
+using namespace ai;
 
 Client::Client()
 {
+    playWithAi = false;
     this->engine = engine::Engine();
 }
 
@@ -28,7 +31,9 @@ void Client::setUp()
         if (playerIsIA == 'y' || playerIsIA == 'Y')
         {
             level = this->enterIALevel();
+            playWithAi = true;
         }
+
         std::vector<std::string> playersNames = this->enterPlayersNames(nbPlayer);
 
         SetUpGame setUpCommand = SetUpGame(nbPlayer, maxScore, playersNames, playerIsIA, level);
@@ -171,7 +176,8 @@ void Client::displayHandCards()
         std::string cardType = typeCardToString(player.getHoldCard()[i].getTypeCard());
         std::cout << i << " : " << " [" << cardNumber << " | " << cardType << "]" << std::endl;
     }
-    std::cout << "--------------------------------------" << std::endl;
+    std::cout << "\n--------------------------------------\n"
+              << std::endl;
 }
 
 void Client::displayBoardCards()
@@ -186,16 +192,28 @@ void Client::displayBoardCards()
         std::cout << i << " : " << " [" << cardNumber << " | " << cardType << "]" << std::endl;
         i++;
     }
-    std::cout << "--------------------------------------" << std::endl;
+    std::cout << "\n--------------------------------------\n"
+              << std::endl;
 }
 
 std::vector<std::string> Client::enterPlayersNames(int nbPlayers)
 {
     std::vector<std::string> playersNames;
-    for (int i = 0; i < nbPlayers; i++)
+    string name;
+    cout << "Enter player " << 1 << " name: ";
+    cin >> name;
+    playersNames.push_back(name);
+
+    for (int i = 1; i < nbPlayers; i++)
     {
-        string name;
-        cout << "Enter player " << i + 1 << " name: ";
+        if (playWithAi)
+        {
+            cout << "Enter AI " << i + 1 << " name: ";
+        }
+        else
+        {
+            cout << "Enter player " << i + 1 << " name: ";
+        }
         cin >> name;
         playersNames.push_back(name);
     }
@@ -222,9 +240,30 @@ ActionType Client::chooseAction()
 {
     int action;
     bool validInput = false;
-
+    state::Player &player = engine.getActualPlayer();
+    RandomAi *ai1 = dynamic_cast<RandomAi *>(&player);
+    HeuristicAi *ai2 = dynamic_cast<HeuristicAi *>(&player);
+    // Display player's hand and the board
+    
+    if (ai1 != nullptr)
+    {
+        std::cout << "Turn of Random AI Player: " << player.getName() << std::endl;
+        ai1->run(&engine);
+        std::cout << "\n--------------------------------------\n"
+                  << std::endl;
+        validInput = true;
+    }
+    else if (ai2 != nullptr)
+    {
+        std::cout << "Turn of Heuristic AI Player: " << player.getName() << std::endl;
+        ai2->run(&engine);
+        std::cout << "\n--------------------------------------\n"
+                  << std::endl;
+        validInput = true;
+    }
     while (!validInput)
     {
+        std::cout << "Turn of : " << player.getName() << std::endl;
         action = this->getValidatedInteger("Choose an action: 1. Throw card 2. Capture card\n");
         if (action == 1 || action == 2)
         {
@@ -256,6 +295,7 @@ std::vector<int> Client::enterIndexesToBeCollectedCards()
         char response = this->getValidatedChar("Do you want to select another card to collect from the board? (y/n):");
         if (response == 'y' || response == 'Y')
         {
+
             isDone = true;
         }
         else
@@ -269,6 +309,7 @@ std::vector<int> Client::enterIndexesToBeCollectedCards()
 
 void Client::playThrowCard()
 {
+    
     bool isValidThrowCard = false;
     ActionType action = Throwing; // Ensure action type is set before loop
     while (!isValidThrowCard)

@@ -4,10 +4,12 @@
 #include <SFML/Graphics.hpp>
 #include "client.h"
 #include "engine.h"
+#include "ai.h"
 
 using namespace std;
 using namespace client;
 using namespace engine;
+using namespace ai;
 
 int main()
 {
@@ -19,8 +21,8 @@ int main()
 
     // Game configuration
     int nbPlayer = c->getNbPlayerAndIA();
-    int nbRound = 12 / nbPlayer; // Number of rounds based on total cards
-    int nbTours = 3;             // Number of turns per round
+    int nbTours = 3;                         // Number of turns per round
+    int nbRound = 36 / (nbPlayer * nbTours); // Number of rounds based on total cards
 
     // Main game loop
     while (!c->isEndOfGame())
@@ -37,11 +39,7 @@ int main()
                     cout << "--------------------------------------" << endl;
                     cout << "Turn of Player " << k + 1 << endl;
 
-                    // Display player's hand and the board
-                    cout << "CARDS IN YOUR HAND:" << endl;
-                    c->displayHandCards();
-                    cout << "CARDS ON THE BOARD:" << endl;
-                    c->displayBoardCards();
+                   
 
                     // Let the player choose an action
                     if (c->chooseAction() == Throwing)
@@ -52,12 +50,13 @@ int main()
                     {
                         c->playCaptureCard();
                     }
+                
                 }
             }
 
             // End of round processing
-            c->countScore(); // Calculate scores
-            c->endRound();   // Handle end of round cards
+            c->countScore();     // Calculate scores
+            c->endRound();       // Handle end of round cards
             c->distributeCard(); // Distribute cards for the next round
         }
 

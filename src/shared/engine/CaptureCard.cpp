@@ -51,7 +51,7 @@ bool CaptureCard::execute(Engine *engine)
         {
             if (indexsCardsBoard.size() != 1 || indexsCardsBoard[0] != directMatchIndex)
             {
-                throw std::logic_error("You must capture the card with the same number from the board.");
+                throw std::logic_error("");
             }
         }
         else
@@ -101,7 +101,7 @@ bool CaptureCard::execute(Engine *engine)
     }
     catch (const std::exception &e)
     {
-        std::cerr << "Exception in execute: " << e.what() << std::endl;
+        //std::cerr << "Exception in execute: " << e.what() << std::endl;
         return false;
     }
 }
