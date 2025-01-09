@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(test_heuristic_ai)
     state.setNbPlayer(2);
 
     Player *player1 = state.getAllPlayers()[0];
-    Player *player2 = state.getAllPlayers()[1];
+    // Player *player2 = state.getAllPlayers()[1];
 
     // Simulation de cartes dans la main du joueur et sur le plateau
     std::vector<Card> hand = {

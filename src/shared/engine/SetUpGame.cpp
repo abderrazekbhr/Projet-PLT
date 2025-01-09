@@ -33,24 +33,30 @@ namespace engine
 
     void SetUpGame::initPlayers(state::State &currentState)
     {
-        int expectedPlayerNames = (playerIsIA == 'y' || playerIsIA == 'Y') ? nbPlayer - 1 : nbPlayer;
+        int expectedPlayerNames =  nbPlayer;
 
-        if (playersName.size() != expectedPlayerNames)
-        {
-            throw std::invalid_argument("The number of players does not match the number of names provided.");
-        }
+        // if ((int) playersName.size() != expectedPlayerNames)
+        // {
+        //     throw std::invalid_argument("The number of players does not match the number of names provided.");
+        // }
 
         currentState.addPlayer(playersName.at(0));
 
-        if (playerIsIA == 'y' || playerIsIA == 'Y') {
-            currentState.addPlayer("AI");
-        } else {
-            for (int i = 1; i < nbPlayer; i++) {
+        if (playerIsIA == 'y' || playerIsIA == 'Y')
+        {
+            for (int i = 1; i < nbPlayer; i++)
+            {
+                currentState.addIA(playersName.at(i), level);
+            }
+        }
+        else
+        {
+            for (int i = 1; i < nbPlayer; i++)
+            {
                 currentState.addPlayer(playersName.at(i));
             }
         }
     }
-
 
     bool SetUpGame::execute(Engine *engine)
     {

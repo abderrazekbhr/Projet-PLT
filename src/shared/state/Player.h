@@ -39,7 +39,7 @@ namespace state {
     Card selectCardFromHand (int cardIndex);
     void addHoldedCard (Card card);
     void removeCardFromHand (Card card);
-    ~Player ();
+    virtual ~Player ();
     int getSizeCollectedCards ();
     int getSizeHoldedCards ();
     // Setters and Getters

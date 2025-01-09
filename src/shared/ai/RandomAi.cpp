@@ -3,57 +3,53 @@
 #include "../engine/ThrowCard.h"
 #include <cstdlib>
 #include <ctime>
-
+#include <iostream>
 using namespace ai;
 using namespace engine;
 using namespace state;
 
-namespace ai
+RandomAi::RandomAi(std::string name) : AI(name)
+{
+    std::srand((unsigned int)std::time(0));
+}
+
+void RandomAi::run(engine::Engine *eng)
 {
 
-    RandomAi::RandomAi(std::string name) : AI(name)
+    state::State &currentState = eng->getState();
+    state::Player &player = eng->getActualPlayer();
+    state::GameBoard *board = currentState.getBoard();
+
+    if (!board || player.getSizeHoldedCards() == 0)
     {
-        std::srand((unsigned int)std::time(0));
+        return;
     }
 
-    RandomAi::~RandomAi() {}
+    std::vector<state::Card> handCards = player.getHoldCard();
+    std::vector<state::Card> boardCards = board->getCardBoard();
 
-    void RandomAi::run(engine::Engine eng)
+    // Utilisation de size_t pour les indices dans les boucles
+    for (size_t i = 0; i < handCards.size(); i++)
     {
-
-        state::State &currentState = eng.getState();
-        state::Player &player = eng.getActualPlayer();
-        state::GameBoard *board = currentState.getBoard();
-
-        if (!board || player.getSizeHoldedCards() == 0)
+        for (size_t j = 0; j < boardCards.size(); j++)
         {
-            return;
-        }
-
-        std::vector<state::Card> handCards = player.getHoldCard();
-        std::vector<state::Card> boardCards = board->getCardBoard();
-
-        // Utilisation de size_t pour les indices dans les boucles
-        for (size_t i = 0; i < handCards.size(); i++)
-        {
-            for (size_t j = 0; j < boardCards.size(); j++)
+            if (handCards[i].getNumberCard() == boardCards[j].getNumberCard())
             {
-                if (handCards[i].equals(boardCards[j]))
+
+                CaptureCard captureAction(static_cast<int>(i), {static_cast<int>(j)});
+                eng->setActualCmd(&captureAction);
+                if (captureAction.execute(eng))
                 {
-
-                    CaptureCard captureAction(static_cast<int>(i), {static_cast<int>(j)});
-
-                    if (captureAction.execute(&eng))
-                    {
-                        return;
-                    }
+                    return;
                 }
             }
         }
-
-        size_t randomIndex = std::rand() % handCards.size();
-        ThrowCard throwAction(randomIndex);
-        throwAction.execute(&eng);
     }
 
+    size_t randomIndex = std::rand() % handCards.size();
+    ThrowCard throwAction(randomIndex);
+    eng->setActualCmd(&throwAction);
+    throwAction.execute(eng);
 }
+
+RandomAi::~RandomAi() {}
