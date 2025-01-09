@@ -1,7 +1,7 @@
-#include "ai.h"
-#include <iostream>
+// #include "ai.h"
+// #include <iostream>
 
-using namespace ai;
-HeuristicAi::HeuristicAi()
-{
-}
+// using namespace ai;
+// HeuristicAi::HeuristicAi()
+// {
+// }
