@@ -254,7 +254,8 @@ ActionType Client::chooseAction()
     }
     while (!validInput)
     {
-        std::cout << "\n*************************************\n"
+        std::cout << "\033[38;2;255;165;0m" << "\n*************************************\n"
+                  << "\033[0m"
                   << std::endl;
         std::cout << "Name of player : " << player.getName() << std::endl;
         cout << "CARDS IN YOUR HAND:" << endl;
@@ -264,8 +265,8 @@ ActionType Client::chooseAction()
         cout << "CARDS ON THE BOARD:"
              << endl;
         this->displayBoardCards();
-        std::cout << "\n*************************************\n"
-                  << std::endl;
+        std::cout << "\033[38;2;255;165;0m" << "\n*************************************\n"
+                  << "\033[0m" << std::endl;
 
         action = this->getValidatedInteger("Choose an action: 1. Throw card 2. Capture card\n");
         if (action == 1 || action == 2)
