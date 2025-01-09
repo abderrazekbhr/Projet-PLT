@@ -10,7 +10,9 @@ using namespace state;
 using namespace engine;
 
 // Constructor
-HeuristicAi::HeuristicAi() {}
+HeuristicAi::HeuristicAi(string name) : AI(name)
+{
+}
 
 // Utility function to calculate the sum of card values
 int cardSum(vector<Card> &cards, vector<int> &indices)
@@ -59,7 +61,7 @@ int findSeptDinari(vector<Card> &cards)
 }
 
 // Function to find possible moves for Chkobba
-std::map<std::string, std::vector<int>> checkPossibleChkoba(std::vector<state::Card> hand, std::vector<state::Card> cardsOnBoard)
+std::map<std::string, std::vector<int>> HeuristicAi::checkPossibleChkoba(std::vector<state::Card> hand, std::vector<state::Card> cardsOnBoard)
 {
     map<string, vector<int>> result;
 
@@ -128,7 +130,7 @@ std::map<std::string, std::vector<int>> HeuristicAi::checkPossible7Carreau(std::
 }
 
 // Function to determine the best move to maximize profit
-std::map<std::string, std::vector<int>> maximiseProfit(std::vector<state::Card> hand, std::vector<state::Card> cardsOnBoard)
+std::map<std::string, std::vector<int>> HeuristicAi::maximiseProfit(std::vector<state::Card> hand, std::vector<state::Card> cardsOnBoard)
 {
     map<string, vector<int>> bestMove;
     int maxScore = 0;
@@ -179,7 +181,7 @@ std::map<std::string, std::vector<int>> maximiseProfit(std::vector<state::Card> 
 int HeuristicAi::throwStrategy(vector<Card> hand)
 {
     int minCard = 0;
-    for (size_t i=0 ;i<hand.size();i++)
+    for (size_t i = 0; i < hand.size(); i++)
     {
         if (hand[minCard].getNumberCard() > hand[i].getNumberCard())
         {

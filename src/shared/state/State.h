@@ -48,6 +48,7 @@ namespace state {
     std::vector<Player *> getAllPlayers ();
     void setPlayerIndexForLastCapturedCard (int newIndexPlayer);
     int getPlayerIndexForLastCapturedCard ();
+    void addIA (std::string name, int level);
     ~State ();
     // Setters and Getters
   };

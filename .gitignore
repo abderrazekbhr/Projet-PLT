@@ -9,5 +9,6 @@ nbproject
 *.autosave
 testFucntions
 
-**/*.identifier
 **/*.h
+**/*.Identifier
+**/*.autosave
