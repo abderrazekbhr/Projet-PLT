@@ -148,18 +148,7 @@ namespace render {
 
 
 
-    void SceneData::removeCardFromHand(state::Card& card) {
-        // Chercher et supprimer la carte logique et sa carte graphique correspondante
-       /* auto it = std::find_if(handCardShapes.begin(), handCardShapes.end(),
-                               [&card]( std::pair<sf::RectangleShape, state::Card>& p) {
-                                   return p.second.equals(card);  // Comparer la carte logique
-                               });
 
-        if (it != handCardShapes.end()) {
-            // Retirer la carte graphique et la carte logique
-            handCardShapes.erase(it);
-        }*/
-    }
 
 
 
