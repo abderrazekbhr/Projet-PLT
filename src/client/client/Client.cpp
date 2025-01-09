@@ -26,16 +26,15 @@ void Client::setUp()
         int maxScore = this->enterMaxScore();
         char playerIsIA = this->wantToPlayWithIA();
         int level = -1;
-        if (playerIsIA)
+        if (playerIsIA == 'y' || playerIsIA == 'Y')
         {
-            int level = this->enterIALevel();
+            level = this->enterIALevel();
         }
         std::vector<std::string> playersNames = this->enterPlayersNames(nbPlayer);
 
-
-        // SetUpGame setUpCommand = SetUpGame(nbPlayer, maxScore, playersNames, playerIsIA, level);
-        // this->engine.setActualCmd(&setUpCommand);
-        // isValidSetUp = this->engine.runCommand(&engine);
+        SetUpGame setUpCommand = SetUpGame(nbPlayer, maxScore, playersNames, playerIsIA, level);
+        this->engine.setActualCmd(&setUpCommand);
+        isValidSetUp = this->engine.runCommand(&engine);
     }
 }
 
@@ -200,7 +199,7 @@ ActionType Client::chooseAction()
 
 int Client::enterIndexToThrowedCard()
 {
-    int indexCard = this->getValidatedInteger("Enter the index of the card to throw: ");
+    int indexCard = this->getValidatedInteger("Enter the index of the card you wish to play from your hand (indices start from 0): ");
     return indexCard;
 }
 
@@ -210,12 +209,16 @@ std::vector<int> Client::enterIndexesToBeCollectedCards()
     bool isDone = false;
     do
     {
-        int index = this->getValidatedInteger("Enter the index of the card to collect: ");
+        int index = this->getValidatedInteger("Enter the index of the card you wish to collect from the board (indices start from 0): ");
         indexes.push_back(index);
-        char response = this->getValidatedChar("Do you want to collect another card? (y/n): ");
-        if (response == 'n' || response == 'N')
+        char response = this->getValidatedChar("Do you want to select another card to collect from the board? (y/n):");
+        if (response == 'y' || response == 'Y')
         {
             isDone = true;
+        }
+        else
+        {
+            isDone = false;
         }
 
     } while (isDone);
@@ -225,25 +228,54 @@ std::vector<int> Client::enterIndexesToBeCollectedCards()
 void Client::playThrowCard()
 {
     bool isValidThrowCard = false;
+    ActionType action;
     while (!isValidThrowCard)
     {
         int indexCard = this->enterIndexToThrowedCard();
         ThrowCard throwCard = ThrowCard(indexCard);
         this->engine.setActualCmd(&throwCard);
         isValidThrowCard = this->engine.runCommand(&engine);
+        if (!isValidThrowCard)
+        {
+            cout << "Invalid card throw action: This may be caused by an incorrect card index." << endl;
+            action = this->chooseAction();
+            if (action == Collecting)
+            {
+                break;
+            }
+        }
+    }
+    if (action == Collecting)
+    {
+        this->playCaptureCard();
     }
 }
 
 void Client::playCaptureCard()
 {
     bool isValidCaptureCard = false;
+    ActionType action;
     while (!isValidCaptureCard)
     {
+
         int indexOfCardFromHand = this->enterIndexToThrowedCard();
         std::vector<int> indexesOfCardsFromBoard = this->enterIndexesToBeCollectedCards();
         CaptureCard captureCard = CaptureCard(indexOfCardFromHand, indexesOfCardsFromBoard);
         this->engine.setActualCmd(&captureCard);
         isValidCaptureCard = this->engine.runCommand(&engine);
+        if (!isValidCaptureCard)
+        {
+            cout << "Invalid card capture action: This may be caused by an incorrect card index or an invalid card combination for the sum." << endl;
+            action = this->chooseAction();
+            if (action == Throwing)
+            {
+                break;
+            }
+        }
+    }
+    if (action == Collecting)
+    {
+        this->playCaptureCard();
     }
 }
 
