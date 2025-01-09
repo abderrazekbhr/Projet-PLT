@@ -61,8 +61,9 @@ int main()
         c->endRound();   // Handle end of round cards
         c->countScore(); // Calculate scores
 
+
         // Ask if the user wants to continue playing
-        if (c->chooseAction())
+        if (c->isEndOfGame())
         {
             break;
         }
@@ -75,6 +76,8 @@ int main()
             }
         }
     }
+
+
 
     // Display the winner at the end of the game
     c->displayWinner();

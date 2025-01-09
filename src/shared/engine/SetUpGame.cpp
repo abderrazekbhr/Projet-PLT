@@ -26,7 +26,7 @@ namespace engine
     void SetUpGame::validateMaxScore()
     {
 
-        if (maxScore != 11 && maxScore != 21)
+        if (maxScore != 4 && maxScore != 21)
         // if (maxScore != 5 && maxScore != 21)
         {
             throw std::invalid_argument("The maximum score must be 11 or 21.");

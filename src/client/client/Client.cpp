@@ -216,6 +216,7 @@ std::vector<std::string> Client::enterPlayersNames(int nbPlayers)
 
 bool Client::initDistribute()
 {
+
     char response = 'y';
     RoundInitDistributeCards roundInitDistributeCards = RoundInitDistributeCards(response);
     this->engine.setActualCmd(&roundInitDistributeCards);
@@ -253,9 +254,7 @@ ActionType Client::chooseAction()
     }
     while (!validInput)
     {
-        std::cout << "\033[38;2;255;165;0m" << "\n*************************************\n"
-                  << "\033[0m"
-                  << std::endl;
+
         std::cout << "Name of player : " << player.getName() << std::endl;
         cout << "CARDS IN YOUR HAND:" << endl;
         this->displayHandCards();
@@ -264,8 +263,6 @@ ActionType Client::chooseAction()
         cout << "CARDS ON THE BOARD:"
              << endl;
         this->displayBoardCards();
-        std::cout << "\033[38;2;255;165;0m" << "\n*************************************\n"
-                  << "\033[0m" << std::endl;
 
         action = this->getValidatedInteger("Choose an action: 1. Throw card 2. Capture card\n");
         if (action == 1 || action == 2)
@@ -277,8 +274,15 @@ ActionType Client::chooseAction()
             cout << "Invalid input! Expected a number 1 or 2.\n";
         }
     }
+if (action == 1) {
+    return Throwing;
+}else if (action == 2) {
+    return Collecting;
+}else {
+    return Nothing;
+}
 
-    return (action == 1) ? Throwing : Collecting;
+
 }
 
 int Client::enterIndexToThrowedCard()
