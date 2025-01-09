@@ -1,6 +1,7 @@
 #include <boost/test/unit_test.hpp>
 #include <stdexcept>
 #include <vector>
+#include <ai/HeuristicAi.h>
 
 #include "../../src/shared/engine.h"
 #include "../../src/shared/state.h"
@@ -45,29 +46,30 @@ BOOST_AUTO_TEST_CASE(test_execute_invalid_max_score) {
     BOOST_CHECK_THROW(command->execute(&engine), std::invalid_argument);
 }
 
-// Test with more player names than the required number of players
-// BOOST_AUTO_TEST_CASE(test_execute_invalid_players_count) {
-//     std::vector<std::string> players = {"Alice", "Bob", "Charlie"};
-//     SetUpGame setup(2, 11, players, 'n', 0); // Too many player names
+BOOST_AUTO_TEST_CASE(test_execute_with_multiple_ai_players) {
+    std::vector<std::string> players = {"Alice", "AI1", "AI2", "AI3"};
+    SetUpGame setup(4, 21, players, 'y', 2); // 4 players, 3 AIs with level 2
 
-//     Engine engine;
+    Engine engine;
 
-//     // Test if an exception is thrown when the number of player names exceeds the expected count
-//     Command* command = &setup;
-//     BOOST_CHECK_THROW(command->execute(&engine), std::invalid_argument);
-// }
+    // Test if the execute method works with multiple AI players
+    Command* command = &setup;
+    BOOST_CHECK(command->execute(&engine));
 
-// Test with fewer player names than the required number of players
-// BOOST_AUTO_TEST_CASE(test_execute_invalid_players_count_too_few) {
-//     std::vector<std::string> players = {"Alice","BOB"};  // Only one name when two are required
-//     SetUpGame setup(2, 11, players, 'n', 0);
+    // Verify that players are correctly added
+    State& state = engine.getState();
+    std::vector<Player*> gamePlayers = state.getAllPlayers();
 
-//     Engine engine;
+    // Check the number of players
+    BOOST_CHECK_EQUAL(gamePlayers.size(), 4);
 
-//     // Test if an exception is thrown when the number of player names is less than the required count
-//     Command* command = &setup;
-//     BOOST_CHECK_THROW(command->execute(&engine), std::invalid_argument);
-// }
+    // Check the type of players
+    BOOST_CHECK_EQUAL(gamePlayers[0]->getName(), "Alice");
+    BOOST_CHECK(dynamic_cast<ai::HeuristicAi*>(gamePlayers[1]) != nullptr); // AI1
+    BOOST_CHECK(dynamic_cast<ai::HeuristicAi*>(gamePlayers[2]) != nullptr); // AI2
+    BOOST_CHECK(dynamic_cast<ai::HeuristicAi*>(gamePlayers[3]) != nullptr); // AI3
+}
+
 
 // Test with AI player configuration
 BOOST_AUTO_TEST_CASE(test_execute_with_ai_player) {

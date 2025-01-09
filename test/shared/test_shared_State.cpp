@@ -1,6 +1,8 @@
 //
 // Created by khakha on 10/12/24.
 //
+#include <ai/HeuristicAi.h>
+#include <ai/RandomAi.h>
 #include <boost/test/unit_test.hpp>
 #include "../../src/shared/state.h"
 
@@ -57,4 +59,29 @@ BOOST_AUTO_TEST_CASE(TestStateDestructor)
     State *state = new State();
     delete state;      // Vérifie qu'aucune fuite de mémoire ne se produit.
     BOOST_CHECK(true); // Si le programme atteint cette ligne, cela signifie que le destructeur fonctionne correctement.
+}
+
+BOOST_AUTO_TEST_CASE(TestStateAddIA)
+{
+    State state;
+
+    // Ajouter une IA de niveau 1
+    state.addIA("RandomAI_1", 1);
+
+    // Ajouter une IA de niveau 2
+    state.addIA("HeuristicAI_1", 2);
+
+    // Récupérer tous les joueurs
+    std::vector<Player *> players = state.getAllPlayers();
+
+    // Vérifier le nombre total de joueurs
+    BOOST_CHECK_EQUAL(players.size(), 2);
+
+    // Vérifier les noms des IA ajoutées
+    BOOST_CHECK_EQUAL(players[0]->getName(), "RandomAI_1");
+    BOOST_CHECK_EQUAL(players[1]->getName(), "HeuristicAI_1");
+
+    // Vérifier le type des IA (utilisation de `dynamic_cast` pour confirmer leur type)
+    BOOST_CHECK(dynamic_cast<ai::RandomAi *>(players[0]) != nullptr);      // Vérifie que le premier joueur est une RandomAI
+    BOOST_CHECK(dynamic_cast<ai::HeuristicAi *>(players[1]) != nullptr);  // Vérifie que le deuxième joueur est une HeuristicAI
 }
