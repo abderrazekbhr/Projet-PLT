@@ -92,3 +92,6 @@ Player::~Player()
     collectedCard.clear();
     holdedCard.clear();
 }
+void Player::removeAllHoldedCards() {
+    holdedCard.clear();
+}
