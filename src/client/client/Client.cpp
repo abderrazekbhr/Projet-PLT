@@ -58,7 +58,7 @@ char Client::wantToPlayWithIA()
 
 int Client::enterMaxScore()
 {
-    std::string prompt = "Enter the maximum score (11 or 21): ";
+    std::string prompt = "Enter the maximum score (4 or 21): ";
     int maxScore = this->getValidatedInteger(prompt);
     return maxScore;
 }
@@ -274,15 +274,18 @@ ActionType Client::chooseAction()
             cout << "Invalid input! Expected a number 1 or 2.\n";
         }
     }
-if (action == 1) {
-    return Throwing;
-}else if (action == 2) {
-    return Collecting;
-}else {
-    return Nothing;
-}
-
-
+    if (action == 1)
+    {
+        return Throwing;
+    }
+    else if (action == 2)
+    {
+        return Collecting;
+    }
+    else
+    {
+        return Nothing;
+    }
 }
 
 int Client::enterIndexToThrowedCard()
@@ -387,7 +390,8 @@ int Client::getNbPlayerAndIA()
     return currentState.getNbPlayer();
 }
 
-void Client::countScore() {
+void Client::countScore()
+{
     // Appelle la commande CountScore pour calculer les scores
     engine::CountScore countScoreCmd;
     countScoreCmd.execute(&this->engine);
@@ -395,11 +399,11 @@ void Client::countScore() {
     // Affiche les scores des joueurs actuels
     std::cout << "Current scores:" << std::endl;
     auto players = engine.getState().getAllPlayers();
-    for (const auto& player : players) {
+    for (const auto &player : players)
+    {
         std::cout << "Player: " << player->getName() << ", Score: " << player->getScore() << std::endl;
     }
 }
-
 
 // Appelle la commande EndRound pour attribuer les cartes restantes au dernier gagnant
 void Client::endRound()

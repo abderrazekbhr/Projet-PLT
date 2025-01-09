@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_SUITE(SetUpGameTests)
 // Test with valid configuration (correct number of players and score, no AI)
 BOOST_AUTO_TEST_CASE(test_execute_valid) {
     std::vector<std::string> players = {"Alice", "Bob"};
-    SetUpGame setup(2, 11, players, 'n', 0); // No AI, level 0
+    SetUpGame setup(2, 4, players, 'n', 0); // No AI, level 0
 
     Engine engine;
 
@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE(test_execute_invalid_max_score) {
 // Test with AI player configuration
 BOOST_AUTO_TEST_CASE(test_execute_with_ai_player) {
     std::vector<std::string> players = {"Alice","AI"};
-    SetUpGame setup(2, 11, players, 'y', 1); // AI is enabled with level 1
+    SetUpGame setup(2, 4, players, 'y', 1); // AI is enabled with level 1
 
     Engine engine;
 
