@@ -33,7 +33,7 @@ namespace engine
 
     void SetUpGame::initPlayers(state::State &currentState)
     {
-        int expectedPlayerNames =  nbPlayer;
+        // int expectedPlayerNames =  nbPlayer;
 
         // if ((int) playersName.size() != expectedPlayerNames)
         // {
