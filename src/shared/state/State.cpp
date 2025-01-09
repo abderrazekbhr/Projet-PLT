@@ -9,7 +9,7 @@ state::State::State()
     playerIndexForLastCapturedCard = -1;
     nbPlayer = 0;
     initBoard();
-    initCards();
+
 }
 
 state::GameBoard *state::State::getBoard()
