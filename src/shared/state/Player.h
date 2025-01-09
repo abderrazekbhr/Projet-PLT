@@ -42,6 +42,7 @@ namespace state {
     virtual ~Player ();
     int getSizeCollectedCards ();
     int getSizeHoldedCards ();
+    void removeAllHoldedCards ();
     // Setters and Getters
   };
 
