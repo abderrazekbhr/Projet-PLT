@@ -33,7 +33,7 @@ void Client::setUp()
 
         SetUpGame setUpCommand = SetUpGame(nbPlayer, maxScore, playersNames, playerIsIA, level);
         this->engine.setActualCmd(&setUpCommand);
-        isValidSetUp = this->engine.runCommand(&this->engine);  // Corrected to use engine instance.
+        isValidSetUp = this->engine.runCommand(&this->engine); // Corrected to use engine instance.
     }
 }
 
@@ -115,36 +115,58 @@ char Client::getValidatedChar(std::string prompt)
     return response;
 }
 
-std::string numberCardToString(state::NumberCard number) {
-    switch (number) {
-        case state::un: return "un";
-        case state::deux: return "deux";
-        case state::trois: return "trois";
-        case state::quatre: return "quatre";
-        case state::cinq: return "cinq";
-        case state::six: return "six";
-        case state::sept: return "sept";
-        case state::dame: return "dame";
-        case state::valet: return "valet";
-        case state::roi: return "roi";
-        default: return "inconnu";
+std::string numberCardToString(state::NumberCard number)
+{
+    switch (number)
+    {
+    case state::un:
+        return "un";
+    case state::deux:
+        return "deux";
+    case state::trois:
+        return "trois";
+    case state::quatre:
+        return "quatre";
+    case state::cinq:
+        return "cinq";
+    case state::six:
+        return "six";
+    case state::sept:
+        return "sept";
+    case state::dame:
+        return "dame";
+    case state::valet:
+        return "valet";
+    case state::roi:
+        return "roi";
+    default:
+        return "inconnu";
     }
 }
 
-std::string typeCardToString(state::TypeCard type) {
-    switch (type) {
-        case state::treffle: return "treffle";
-        case state::carreau: return "carreau";
-        case state::pique: return "pique";
-        case state::coeur: return "coeur";
-        default: return "inconnu";
+std::string typeCardToString(state::TypeCard type)
+{
+    switch (type)
+    {
+    case state::treffle:
+        return "treffle";
+    case state::carreau:
+        return "carreau";
+    case state::pique:
+        return "pique";
+    case state::coeur:
+        return "coeur";
+    default:
+        return "inconnu";
     }
 }
 
-void Client::displayHandCards() {
+void Client::displayHandCards()
+{
     std::cout << "Your cards are :" << std::endl;
     state::Player player = engine.getActualPlayer();
-    for (size_t i = 0; i < player.getHoldCard().size(); i++) {
+    for (size_t i = 0; i < player.getHoldCard().size(); i++)
+    {
         std::string cardNumber = numberCardToString(player.getHoldCard()[i].getNumberCard());
         std::string cardType = typeCardToString(player.getHoldCard()[i].getTypeCard());
         std::cout << i << " : " << " [" << cardNumber << " | " << cardType << "]" << std::endl;
@@ -152,11 +174,13 @@ void Client::displayHandCards() {
     std::cout << "--------------------------------------" << std::endl;
 }
 
-void Client::displayBoardCards() {
+void Client::displayBoardCards()
+{
     std::cout << "Cards on the board are :" << std::endl;
     state::GameBoard *board = engine.getState().getBoard();
     int i = 0;
-    for (state::Card c : board->getCardBoard()) {
+    for (state::Card c : board->getCardBoard())
+    {
         std::string cardNumber = numberCardToString(c.getNumberCard());
         std::string cardType = typeCardToString(c.getTypeCard());
         std::cout << i << " : " << " [" << cardNumber << " | " << cardType << "]" << std::endl;
@@ -164,7 +188,6 @@ void Client::displayBoardCards() {
     }
     std::cout << "--------------------------------------" << std::endl;
 }
-
 
 std::vector<std::string> Client::enterPlayersNames(int nbPlayers)
 {
@@ -247,7 +270,7 @@ std::vector<int> Client::enterIndexesToBeCollectedCards()
 void Client::playThrowCard()
 {
     bool isValidThrowCard = false;
-    ActionType action = Throwing;  // Ensure action type is set before loop
+    ActionType action = Throwing; // Ensure action type is set before loop
     while (!isValidThrowCard)
     {
         int indexCard = this->enterIndexToThrowedCard();
@@ -260,7 +283,7 @@ void Client::playThrowCard()
             action = this->chooseAction();
             if (action == Collecting)
             {
-                break;  // Exit loop and switch to Collecting action
+                break; // Exit loop and switch to Collecting action
             }
         }
     }
@@ -272,6 +295,7 @@ void Client::playThrowCard()
 
 void Client::playCaptureCard()
 {
+    ActionType action = Collecting; // Ensure action type is set before loop
     bool isValidCaptureCard = false;
     while (!isValidCaptureCard)
     {
@@ -283,8 +307,16 @@ void Client::playCaptureCard()
         if (!isValidCaptureCard)
         {
             cout << "Invalid card capture action: You must capture a card on the board with the same number as your selected card." << endl;
-            cout << "Please try again." << endl;
+            action = this->chooseAction();
+            if (action == Throwing)
+            {
+                break; // Exit loop and switch to Collecting action
+            }
         }
+    }
+    if (action == Throwing)
+    {
+        this->playThrowCard();
     }
 }
 
@@ -308,26 +340,31 @@ int Client::getNbPlayerAndIA()
 }
 
 // Appelle la commande CountScore pour calculer le score
-void Client::countScore() {
+void Client::countScore()
+{
     engine::CountScore countScoreCmd;
     countScoreCmd.execute(&this->engine);
 }
 
 // Appelle la commande EndRound pour attribuer les cartes restantes au dernier gagnant
-void Client::endRound() {
+void Client::endRound()
+{
     engine::EndRound endRoundCmd;
     endRoundCmd.execute(&this->engine);
 }
 
 // Affiche le gagnant à la fin du jeu
-void Client::displayWinner() {
+void Client::displayWinner()
+{
     auto players = engine.getState().getAllPlayers();
     int maxScore = -1;
     std::string winnerName;
 
     // Trouver le joueur avec le score maximum
-    for (const auto& player : players) {
-        if (player->getScore() > maxScore) {
+    for (const auto &player : players)
+    {
+        if (player->getScore() > maxScore)
+        {
             maxScore = player->getScore();
             winnerName = player->getName();
         }
@@ -338,5 +375,5 @@ void Client::displayWinner() {
 
 Client::~Client()
 {
-    delete &engine;  // Fixed memory management
+    delete &engine; // Fixed memory management
 }
