@@ -216,8 +216,7 @@ std::vector<std::string> Client::enterPlayersNames(int nbPlayers)
 
 bool Client::initDistribute()
 {
-    string prompt = "Do you want to keep the first card ? (y/n): ";
-    char response = this->getValidatedChar(prompt);
+    char response = 'y';
     RoundInitDistributeCards roundInitDistributeCards = RoundInitDistributeCards(response);
     this->engine.setActualCmd(&roundInitDistributeCards);
     return this->engine.runCommand(&this->engine);
