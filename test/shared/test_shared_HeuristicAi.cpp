@@ -1,111 +1,101 @@
-// #include <boost/test/unit_test.hpp>
-// #include "../../src/shared/ai.h"
-// #include "../../src/shared/engine.h"
-// #include "../../src/shared/state.h"
-// #include <vector>
-// #include <map>
+#include <boost/test/unit_test.hpp>
+#include "engine.h"
+#include "state.h"
+#include "ai.h"
+#include <iostream>
+#include <vector>
+#include <string>
+#include <map>
 
-// using namespace ai;
-// using namespace state;
-// using namespace engine;
+using namespace ai;
+using namespace engine;
+using namespace state;
 
-// BOOST_AUTO_TEST_CASE(test_heuristic_ai)
-// {
-//     // Set up the game with 2 players, including 1 AI player.
-//     std::vector<std::string> playerNames = {"Player1", "Heurist AI"}; // Names for the players
-//     SetUpGame *setUpGame = new SetUpGame(2, 11, playerNames, 'y', 2); // 2 players, max score 21, 2 AI
+BOOST_AUTO_TEST_CASE(test_heuristic_ai)
+{
+    // Set up the game with 2 players, including 1 AI player.
+    std::vector<std::string> playerNames = {"Player1", "Heurist AI"}; // Names for the players
+    SetUpGame *setUpGame = new SetUpGame(2, 11, playerNames, 'y', 2); // 2 players, max score 21, 2 AI
 
-//     Engine engine;                  // Create an engine to run the game
-//     engine.setActualCmd(setUpGame); // Set the game setup as the current command in the engine
+    Engine engine;                  // Create an engine to run the game
+    engine.setActualCmd(setUpGame); // Set the game setup as the current command in the engine
 
-//     // Check if the game setup executed successfully. If not, fail the test.
-//     if (!setUpGame->execute(&engine))
-//     {
-//         BOOST_FAIL("Game setup failed.");
-//     }
+    // Check if the game setup executed successfully. If not, fail the test.
+    if (!setUpGame->execute(&engine))
+    {
+        BOOST_FAIL("Game setup failed.");
+    }
 
-//     // Retrieve all players from the engine's state
-//     std::vector<Player *> players = engine.getState().getAllPlayers();
-//     std::cout << "Number of players: " << players.size() << std::endl; // Print number of players
+    // Retrieve all players from the engine's state
+    std::vector<Player *> players = engine.getState().getAllPlayers();
+    std::cout << "Number of players: " << players.size() << std::endl; // Print number of players
 
-//     // Attempt to cast the second player to a RandomAi object.
-//     RandomAi *randomAi = dynamic_cast<RandomAi *>(players[1]);
-//     if (!randomAi) // If cast fails, report the failure
-//     {
-//         BOOST_FAIL("Failed to cast Player to RandomAi.");
-//     }
+    // Add a card to the board and check the card holding logic for RandomAi
+    GameBoard *board = engine.getState().getBoard(); // Get the game board
 
-//     // Execute the RandomAI logic for the first time (AI makes its move).
-//     randomAi->run(&engine);
+    // Attempt to cast the second player to a RandomAi object.
+    HeuristicAi *heuristicAi = dynamic_cast<HeuristicAi *>(players[1]);
+    Player *player1 = players[0];
+    if (!heuristicAi) // If cast fails, report the failure
+    {
+        BOOST_FAIL("Failed to cast Player to RandomAi.");
+    }
 
-//     // Add a card to the board and check the card holding logic for RandomAi
-//     GameBoard *board = engine.getState().getBoard();                  // Get the game board
-//     board->addCardToBoard(Card(NumberCard::deux, TypeCard::treffle)); // Add a card to the board
-//     Card card(NumberCard::deux, TypeCard::coeur);                     // Create a new card to be added to RandomAi's hand
-//     players[0]->addHoldCard(Card(NumberCard::un, TypeCard::coeur));   // Add a card to Player1's hand
+    // Simulation de cartes dans la main du joueur et sur le plateau
+    std::vector<Card> handPlayer = {
+        Card(sept, carreau), // Sept Dinari
+        Card(trois, pique),
+        Card(cinq, coeur)};
 
-//     // Simulation de cartes dans la main du joueur et sur le plateau
-//     std::vector<Card> hand = {
-//         Card(sept, carreau), // Sept Dinari
-//         Card(trois, pique),
-//         Card(cinq, coeur)};
-//     std::vector<Card> board = {
-//         Card(deux, treffle),
-//         Card(cinq, carreau),
-//         Card(sept, pique)};
+    std::vector<Card> handAi = {
 
-//     // Ajouter les cartes dans la main du joueur
-//     for (auto &card : hand)
-//     {
-//         player1->addHoldedCard(card);
-//     }
+    };
 
-//     // Ajouter les cartes sur le plateau
-//     for (auto &card : board)
-//     {
-//         state.getBoard()->addCardToBoard(card);
-//     }
+    std::vector<Card> board = {
+        Card(deux, treffle),
+        Card(cinq, carreau),
+        Card(sept, pique)};
 
-//     // Test de checkPossibleChkoba
-//     auto chkobaResult = ai.checkPossibleChkoba(hand, board);
-//     BOOST_CHECK_EQUAL(chkobaResult.size(), 0); // Pas de Chkobba possible ici
+    // Add cards to the players and and the board
+    for (int i = 0; i < 3; i++)
+    {
+        player1->addHoldedCard(handPlayer[i]);
+        heuristicAi->addHoldedCard(handAi[i]);
+        board->addCardToBoard(board[i]);
+    }
 
-//     // Test de checkPossible7Carreau
-//     auto septCarreauResult = ai.checkPossible7Carreau(hand, board);
-//     BOOST_CHECK(septCarreauResult["hand"].size() > 0);
-//     BOOST_CHECK(septCarreauResult["board"].size() > 0);
+    // Test de checkPossibleChkoba
+    auto chkobaResult = ai.checkPossibleChkoba(hand, board);
+    BOOST_CHECK_EQUAL(chkobaResult.size(), 0); // Pas de Chkobba possible ici
 
-//     // Vérification des indices
-//     BOOST_CHECK_EQUAL(septCarreauResult["hand"][0], 0);  // Sept Dinari dans la main
-//     BOOST_CHECK_EQUAL(septCarreauResult["board"][0], 1); // Sept Dinari sur le plateau
+    // Test de checkPossible7Carreau
+    auto septCarreauResult = ai.checkPossible7Carreau(hand, board);
+    BOOST_CHECK(septCarreauResult["hand"].size() > 0);
+    BOOST_CHECK(septCarreauResult["board"].size() > 0);
 
-//     // Test de maximiseProfit
-//     auto bestMove = ai.maximiseProfit(hand, board);
-//     BOOST_CHECK(bestMove["hand"].size() > 0);
-//     BOOST_CHECK(bestMove["board"].size() > 0);
+    // Vérification des indices
+    BOOST_CHECK_EQUAL(septCarreauResult["hand"][0], 0);  // Sept Dinari dans la main
+    BOOST_CHECK_EQUAL(septCarreauResult["board"][0], 1); // Sept Dinari sur le plateau
 
-//     // Vérification des scores maximaux
-//     int expectedHandIndex = 0; // Sept Dinari maximise souvent les points
-//     BOOST_CHECK_EQUAL(bestMove["hand"][0], expectedHandIndex);
+    // Test de maximiseProfit
+    auto bestMove = ai.maximiseProfit(hand, board);
+    BOOST_CHECK(bestMove["hand"].size() > 0);
+    BOOST_CHECK(bestMove["board"].size() > 0);
 
-//     // Test de throwStrategy
-//     int cardToThrow = ai.throwStrategy(hand);
-//     BOOST_CHECK_EQUAL(cardToThrow, 1); // La carte avec le plus petit nombre est choisie
+    // Vérification des scores maximaux
+    int expectedHandIndex = 0; // Sept Dinari maximise souvent les points
+    BOOST_CHECK_EQUAL(bestMove["hand"][0], expectedHandIndex);
 
-//     // Test du run
-//     BOOST_CHECK_NO_THROW(ai.run(&e)); // Exécution complète de l'IA sans erreur
-// }
+    // Test de throwStrategy
+    int cardToThrow = ai.throwStrategy(hand);
+    BOOST_CHECK_EQUAL(cardToThrow, 1); // La carte avec le plus petit nombre est choisie
 
-// #include <boost/test/unit_test.hpp>
-// #include "engine.h"
-// #include "state.h"
-// #include "ai.h"
+    // Test du run
+    BOOST_CHECK_NO_THROW(ai.run(&e)); // Exécution complète de l'IA sans erreur
+}
 
-// using namespace ai;
-// using namespace engine;
-// using namespace state;
-
-// BOOST_AUTO_TEST_SUITE(RandomAiTestSuite)
+BOOST_AUTO_TEST_SUITE(RandomAiTestSuite)
+BOOST_AUTO_TEST_SUITE_END()
 
 // // Test case for RandomAi capturing a card
 // BOOST_AUTO_TEST_CASE(RandomAiCaptureCardTest)
@@ -181,4 +171,3 @@
 // }
 
 // // End of test suite
-// BOOST_AUTO_TEST_SUITE_END()

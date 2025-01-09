@@ -17,7 +17,7 @@ namespace engine
         try
         {
             state::State &currentState = engine->getState();
-
+            std::cout<<"nbCards:"<<currentState.getAllCards()->getDeckSize()<<std::endl;
             if (currentState.getAllCards()->getDeckSize() != 0)
             {
                 throw std::runtime_error("The deck is not empty. Cannot end the round.");

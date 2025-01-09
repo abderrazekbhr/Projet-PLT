@@ -19,7 +19,7 @@ int main()
 
     // Game configuration
     int nbPlayer = c->getNbPlayerAndIA();
-    int nbRound = 36 / nbPlayer; // Number of rounds based on total cards
+    int nbRound = 12 / nbPlayer; // Number of rounds based on total cards
     int nbTours = 3;             // Number of turns per round
 
     // Main game loop
@@ -54,8 +54,11 @@ int main()
                     }
                 }
             }
-            // Distribute cards for the next round
-            c->distributeCard();
+
+            // End of round processing
+            c->countScore(); // Calculate scores
+            c->endRound();   // Handle end of round cards
+            c->distributeCard(); // Distribute cards for the next round
         }
         
         // Ask if the user wants to continue playing
@@ -66,6 +69,12 @@ int main()
             break; // Exit the game loop
         }
     }
+
+    // Display the winner at the end of the game
+    c->displayWinner();
+
+    // Proper memory management
+    delete c;
 
     return 0;
 }
