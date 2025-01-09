@@ -116,28 +116,56 @@ char Client::getValidatedChar(std::string prompt)
     return response;
 }
 
-void Client::displayHandCards()
-{
-    cout << "Your cards are :" << endl;
+std::string numberCardToString(state::NumberCard number) {
+    switch (number) {
+        case state::un: return "un";
+        case state::deux: return "deux";
+        case state::trois: return "trois";
+        case state::quatre: return "quatre";
+        case state::cinq: return "cinq";
+        case state::six: return "six";
+        case state::sept: return "sept";
+        case state::dame: return "dame";
+        case state::valet: return "valet";
+        case state::roi: return "roi";
+        default: return "inconnu";
+    }
+}
+
+std::string typeCardToString(state::TypeCard type) {
+    switch (type) {
+        case state::treffle: return "treffle";
+        case state::carreau: return "carreau";
+        case state::pique: return "pique";
+        case state::coeur: return "coeur";
+        default: return "inconnu";
+    }
+}
+
+void Client::displayHandCards() {
+    std::cout << "Your cards are :" << std::endl;
     state::Player player = engine.getActualPlayer();
-    for (size_t i = 0; i < player.getHoldCard().size(); i++)
-    {
-        cout << i << "[" << player.getHoldCard()[i].getNumberCard() << "|" << player.getHoldCard()[i].getTypeCard() << "]" << endl;
+    for (size_t i = 0; i < player.getHoldCard().size(); i++) {
+        std::string cardNumber = numberCardToString(player.getHoldCard()[i].getNumberCard());
+        std::string cardType = typeCardToString(player.getHoldCard()[i].getTypeCard());
+        std::cout << i << " : " << " [" << cardNumber << " | " << cardType << "]" << std::endl;
     }
-    cout << "--------------------------------------" << endl;
+    std::cout << "--------------------------------------" << std::endl;
 }
 
-void Client::displayBoardCards()
-{
-    cout << "Cards on the board are :" << endl;
+void Client::displayBoardCards() {
+    std::cout << "Cards on the board are :" << std::endl;
     state::GameBoard *board = engine.getState().getBoard();
-
-    for (state::Card c : board->getCardBoard())
-    {
-        cout << "[" << c.getNumberCard() << "|" << c.getTypeCard() << "]" << endl;
+    int i = 0;
+    for (state::Card c : board->getCardBoard()) {
+        std::string cardNumber = numberCardToString(c.getNumberCard());
+        std::string cardType = typeCardToString(c.getTypeCard());
+        std::cout << i << " : " << " [" << cardNumber << " | " << cardType << "]" << std::endl;
+        i++;
     }
-    cout << "--------------------------------------" << endl;
+    std::cout << "--------------------------------------" << std::endl;
 }
+
 
 std::vector<std::string> Client::enterPlayersNames(int nbPlayers)
 {
@@ -154,7 +182,7 @@ std::vector<std::string> Client::enterPlayersNames(int nbPlayers)
 
 bool Client::initDistribute()
 {
-    string prompt = "Do you want to gard the keep your first card ? (y/n): ";
+    string prompt = "Do you want to keep the first card ? (y/n): ";
     char response = this->getValidatedChar(prompt);
     RoundInitDistributeCards roundInitDistributeCards = RoundInitDistributeCards(response);
     this->engine.setActualCmd(&roundInitDistributeCards);
