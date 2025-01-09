@@ -272,7 +272,6 @@ void Client::playThrowCard()
 void Client::playCaptureCard()
 {
     bool isValidCaptureCard = false;
-    ActionType action = Collecting;  // Ensure action type is set before loop
     while (!isValidCaptureCard)
     {
         int indexOfCardFromHand = this->enterIndexToThrowedCard();
@@ -282,17 +281,9 @@ void Client::playCaptureCard()
         isValidCaptureCard = this->engine.runCommand(&this->engine);
         if (!isValidCaptureCard)
         {
-            cout << "Invalid card capture action: This may be caused by an incorrect card index or an invalid card combination for the sum." << endl;
-            action = this->chooseAction();
-            if (action == Throwing)
-            {
-                break;  // Exit loop and switch to Throwing action
-            }
+            cout << "Invalid card capture action: You must capture a card on the board with the same number as your selected card." << endl;
+            cout << "Please try again." << endl;
         }
-    }
-    if (action == Throwing)
-    {
-        this->playThrowCard();
     }
 }
 
@@ -313,6 +304,35 @@ int Client::getNbPlayerAndIA()
 {
     state::State currentState = engine.getState();
     return currentState.getNbPlayer();
+}
+
+// Appelle la commande CountScore pour calculer le score
+void Client::countScore() {
+    engine::CountScore countScoreCmd;
+    countScoreCmd.execute(&this->engine);
+}
+
+// Appelle la commande EndRound pour attribuer les cartes restantes au dernier gagnant
+void Client::endRound() {
+    engine::EndRound endRoundCmd;
+    endRoundCmd.execute(&this->engine);
+}
+
+// Affiche le gagnant à la fin du jeu
+void Client::displayWinner() {
+    auto players = engine.getState().getAllPlayers();
+    int maxScore = -1;
+    std::string winnerName;
+
+    // Trouver le joueur avec le score maximum
+    for (const auto& player : players) {
+        if (player->getScore() > maxScore) {
+            maxScore = player->getScore();
+            winnerName = player->getName();
+        }
+    }
+
+    std::cout << " Winner Name : " << winnerName << " with a score of : " << maxScore << " points. Congratulations! " << std::endl;
 }
 
 Client::~Client()

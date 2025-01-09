@@ -32,22 +32,62 @@ bool CaptureCard::execute(Engine *engine)
 
         // Capture card from hand
         state::Card card = player.getHoldCard()[indexCardHand];
-        std::vector<state::Card> cardBoard;
-        for (int index : indexsCardsBoard)
+
+        // Check for direct match on the board
+        bool directMatch = false;
+        int directMatchIndex = -1;
+        for (size_t i = 0; i < board->getCardBoard().size(); ++i)
         {
-            cardBoard.push_back(board->getCardBoard()[index]);
+            if (board->getCardBoard()[i].getNumberCard() == card.getNumberCard())
+            {
+                directMatch = true;
+                directMatchIndex = i;
+                break;
+            }
         }
 
-        if (!validateSum(card, cardBoard))
+        // If a direct match exists, enforce capturing it
+        if (directMatch)
         {
-            return false;
+            if (indexsCardsBoard.size() != 1 || indexsCardsBoard[0] != directMatchIndex)
+            {
+                throw std::logic_error("You must capture the card with the same number from the board.");
+            }
+        }
+        else
+        {
+            // If no direct match, validate the sum
+            std::vector<state::Card> cardBoard;
+            for (int index : indexsCardsBoard)
+            {
+                cardBoard.push_back(board->getCardBoard()[index]);
+            }
+
+            if (!validateSum(card, cardBoard))
+            {
+                return false;
+            }
         }
 
+        // Proceed with capture
         player.removeCardFromHand(card);
         player.addCollectedCard(card);
 
         // Capture cards from board
-        this->collectMultipleCard(*board, cardBoard, player);
+        std::vector<state::Card> cardToCollect;
+        if (directMatch)
+        {
+            cardToCollect.push_back(board->getCardBoard()[directMatchIndex]);
+        }
+        else
+        {
+            for (int index : indexsCardsBoard)
+            {
+                cardToCollect.push_back(board->getCardBoard()[index]);
+            }
+        }
+
+        this->collectMultipleCard(*board, cardToCollect, player);
 
         // Check chkoba condition
         if (this->verifyChkoba(*board))
