@@ -1,141 +1,252 @@
-// #include "SceneData.h"
-// #include <iostream>
-// #include <state/Player.h>
+#include "SceneData.h"
+#include "state/Player.h"
+#include "state/Card.h"
+#include <SFML/Graphics.hpp>
 
-// using namespace render;
-// using namespace state;
-// using namespace sf;
+namespace render {
 
-// // Initialisation de CardPosition
-// CardPosition SceneData::cardPos;
+    // Constructor of the SceneData class
+    SceneData::SceneData(): bordWidth(800), boardHeight(600), cardWidth(80), cardHeight(120), selectedCardIndex(-1)
+    {}
 
-// SceneData::SceneData(): bordWidth(800), boardHeight(600), cardWidth(100), cardHeight(150) {
-//     // Initialiser le plateau
-//     board.setSize(Vector2f(bordWidth, boardHeight));
-//     board.setFillColor(Color::Green);
-//     board.setPosition(50, 50); // Position du plateau sur la fenêtre
+    // Destructor of the SceneData class
+    SceneData::~SceneData() {}
 
-//     // Charger une police par défaut
-//     if (!font.loadFromFile("arial.ttf")) {
-//         throw std::runtime_error("Failed to load font");
-//     }
-// }
+    // Initialization of the scene, loading the font, and setting up the board
+    void SceneData::init(sf::RenderWindow& window, SceneComponent& id) {
+        // Load the font for the text (make sure the file "arial.ttf" exists in your project folder)
+        font.loadFromFile("arial.ttf");
+        board.setSize(sf::Vector2f(bordWidth, boardHeight)); // Set the size of the board
+        board.setFillColor(sf::Color(200, 200, 255)); // Board color
 
-// SceneData::~SceneData() {}
+        // Initial position of the cards on the board and hands (adjust according to the game)
+        cardPos = CardPosition();  // Card position (the CardPosition object can manage the position on the board)
+    }
 
-// // Initialise les composants de la scène
-// void SceneData::init(RenderWindow& window, SceneComponent& id) {
-//     if (id == MENU) {
-//         // Ajouter du texte pour le menu
-//         Text menuText("Bienvenue dans le menu", font, 24);
-//         menuText.setPosition(100, 100);
-//         menuText.setFillColor(Color::White);
-//         text.push_back(menuText);
-//     }
-//     // Autres initialisations basées sur `id` si nécessaire
-// }
+    // Update the scene, for example, to update the score and card information
+    void SceneData::update(state::Player& playerInfo, int turn) {
+        // Logic to handle updating player information and score
+        // Ex: Update the score each turn or add specific player actions
+        text.clear(); // Clear previous text
 
-// // Met à jour la scène en fonction du joueur et du tour
-// void SceneData::update(Player& playerInfo, int turn) {
-//     // Exemple : Mettre à jour les cartes dans la main du joueur
-//     cards.clear();
-//     for (const Card& card : playerInfo.getHoldCard()) {
-//         RectangleShape cardShape(Vector2f(cardWidth, cardHeight));
-//         cardShape.setFillColor(Color::Blue);
-//         cardShape.setOutlineThickness(2);
-//         cardShape.setOutlineColor(Color::White);
-//         cards.push_back(cardShape);
-//     }
+        // Display the player's name and score
+        sf::Text playerText;
+        playerText.setFont(font);
+        playerText.setString("Player: " + playerInfo.getName() + " - Score: " + std::to_string(playerInfo.getScore()));
+        playerText.setCharacterSize(20);
+        playerText.setFillColor(sf::Color::Black);
+        playerText.setPosition(10, 10); // Position the text
+        text.push_back(playerText); // Add the text to the list for display
 
-//     Text playerScoreText;
-//     playerScoreText.setFont(font);
-//     playerScoreText.setString("Score: " + std::to_string(playerInfo.getScore()));
-//     playerScoreText.setCharacterSize(24);
-//     playerScoreText.setFillColor(Color::White);
+        // You can also update other elements here depending on the turn
+    }
 
-//     // Positionne chaque texte légèrement en dessous de l'autre en fonction du tour
-//     playerScoreText.setPosition(10.0f, 10.0f + turn * 30.0f);
-//     text.push_back(playerScoreText); // Ajoute le texte à la liste des textes
-// }
+    // Draw the entire scene, including the board, cards in hand, and cards on the board
+    void SceneData::drawSceneData(sf::RenderWindow& window, state::Player& player) {
+        window.clear(); // Clear the screen
 
-// // Dessine la scène entière
-// void SceneData::drawSceneData(RenderWindow& window) {
-//     window.draw(board); // Dessiner le plateau
+        // Draw the game board
+        window.draw(board);
 
-//     for (auto& card : cards) {
-//         window.draw(card); // Dessiner chaque carte
-//     }
+        // Draw the cards in the player's hand
+        drawCardsOnHand(window, player);  // Pass the player instance here
 
-//     for (auto& txt : text) {
-//         window.draw(txt); // Dessiner le texte
-//     }
-// }
+        // Draw the cards on the game board
+        drawCardsOnBoard(window, player);
 
-// // Redéfinition de la méthode draw de Drawable
-// void SceneData::draw(RenderTarget& target, RenderStates states) {
-//     target.draw(board, states);
+        // Display the player's score text
+        for (const auto& t : text) {
+            window.draw(t);
+        }
+    }
 
-//     for (auto& card : cards) {
-//         target.draw(card, states);
-//     }
-// }
+    // Draw the cards in the player's hand
+    void SceneData::drawCardsOnHand(sf::RenderWindow& window, state::Player& player) {
+        // Get the cards in the player's hand
+        std::vector<state::Card> heldCards = player.getHoldCard();  // Use the player instance here
 
-// // Dessine les cartes dans la main
-// void SceneData::drawCardsOnHand(RenderWindow& window) {
-//     float xOffset = 50;
-//     for (size_t i = 0; i < cards.size(); ++i) {
-//         cards[i].setPosition(xOffset + i * (cardWidth + 10), 500); // Ligne en bas
-//         window.draw(cards[i]);
-//     }
-// }
+        for (size_t i = 0; i < heldCards.size(); ++i) {
+            state::Card card = heldCards[i];
 
-// // Dessine les cartes sur le plateau
-// void SceneData::drawCardsOnBoard(RenderWindow& window) {
-//     float yOffset = 200;
-//     for (size_t i = 0; i < cards.size(); ++i) {
-//         cards[i].setPosition(100 + i * (cardWidth + 10), yOffset);
-//         window.draw(cards[i]);
-//     }
-// }
+            // Create a rectangle for the card
+            sf::RectangleShape cardShape(sf::Vector2f(cardWidth, cardHeight));
+            cardShape.setPosition(sf::Vector2f(50 + i * (cardWidth + 10), boardHeight - cardHeight - 20)); // Position the cards
 
-// // Ajoute des cartes au plateau
-// void SceneData::addCardToBoard(std::vector<Card> newCards) {
-//     for (const auto& card : newCards) {
-//         RectangleShape cardShape(Vector2f(cardWidth, cardHeight));
-//         cardShape.setFillColor(Color::Red);
-//         cardShape.setOutlineThickness(2);
-//         cardShape.setOutlineColor(Color::White);
-//         cards.push_back(cardShape);
-//     }
-// }
+            // Set the card color based on the type
+            switch (card.getTypeCard()) {
+            case state::TypeCard::coeur: cardShape.setFillColor(sf::Color::Red); break;
+            case state::TypeCard::carreau: cardShape.setFillColor(sf::Color::Yellow); break;
+            case state::TypeCard::pique: cardShape.setFillColor(sf::Color::Green); break;
+            case state::TypeCard::treffle: cardShape.setFillColor(sf::Color::Blue); break;
+            }
 
-// // Ajoute des cartes à la main
-// void SceneData::addCardToHand(std::vector<Card> newCards) {
-//     addCardToBoard(newCards); // Exemple simplifié
-// }
+            // Add a darker border if the card is selected
+            if (i == selectedCardIndex) {
+                cardShape.setOutlineColor(sf::Color::Black);  // Black border
+                cardShape.setOutlineThickness(5);  // Border thickness (thicker, hence "bold")
+            } else {
+                cardShape.setOutlineColor(sf::Color::Transparent);  // No border if not selected
+                cardShape.setOutlineThickness(1);  // Normal border size
+            }
 
-// // Retire une carte du plateau
-// void SceneData::removeCardFromBoard(Card card) {
-//     cards.pop_back(); // Exemple basique
-// }
+            window.draw(cardShape);  // Draw the card in hand
+        }
+    }
 
-// // Retire une carte de la main
-// void SceneData::removeCardFromHand(Card card) {
-//     // Implémenter une logique similaire
-// }
+    // Draw the cards on the board
+    void SceneData::drawCardsOnBoard(sf::RenderWindow& window , state::Player& player) {
+        std::vector<state::Card> collectedCards = player.getCollectCard(); // Get the cards on the board
 
-// // Sélectionne une carte de la main
-// Card SceneData::selectCardFromHand(int cardIndex) {
-//     // Implémentation fictive : retourner une carte vide
-//     return Card(NumberCard::un, TypeCard::coeur); // Exemple
-// }
+        for (size_t i = 0; i < collectedCards.size(); ++i) {
+            state::Card card = collectedCards[i];
 
-// // Sélectionne des cartes du plateau
-// std::vector<Card> SceneData::selectCardFromBoard(std::vector<int> cardIndexes) {
-//     std::vector<Card> selectedCards;
-//     for (int index : cardIndexes) {
-//         // Ajouter une carte fictive comme exemple
-//         selectedCards.push_back(Card(NumberCard::un, TypeCard::treffle));
-//     }
-//     return selectedCards;
-// }
+            // Create a rectangle for the card
+            sf::RectangleShape cardShape(sf::Vector2f(cardWidth, cardHeight));
+            cardShape.setPosition(sf::Vector2f(50 + i * (cardWidth + 10), 50));  // Position on the board
+
+            // Set the card color based on the type
+            switch (card.getTypeCard()) {
+            case state::TypeCard::coeur: cardShape.setFillColor(sf::Color::Red); break;
+            case state::TypeCard::carreau: cardShape.setFillColor(sf::Color::Yellow); break;
+            case state::TypeCard::pique: cardShape.setFillColor(sf::Color::Green); break;
+            case state::TypeCard::treffle: cardShape.setFillColor(sf::Color::Blue); break;
+            }
+
+            // Add a darker border if the card is selected
+            if (std::find(selectedBoardCards.begin(), selectedBoardCards.end(), i) != selectedBoardCards.end()) {
+                cardShape.setOutlineColor(sf::Color::Black);  // Black border
+                cardShape.setOutlineThickness(5);  // Border thickness (thicker, hence "bold")
+            } else {
+                cardShape.setOutlineColor(sf::Color::Transparent);  // No border if not selected
+                cardShape.setOutlineThickness(1);  // Normal border size
+            }
+
+            window.draw(cardShape);  // Draw the card on the board
+        }
+    }
+
+    // Add a card to the game board and draw it graphically
+    void SceneData::addCardToBoard( state::Card& card) {
+        // Add the card to the list of cards on the board
+        boardCards.push_back(card);
+
+        // Create a rectangle that will graphically represent the card on the board
+        sf::RectangleShape cardShape(sf::Vector2f(cardWidth, cardHeight));
+
+        // Set the card color based on its type
+        switch (card.getTypeCard()) {
+        case state::TypeCard::coeur:
+            cardShape.setFillColor(sf::Color::Red);
+            break;
+        case state::TypeCard::carreau:
+            cardShape.setFillColor(sf::Color::Yellow);
+            break;
+        case state::TypeCard::pique:
+            cardShape.setFillColor(sf::Color::Green);
+            break;
+        case state::TypeCard::treffle:
+            cardShape.setFillColor(sf::Color::Blue);
+            break;
+        }
+
+        // Set the position of the card on the board
+        // Example positioning: display the cards horizontally with an offset
+        float xPos = 50 + (boardCards.size() - 1) * (cardWidth + 10);
+        float yPos = 50;  // Set the fixed Y position for the cards
+
+        cardShape.setPosition(sf::Vector2f(xPos, yPos)); // Position the card
+
+        // Add the graphical shape of the card to a list of cards on the board for drawing
+        boardCardShapes.push_back(cardShape);
+    }
+
+    // Add a card to the player's hand, both logically and graphically
+    void SceneData::addCardToHand(state::Card& card) {
+        // Create the graphical shape for the card (rectangle representing the card)
+        sf::RectangleShape cardShape(sf::Vector2f(cardWidth, cardHeight));
+
+        // Position the card graphically in the player's hand
+        float xPosition = 50 + handCardShapes.size() * (cardWidth + 10); // Horizontal position, spacing between cards
+        float yPosition = boardHeight - cardHeight - 20;  // Fixed vertical position just above the bottom of the board
+        cardShape.setPosition(sf::Vector2f(xPosition, yPosition));
+
+        // Set the card color based on its type
+        switch (card.getTypeCard()) {
+        case state::TypeCard::coeur:
+            cardShape.setFillColor(sf::Color::Red);  // Heart
+            break;
+        case state::TypeCard::carreau:
+            cardShape.setFillColor(sf::Color::Yellow);  // Diamond
+            break;
+        case state::TypeCard::pique:
+            cardShape.setFillColor(sf::Color::Green);  // Spade
+            break;
+        case state::TypeCard::treffle:
+            cardShape.setFillColor(sf::Color::Blue);  // Club
+            break;
+        }
+
+        // Add the graphical card to the `handCardShapes` vector for display
+        handCardShapes.push_back(cardShape);  // Add the graphical shape of the card to the vector
+    }
+
+    // Remove a card from the board
+    void SceneData::removeCardFromBoard(state::Card& card) {
+        // Find and remove the logical card in boardCards
+        auto it = std::find_if(boardCards.begin(), boardCards.end(),
+                               [&card]( state::Card& c) { return c.equals(card); });
+        if (it != boardCards.end()) {
+            // Remove the card from the logical collection
+            boardCards.erase(it);
+        }
+
+        // Find and remove the graphical card in boardCardShapes
+        for (size_t i = 0; i < boardCards.size(); ++i) {
+            if (boardCards[i].equals(card)) {
+                // The graphical card corresponds to the index of the logical card
+                boardCardShapes.erase(boardCardShapes.begin() + i);  // Remove the graphical card
+                break;
+            }
+        }
+    }
+
+    void SceneData::removeCardFromHand(state::Card& card) {
+        // Find and remove the logical card and its corresponding graphical card
+        auto it = std::find_if(handCardShapes.begin(), handCardShapes.end(),
+                               [&card]( std::pair<sf::RectangleShape, state::Card>& p) {
+                                   return p.second.equals(card);  // Compare the logical card
+                               });
+
+        if (it != handCardShapes.end()) {
+            // Remove the graphical card and the logical card
+            handCardShapes.erase(it);
+        }
+    }
+
+    // Select a card from the player's hand based on its index
+    void SceneData::selectCardFromHand(int cardIndex) {
+        if (cardIndex >= 0 && cardIndex < handCardShapes.size()) {
+            selectedCardIndex = cardIndex;  // Mark the index of the selected card
+        } else {
+            selectedCardIndex = -1;  // No card selected if the index is invalid
+        }
+    }
+
+    // Select multiple cards on the game board
+    void SceneData::selectCardsFromBoard(const std::vector<int>& cardIndexes) {
+        selectedBoardCards.clear();  // Reset previously selected cards
+
+        // Add the indices of the selected cards
+        for (int idx : cardIndexes) {
+            if (idx >= 0 && idx < boardCardShapes.size()) {
+                selectedBoardCards.push_back(idx);  // Add the index of the selected card
+            }
+        }
+    }
+
+    void SceneData::setSelectedCardIndex(int index){ selectedCardIndex = index; }
+
+    // Getter for the index of the selected card
+    int SceneData::getSelectedCardIndex(){ return selectedCardIndex; }
+
+}

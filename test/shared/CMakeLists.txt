@@ -10,10 +10,8 @@ add_custom_test(shared_RoundInitDistributeCard)
 add_custom_test(shared_RoundDistributeCard)
 add_custom_test(shared_throwCard)
 add_custom_test(shared_captureCard)
-<<<<<<< HEAD
-=======
 # add_custom_test(shared_HeuristicAi)
->>>>>>> 15bbf0ebb707e1680d476f7e1acdc1e77f2f0b94
 add_custom_test(shared_RandomAi)
+add_custom_test(shared_EndRound)
 # vim: set sw=2 sts=2 et:
 
