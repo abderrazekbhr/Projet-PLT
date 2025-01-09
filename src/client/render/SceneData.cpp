@@ -4,20 +4,23 @@
 
 namespace render {
 
-    CardPosition SceneData::cardPos;
-
+    // Constructeur de la classe SceneData
     SceneData::SceneData()
-        : selectedCardIndex(-1),bordWidth(800.0), boardHeight(600.0), cardWidth(80.0), cardHeight(120.0) {}
+        : bordWidth(800), boardHeight(600), cardWidth(80)
+    {}
 
-    SceneData::~SceneData() {}
+    // Destructeur de la classe SceneData
+    SceneData::~SceneData() = default;
 
-    void SceneData::init(sf::RenderWindow &window, SceneComponent &id) {
-        if (!font.loadFromFile("arial.ttf")) {
-            throw std::runtime_error("Failed to load font 'arial.ttf'");
-        }
+    // Initialisation de la scène, chargement de la police, et paramétrage du plateau
+    void SceneData::init(sf::RenderWindow& window, SceneComponent& id) {
+        // Charger la police pour le texte (assurez-vous que le fichier "arial.ttf" existe dans votre dossier de projet)
+        /*font.loadFromFile("arial.ttf");
+        board.setSize(sf::Vector2f(bordWidth, boardHeight)); // Définir la taille du plateau
+        board.setFillColor(sf::Color(200, 200, 255)); // Couleur du plateau
 
-        board.setSize(sf::Vector2f(bordWidth, boardHeight));
-        board.setFillColor(sf::Color(200, 200, 255));
+        // Position initiale des cartes sur le plateau et les mains (ajuster selon le jeu)
+        cardPos = CardPosition();  // Position des cartes (l'objet CardPosition peut gérer la position sur le plateau)*/
     }
 
     void SceneData::update(state::Player &playerInfo, int turn) {
@@ -45,25 +48,15 @@ namespace render {
         }
     }
 
-    void SceneData::draw(sf::RenderTarget &target, sf::RenderStates states) {
-        target.draw(board, states);
+    // Dessiner les cartes sur la main du joueur
+    void SceneData::drawCardsOnHand(sf::RenderWindow& window, state::Player& player)  {
+        // Récupérer les cartes en main du joueur
+        std::vector<state::Card> heldCards = player.getHoldCard();  // Utiliser l'instance player ici
+        int size = heldCards.size();
+        for (int i = 0; i < size; ++i) {
+            state::Card card = heldCards[i];
 
-        for (auto &card : boardCardShapes) {
-            target.draw(card, states);
-        }
-
-        for (auto &card : boardCardShapes) {
-            target.draw(card, states);
-        }
-
-        for (auto &t : text) {
-            target.draw(t, states);
-        }
-    }
-
-    void SceneData::drawCardsOnHand(sf::RenderWindow &window, state::Player &player) {
-        auto  heldCards = player.getHoldCard();
-        for (size_t i = 0; i < heldCards.size(); ++i) {
+            // Création d'un rectangle pour la carte
             sf::RectangleShape cardShape(sf::Vector2f(cardWidth, cardHeight));
             cardShape.setPosition(50 + i * (cardWidth + 10), boardHeight - cardHeight - 20);
 
@@ -85,8 +78,30 @@ namespace render {
         }
     }
 
-    void SceneData::drawCardsOnBoard(sf::RenderWindow &window, state::Player &player) {
-        auto collectedCards = player.getCollectCard();
+
+    void render::SceneData::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+        // Exemple : Dessiner le plateau et les cartes graphiques
+        target.draw(board, states); // Dessine le plateau
+
+        // Dessiner toutes les cartes sur le plateau
+        for (const auto& cardShape : boardCardShapes) {
+            target.draw(cardShape, states);
+        }
+
+        // Dessiner toutes les cartes dans la main
+        for (const auto& handShape : handCardShapes) {
+            target.draw(handShape, states);
+        }
+
+        // Dessiner le texte associé (si besoin)
+        for (const auto& txt : text) {
+            target.draw(txt, states);
+        }
+    }
+    // Dessiner les cartes sur le plateau
+    void SceneData::drawCardsOnBoard(sf::RenderWindow& window , state::Player& player) {
+        std::vector<state::Card> collectedCards = player.getCollectCard(); // Récupérer les cartes sur le plateau
+
         for (size_t i = 0; i < collectedCards.size(); ++i) {
             sf::RectangleShape cardShape(sf::Vector2f(cardWidth, cardHeight));
             cardShape.setPosition(50 + i * (cardWidth + 10), 50);
@@ -131,12 +146,45 @@ namespace render {
         }
     }
 
-    void SceneData::selectCardFromHand(int cardIndex) {
-        selectedCardIndex = (cardIndex >= 0 && cardIndex < static_cast<int>(boardCards.size())) ? cardIndex : -1;
+
+
+    void SceneData::removeCardFromHand(state::Card& card) {
+        // Chercher et supprimer la carte logique et sa carte graphique correspondante
+       /* auto it = std::find_if(handCardShapes.begin(), handCardShapes.end(),
+                               [&card]( std::pair<sf::RectangleShape, state::Card>& p) {
+                                   return p.second.equals(card);  // Comparer la carte logique
+                               });
+
+        if (it != handCardShapes.end()) {
+            // Retirer la carte graphique et la carte logique
+            handCardShapes.erase(it);
+        }*/
     }
 
-    void SceneData::selectCardsFromBoard(std::vector<int> &cardIndexes) {
-        selectedBoardCards = cardIndexes;
+
+
+    // Sélectionner une carte de la main du joueur en fonction de son index
+    void SceneData::selectCardFromHand(int cardIndex) {
+        int size =handCardShapes.size();
+        if (cardIndex >= 0 && cardIndex < size) {
+            selectedCardIndex = cardIndex;  // Marquer l'index de la carte sélectionnée
+        } else {
+            selectedCardIndex = -1;  // Aucune carte sélectionnée si l'index est invalide
+        }
+    }
+
+
+    // Sélectionner plusieurs cartes sur le plateau de jeu
+    void SceneData::selectCardsFromBoard( std::vector<int>& cardIndexes) {
+        selectedBoardCards.clear();  // Réinitialiser les cartes sélectionnées précédemment
+
+        // Ajouter les indices des cartes sélectionnées
+        for (int idx : cardIndexes) {
+            int size =boardCardShapes.size();
+            if (idx >= 0 && idx < size) {
+                selectedBoardCards.push_back(idx);  // Ajouter l'index de la carte sélectionnée
+            }
+        }
     }
 
     void SceneData::setSelectedCardIndex(int index) {

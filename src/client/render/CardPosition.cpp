@@ -37,23 +37,15 @@ namespace render
         return y;
     }
 
-    // Method to calculate the position of a card based on its index
-    // sf::Vector2f CardPosition::getCardPosition(int index, double cardWidth, double cardHeight)
-    // {
-    //     double spacing = 15.0;                                 // Space between cards
-    //     double cardPosX = x + (index * (spacing + cardWidth)); // Calculate X position
-    //     double cardPosY = y;                                   // Y position remains constant
+    // Méthode mise à jour pour renvoyer la position d'une carte selon son index
+    void getCardPosition(int index, double cardWidth, double cardHeight, int &x, int &y) {
+        x = static_cast<int>(index * cardWidth);
+        y = static_cast<int>(cardHeight * 0.5);  // Exemple d'un calcul simple pour la hauteur
+    }
 
-    //     return sf::Vector2f(static_cast<float>(cardPosX), static_cast<float>(cardPosY));
-    // }
-
-    // // Method to calculate the position of a card on the board based on its index
-    // sf::Vector2f CardPosition::getBoardPosition(int index, double cardWidth, double cardHeight)
-    // {
-    //     double spacing = 10.0;                                  // Space between cards on the board
-    //     double boardPosX = x + (index * (cardWidth + spacing)); // Calculate X position
-    //     double boardPosY = y;                                   // Y position remains constant
-
-    //     return sf::Vector2f(static_cast<float>(boardPosX), static_cast<float>(boardPosY));
-    // }
+    // Fonction qui affecte la position du tableau (x, y) selon l'index
+    void getBoardPosition(int index, double cardWidth, double cardHeight, int &x, int &y) {
+        x = static_cast<int>(index * cardWidth * 1.5);
+        y = static_cast<int>(cardHeight * 1.2);  // Exemple d'un autre calcul
+    }
 }
