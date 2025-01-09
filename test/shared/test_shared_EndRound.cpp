@@ -15,12 +15,13 @@ BOOST_AUTO_TEST_CASE(test_end_round_successful)
 {
     Engine engine;
     state::State &state = engine.getState();
-
+    state.initCards();
     // Set up players and deck
     state.addPlayer("Player1");
     state.addPlayer("Player2");
 
     // Distribute all cards to players
+
     CardsDeck *deck = state.getAllCards();
     deck->distributeCards(state.getAllPlayers(), 3); // Example: give 3 cards to each player
 
