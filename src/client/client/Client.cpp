@@ -282,6 +282,7 @@ if (action == 1) {
     return Nothing;
 }
 
+
 }
 
 int Client::enterIndexToThrowedCard()
