@@ -1,6 +1,7 @@
 #include <boost/test/unit_test.hpp>
 #include <stdexcept>
 #include <vector>
+#include <ai/HeuristicAi.h>
 
 #include "../../src/shared/engine.h"
 #include "../../src/shared/state.h"
@@ -45,6 +46,29 @@ BOOST_AUTO_TEST_CASE(test_execute_invalid_max_score) {
     BOOST_CHECK_THROW(command->execute(&engine), std::invalid_argument);
 }
 
+BOOST_AUTO_TEST_CASE(test_execute_with_multiple_ai_players) {
+    std::vector<std::string> players = {"Alice", "AI1", "AI2", "AI3"};
+    SetUpGame setup(4, 21, players, 'y', 2); // 4 players, 3 AIs with level 2
+
+    Engine engine;
+
+    // Test if the execute method works with multiple AI players
+    Command* command = &setup;
+    BOOST_CHECK(command->execute(&engine));
+
+    // Verify that players are correctly added
+    State& state = engine.getState();
+    std::vector<Player*> gamePlayers = state.getAllPlayers();
+
+    // Check the number of players
+    BOOST_CHECK_EQUAL(gamePlayers.size(), 4);
+
+    // Check the type of players
+    BOOST_CHECK_EQUAL(gamePlayers[0]->getName(), "Alice");
+    BOOST_CHECK(dynamic_cast<ai::HeuristicAi*>(gamePlayers[1]) != nullptr); // AI1
+    BOOST_CHECK(dynamic_cast<ai::HeuristicAi*>(gamePlayers[2]) != nullptr); // AI2
+    BOOST_CHECK(dynamic_cast<ai::HeuristicAi*>(gamePlayers[3]) != nullptr); // AI3
+}
 
 
 // Test with AI player configuration

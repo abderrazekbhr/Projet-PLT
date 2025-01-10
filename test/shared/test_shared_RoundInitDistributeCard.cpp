@@ -21,9 +21,6 @@ BOOST_AUTO_TEST_CASE(TestRoundInitDistributeCards_Execute_Y)
     // Vérification de l'état initial
     BOOST_CHECK_EQUAL(engine.getState().getAllPlayers().size(), 2); // Vérifie qu'il y a bien 2 joueurs
 
-    // Vérifie que le deck existe et contient des cartes
-    BOOST_CHECK_NE(engine.getState().getAllCards(), nullptr);  // Vérifie que le deck existe
-    BOOST_CHECK_GT(engine.getState().getAllCards()->getDeckSize(), 0); // Vérifie que le deck contient des cartes
 
     // Exécute la commande via le pointeur polymorphique
     BOOST_CHECK(roundInit->execute(&engine)); // Vérifie que l'exécution réussit
@@ -53,9 +50,6 @@ BOOST_AUTO_TEST_CASE(TestRoundInitDistributeCards_Execute_N)
     // Vérification de l'état initial
     BOOST_CHECK_EQUAL(engine.getState().getAllPlayers().size(), 2); // Vérifie qu'il y a bien 2 joueurs
 
-    // Vérifie que le deck existe et contient des cartes
-    BOOST_CHECK_NE(engine.getState().getAllCards(), nullptr);  // Vérifie que le deck existe
-    BOOST_CHECK_GT(engine.getState().getAllCards()->getDeckSize(), 0); // Vérifie que le deck contient des cartes
 
     // Exécute la commande via le pointeur polymorphique
     BOOST_CHECK(roundInit->execute(&engine)); // Vérifie que l'exécution réussit

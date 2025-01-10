@@ -55,7 +55,7 @@ void state::State::addPlayer(std::string playerName)
     players.push_back(player);
 }
 
-void state::State::addIA(std::string playerName, int level) // TODO :Test
+void state::State::addIA(std::string playerName, int level)
 {
     ai::AI *ai;
     if (level == 1)
