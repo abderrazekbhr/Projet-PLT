@@ -434,13 +434,15 @@ void Client::displayWinner()
     // Vérifier si le cas d'égalité existe
     if (countMaxScore > 1)
     {
-        std::cout << "Match nul ! Plusieurs joueurs ont obtenu le score maximum de : "
-                  << maxScoreWin << " points." << std::endl;
+        std::cout << "End of game !! Equality!!"
+                  << std::endl;
     }
     else
     {
-        std::cout << "End of game !! Equality!!"
+        std::cout << "Winner Name : " << winnerName
+                  << " with a score of : " << maxScoreWin << " points. Congratulations!"
                   << std::endl;
+
     }
 }
 
