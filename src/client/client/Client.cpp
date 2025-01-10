@@ -412,20 +412,36 @@ void Client::endRound()
 void Client::displayWinner()
 {
     auto players = engine.getState().getAllPlayers();
-    int maxScore = -1;
+    int maxScoreWin = -1;
     std::string winnerName;
+    int countMaxScore = 0;
 
-    // Trouver le joueur avec le score maximum
+    // Trouver le score maximum et compter les joueurs ayant ce score
     for (const auto &player : players)
     {
-        if (player->getScore() > maxScore)
+        if (player->getScore() > maxScoreWin)
         {
-            maxScore = player->getScore();
+            maxScoreWin = player->getScore();
             winnerName = player->getName();
+            countMaxScore = 1; // Réinitialiser le compteur
+        }
+        else if (player->getScore() == maxScoreWin)
+        {
+            countMaxScore++; // Incrémenter le compteur en cas d'égalité
         }
     }
 
-    std::cout << " Winner Name : " << winnerName << " with a score of : " << maxScore << " points. Congratulations! " << std::endl;
+    // Vérifier si le cas d'égalité existe
+    if (countMaxScore > 1)
+    {
+        std::cout << "Match nul ! Plusieurs joueurs ont obtenu le score maximum de : "
+                  << maxScoreWin << " points." << std::endl;
+    }
+    else
+    {
+        std::cout << "End of game !! Equality!!"
+                  << std::endl;
+    }
 }
 
 Client::~Client()
