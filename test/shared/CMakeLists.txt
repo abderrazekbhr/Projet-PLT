@@ -15,3 +15,4 @@ add_custom_test(shared_RandomAi)
 add_custom_test(shared_EndRound)
 # vim: set sw=2 sts=2 et:
 
+
