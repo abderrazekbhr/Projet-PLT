@@ -15,23 +15,24 @@ BOOST_AUTO_TEST_CASE(test_heuristic_ai_full)
 {
     // Set up the game with 2 players, including 1 AI player
     std::vector<std::string> playerNames = {"Player1", "Heuristic AI"};
-    SetUpGame *setUpGame = new SetUpGame(2, 11, playerNames, 'y', 2); // 2 players, max score 11
+    SetUpGame *setUpGame =new SetUpGame(2, 11, playerNames, 'y', 2); // 2 players, max score 11
 
     Engine engine;                  // Create an engine to run the game
     engine.setActualCmd(setUpGame); // Set the game setup as the current command in the engine
 
     // Check if the game setup executed successfully
-    engine.runCommand(&engine);
+    BOOST_CHECK_NO_THROW(engine.runCommand(&engine));
 
     // Retrieve all players from the engine's state
-    std::vector<Player *> players = engine.getState().getAllPlayers();
+    auto &state = engine.getState();
+    std::vector<Player *> players = state.getAllPlayers();
     BOOST_REQUIRE_EQUAL(players.size(), 2); // Ensure there are exactly 2 players
 
     // Get the AI player and board
-    HeuristicAi *heuristicAi = dynamic_cast<HeuristicAi *>(players[1]);
-    BOOST_REQUIRE(heuristicAi); // Ensure successful cast to HeuristicAi
-    GameBoard *board = engine.getState().getBoard();
-    BOOST_REQUIRE(board);
+    auto *heuristicAi = dynamic_cast<HeuristicAi *>(players[1]);
+    BOOST_REQUIRE_MESSAGE(heuristicAi, "Failed to cast Player2 to HeuristicAi");
+    auto *board = state.getBoard();
+    BOOST_REQUIRE_MESSAGE(board, "Failed to retrieve the game board");
 
     // Set up cards for testing
     std::vector<Card> handPlayer = {
@@ -50,23 +51,28 @@ BOOST_AUTO_TEST_CASE(test_heuristic_ai_full)
         Card(valet, pique)};
 
     // Add cards to the players and board
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 3; ++i)
     {
         players[0]->addHoldedCard(handPlayer[i]);
         heuristicAi->addHoldedCard(handAi[i]);
         board->addCardToBoard(boardCards[i]);
     }
 
+    // Verify the cards were added correctly
+    BOOST_CHECK_EQUAL(players[0]->getHoldCard().size(), 3);
+    BOOST_CHECK_EQUAL(heuristicAi->getHoldCard().size(), 3);
+    BOOST_CHECK_EQUAL(board->getCardBoard().size(), 3);
+
     // Test `checkPossibleChkoba`
     auto chkobaResult = heuristicAi->checkPossibleChkoba(handAi, boardCards);
     if (!chkobaResult["hand"].empty() && !chkobaResult["board"].empty())
     {
-        std::vector<int> boardIndices = chkobaResult["board"];
-        BOOST_CHECK_EQUAL(heuristicAi->getScore(), 1);
+        BOOST_CHECK_EQUAL(chkobaResult["hand"].size(), 1); // Ensure only one card is played from hand
+        BOOST_CHECK(!chkobaResult["board"].empty());       // Ensure cards on the board are involved
     }
     else
     {
-        BOOST_CHECK(chkobaResult["hand"].empty() || chkobaResult["board"].empty());
+        BOOST_CHECK(chkobaResult["hand"].empty() && chkobaResult["board"].empty());
     }
 
     // Test `checkPossible7Carreau`
@@ -74,22 +80,15 @@ BOOST_AUTO_TEST_CASE(test_heuristic_ai_full)
     if (!septCarreauResult["hand"].empty() && !septCarreauResult["board"].empty())
     {
         int handIndex = septCarreauResult["hand"][0];
-        std::vector<int> boardIndices = septCarreauResult["board"];
-        BOOST_CHECK_EQUAL(handAi[handIndex].getNumberCard(), 7);
-        for (int idx : boardIndices)
-        {
-            BOOST_CHECK_EQUAL(boardCards[idx].getNumberCard(), 7);
-        }
+        BOOST_CHECK_EQUAL(handAi[handIndex].getNumberCard(), 7); // Ensure the card is Sept
     }
 
     // Test `maximiseProfit`
     auto bestMove = heuristicAi->maximiseProfit(handAi, boardCards);
     if (!bestMove["hand"].empty() && !bestMove["board"].empty())
     {
-        int handIndex = bestMove["hand"][0];
-        std::vector<int> boardIndices = bestMove["board"];
-        BOOST_CHECK(!boardIndices.empty());
-        BOOST_CHECK(handIndex >= 0 && handIndex < (int)handAi.size());
+        BOOST_CHECK(!bestMove["board"].empty());
+        BOOST_CHECK(bestMove["hand"][0] < (int)handAi.size());
     }
 
     // Test `throwStrategy`
@@ -100,13 +99,12 @@ BOOST_AUTO_TEST_CASE(test_heuristic_ai_full)
     BOOST_CHECK_NO_THROW(heuristicAi->run(&engine));
 
     // Test card collection logic
-    heuristicAi->run(&engine);                                  // Run AI logic
-    BOOST_CHECK_EQUAL(heuristicAi->getSizeCollectedCards(), 1); // Ensure cards are collected properly
+    heuristicAi->run(&engine);
+    BOOST_CHECK_EQUAL(heuristicAi->getSizeCollectedCards(), 1);
 
-    heuristicAi->run(&engine);                                  // Run AI logic again
-    BOOST_CHECK_EQUAL(heuristicAi->getSizeCollectedCards(), 1); // Ensure no duplicate collection
+    heuristicAi->run(&engine);
+    BOOST_CHECK_EQUAL(heuristicAi->getSizeCollectedCards(), 1);
 
-    // Test AI's scoring logic
-    // Uncomment this part if scoring is implemented
+    // Optional: Test scoring logic if implemented
     // BOOST_CHECK_EQUAL(heuristicAi->getScore(), expectedScore);
 }

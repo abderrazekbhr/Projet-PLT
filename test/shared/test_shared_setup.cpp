@@ -45,29 +45,7 @@ BOOST_AUTO_TEST_CASE(test_execute_invalid_max_score) {
     BOOST_CHECK_THROW(command->execute(&engine), std::invalid_argument);
 }
 
-// Test with more player names than the required number of players
-// BOOST_AUTO_TEST_CASE(test_execute_invalid_players_count) {
-//     std::vector<std::string> players = {"Alice", "Bob", "Charlie"};
-//     SetUpGame setup(2, 11, players, 'n', 0); // Too many player names
 
-//     Engine engine;
-
-//     // Test if an exception is thrown when the number of player names exceeds the expected count
-//     Command* command = &setup;
-//     BOOST_CHECK_THROW(command->execute(&engine), std::invalid_argument);
-// }
-
-// Test with fewer player names than the required number of players
-// BOOST_AUTO_TEST_CASE(test_execute_invalid_players_count_too_few) {
-//     std::vector<std::string> players = {"Alice","BOB"};  // Only one name when two are required
-//     SetUpGame setup(2, 11, players, 'n', 0);
-
-//     Engine engine;
-
-//     // Test if an exception is thrown when the number of player names is less than the required count
-//     Command* command = &setup;
-//     BOOST_CHECK_THROW(command->execute(&engine), std::invalid_argument);
-// }
 
 // Test with AI player configuration
 BOOST_AUTO_TEST_CASE(test_execute_with_ai_player) {
