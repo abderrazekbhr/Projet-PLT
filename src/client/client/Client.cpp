@@ -441,6 +441,7 @@ void Client::displayWinner()
         std::cout << "Winner Name : " << winnerName
                   << " with a score of : " << maxScoreWin << " points. Congratulations!"
                   << std::endl;
+
     }
 }
 
