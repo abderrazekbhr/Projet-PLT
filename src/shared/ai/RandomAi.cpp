@@ -36,10 +36,12 @@ void RandomAi::run(engine::Engine *eng)
             if (handCards[i].getNumberCard() == boardCards[j].getNumberCard())
             {
 
+
                 CaptureCard captureAction(static_cast<int>(i), {static_cast<int>(j)});
                 eng->setActualCmd(&captureAction);
                 if (captureAction.execute(eng))
                 {
+                    std::cout<<"AI "<<player.getName()<<" captured a card"<<std::endl;
                     return;
                 }
             }
@@ -50,6 +52,8 @@ void RandomAi::run(engine::Engine *eng)
     ThrowCard throwAction(randomIndex);
     eng->setActualCmd(&throwAction);
     throwAction.execute(eng);
+    std::cout<<"AI "<<player.getName()<<" throwed a card"<<std::endl;
+
 }
 
 RandomAi::~RandomAi() {}

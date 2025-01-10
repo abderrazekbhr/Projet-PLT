@@ -10,7 +10,6 @@ namespace engine
     }
     RoundInitDistributeCards::~RoundInitDistributeCards() {}
     
-    // TODO: Correct logic in this method : we get the first card and then ask the player if he wants to take it or not
     bool RoundInitDistributeCards::execute(Engine *engine)
     {
         state::State &currentState = engine->getState();
