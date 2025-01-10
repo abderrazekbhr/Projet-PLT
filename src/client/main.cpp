@@ -57,7 +57,12 @@ int main()
         // End of round processing
         c->endRound();   // Handle end of round cards
         c->countScore(); // Calculate scores
-
+        
+        if (c->isEndOfGame())
+        {
+            break; // Exit the game loop
+        }
+        
         // Check if the user wants to continue the game
         char response = c->getValidatedChar("Do you want to continue the game? (y/n): ");
         if (response == 'n' || response == 'N')

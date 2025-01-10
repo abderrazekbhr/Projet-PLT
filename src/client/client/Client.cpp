@@ -240,13 +240,13 @@ ActionType Client::chooseAction()
     // Handle AI players
     if (ai1 != nullptr)
     {
-        std::cout << "Name of Random AI Player: " << player.getName() << std::endl;
+        std::cout << "\nName of Random AI Player: " << player.getName() << std::endl;
         ai1->run(&engine); // Corrected to pass engine pointer
         return Nothing;    // AI has no action prompt for human input
     }
     else if (ai2 != nullptr)
     {
-        std::cout << "Name of Heuristic AI Player: " << player.getName() << std::endl;
+        std::cout << "\nName of Heuristic AI Player: " << player.getName() << std::endl;
         ai2->run(&engine); // Corrected to pass engine pointer
         return Nothing;    // AI has no action prompt for human input
     }
@@ -408,7 +408,6 @@ void Client::endRound()
     endRoundCmd.execute(&this->engine);
 }
 
-// Affiche le gagnant à la fin du jeu
 void Client::displayWinner()
 {
     auto players = engine.getState().getAllPlayers();
@@ -434,12 +433,13 @@ void Client::displayWinner()
     // Vérifier si le cas d'égalité existe
     if (countMaxScore > 1)
     {
-        std::cout << "Match nul ! Plusieurs joueurs ont obtenu le score maximum de : "
-                  << maxScoreWin << " points." << std::endl;
+        std::cout << "End of game !! Equality!!"
+                  << std::endl;
     }
     else
     {
-        std::cout << "End of game !! Equality!!"
+        std::cout << "Winner Name : " << winnerName
+                  << " with a score of : " << maxScoreWin << " points. Congratulations!"
                   << std::endl;
     }
 }
