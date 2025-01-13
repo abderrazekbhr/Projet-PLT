@@ -17,6 +17,7 @@ Client::Client()
 {
     playWithAi = false;
     this->engine = engine::Engine();
+   
 }
 
 void Client::setUp()
@@ -40,6 +41,9 @@ void Client::setUp()
         this->engine.setActualCmd(&setUpCommand);
         isValidSetUp = this->engine.runCommand(&this->engine); // Corrected to use engine instance.
     }
+    scene = new render::Scene(engine.getState());
+    scene->drawScene();
+    
 }
 
 int Client::enterNbPlayer()
@@ -446,5 +450,5 @@ void Client::displayWinner()
 
 Client::~Client()
 {
-    delete &engine; // Fixed memory management
+    // delete &engine; // Fixed memory management
 }

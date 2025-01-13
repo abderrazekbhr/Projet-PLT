@@ -5,16 +5,18 @@
 #include "client.h"
 #include "engine.h"
 #include "ai.h"
+#include "render.h"
 
 using namespace std;
 using namespace client;
 using namespace engine;
+using namespace render;
 using namespace ai;
 
 int main()
 {
     cout << "Welcome to the game of CHKOBA!" << endl;
-
+    
     // Initialize the client
     Client *c = new Client();
     c->setUp();
