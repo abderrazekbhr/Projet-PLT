@@ -2,19 +2,14 @@
 #include <iostream>
 #include <filesystem>
 #include <unistd.h>
-#define WIDTH 1080
-#define HEIGHT 720
-#define MARGIN 20
-#define BOX_WIDTH 150
-#define BOX_HEIGHT 100
-
+#include "GameParameters.h"
 namespace render
 {
     Scene::Scene(state::State &state) : playerInfo("DefaultPlayerName"), actualState(state)
     {
         // sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
-        window.create(sf::VideoMode(WIDTH, HEIGHT), "Game Scene");
-        window.setSize(sf::Vector2u(WIDTH, HEIGHT));
+        window.create(sf::VideoMode(GameParameters::WIDTH, GameParameters::HEIGHT), "CHKOBA");
+        window.setSize(sf::Vector2u(GameParameters::WIDTH, GameParameters::HEIGHT));
         currentComponent = SceneComponent::PLAYER_A;
         init();
     }
@@ -26,16 +21,7 @@ namespace render
         // Exemple d'initialisation (couleurs, styles, etc.)
         std::cout << "Initialisation de la scène avec les données nécessaires." << std::endl;
     }
-
-    sf::Font createFont(std::string filepath)
-    {
-        sf::Font font;
-        if (!font.loadFromFile(filepath))
-        {
-            std::cerr << "Erreur : Impossible de charger la police." << std::endl;
-        }
-        return font;
-    }
+    
 
     void Scene::drawScene()
     {
@@ -93,7 +79,7 @@ namespace render
         case SceneComponent::PLAYER_B:
         case SceneComponent::PLAYER_C:
         case SceneComponent::PLAYER_D:
-            renderPlayerInfo(actualState.getAllPlayers());
+            // renderPlayerInfo(actualState.getAllPlayers());
             break;
         // case SceneComponent::SCORE_CALCULATION:
         //     renderScores();
@@ -102,158 +88,12 @@ namespace render
             std::cout << "Composante inconnue !" << std::endl;
             break;
         }
-        this->createBoard();
+        // this->createBoard();
         // Affiche tout ce qui a été dessiné
         window.display();
     }
 
     //
-
-    std::vector<std::map<char, double>> generatePlayersPositions(int nbPlayer, double width, double height)
-    {
-        std::vector<std::map<char, double>> positions;
-
-        for (int i = 0; i < nbPlayer; i++)
-        {
-            std::map<char, double> position;
-
-            // Determine corner placement (0: Top-Left, 1: Top-Right, 2: Bottom-Left, 3: Bottom-Right)
-            switch (i)
-            {
-            case 0: // Top-Left
-                position['x'] = MARGIN;
-                position['y'] = MARGIN;
-                break;
-            case 1: // Top-Right
-                position['x'] = WIDTH - width - MARGIN;
-                position['y'] = MARGIN;
-                break;
-            case 2: // Bottom-Left
-                position['x'] = MARGIN;
-                position['y'] = HEIGHT - BOX_HEIGHT - MARGIN;
-                break;
-            case 3: // Bottom-Right
-                position['x'] = WIDTH - width - MARGIN;
-                position['y'] = HEIGHT - BOX_HEIGHT - MARGIN;
-                break;
-            default:
-                throw std::out_of_range("Player position exceeds supported number of corners.");
-            }
-
-            positions.push_back(position); // Store the calculated position
-        }
-        return positions; // Return all calculated positions
-    }
-
-    // Create a text object
-    sf::Text createText(const std::string &text, const sf::Font &font, int size, sf::Color color, int x, int y)
-    {
-        sf::Text title;
-        title.setFont(font);
-        title.setString(text);
-        title.setCharacterSize(size);
-        title.setFillColor(color);
-        title.setPosition(x, y);
-        return title;
-    }
-
-    // Create a rectangle for player info
-    sf::RectangleShape createInfoPlayer(int width, int height, sf::Color bg, int posX, int posY)
-    {
-        sf::RectangleShape rectangle(sf::Vector2f(width, height));
-        rectangle.setFillColor(sf::Color::Transparent);
-        rectangle.setPosition(posX, posY);
-        rectangle.setFillColor(bg);
-        rectangle.setOutlineColor(sf::Color(61, 61, 61));
-        return rectangle;
-    }
-
-    int maxSizeName(std::vector<state::Player *> players)
-    {
-        int size = players[0]->getName().size();
-        for (state::Player *p : players)
-        {
-            int len = p->getName().size();
-            if (size < len)
-            {
-                size = len;
-            }
-        }
-        return size;
-    }
-    void Scene::createBoard()
-    {
-        sf::Texture texture;
-        sf::RectangleShape board(sf::Vector2f(WIDTH * 0.7, HEIGHT * 0.7));
-        if (!texture.loadFromFile("../assets/tapis.png"))
-        {
-            std::cout << "error in load bg texture" << std::endl;
-        }
-        texture.setSmooth(true);
-        board.setPosition(WIDTH * 0.15, HEIGHT * 0.15);
-        board.setTexture(&texture);
-
-        window.draw(board);
-    }
-
-    void Scene::renderPlayerInfo(std::vector<state::Player *> players)
-    {
-        std::string filepath = "../assets/Luckiest_Guy/LuckiestGuy-Regular.ttf";
-        sf::Font font = createFont(filepath);
-
-        int paddingX = 20;
-        int fontSize = 18;
-        int spacingY = 20;
-        const std::string START_NAME = "Player:";
-        const std::string START_SCORE = "Score:";
-
-        double maxWidthBox = maxSizeName(players);
-        maxWidthBox += START_NAME.size();
-        maxWidthBox *= fontSize / 1.5;
-        maxWidthBox += paddingX * 2;
-        double heightBox = 2 * (fontSize + spacingY);
-        std::vector<std::map<char, double>> allPos = generatePlayersPositions(players.size(), maxWidthBox, heightBox);
-
-        for (size_t i = 0; i < players.size(); i++)
-        {
-
-            std::string name = START_NAME + players[i]->getName();
-            std::string score = START_SCORE + std::to_string(players[i]->getScore());
-            sf::Text playerName = createText(name, font, fontSize, sf::Color(50, 50, 50), allPos[i]['x'] + 2 * paddingX, allPos[i]['y'] + spacingY);
-            sf::Text playerScore = createText(score, font, fontSize, sf::Color(87, 142, 126), allPos[i]['x'] + 2 * paddingX, allPos[i]['y'] + 2 * spacingY);
-            sf::RectangleShape box = createInfoPlayer(
-                maxWidthBox, heightBox, sf::Color(240, 240, 240, 100), allPos[i]['x'],
-                allPos[i]['y']);
-
-            window.draw(box);
-            window.draw(playerName);
-            window.draw(playerScore);
-        }
-    }
-
-    // void Scene::renderScores()
-    // {
-    //     // Exemple de rendu pour le calcul des scores
-    //     sf::Font font;
-
-    //     std::string filepath = "../assets/Luckiest_Guy/LuckiestGuy-Regular.ttf";
-
-    //     if (!font.loadFromFile(filepath))
-    //     {
-    //         std::cerr << "***********Erreur : Impossible de charger la police." << std::endl;
-    //     }
-
-    //     sf::Text title("Calcul des Scores", font, 50);
-    //     title.setFillColor(sf::Color::Red);
-    //     title.setPosition(200, 100);
-
-    //     sf::Text scoreCalculation("Calcul en cours...", font, 30);
-    //     scoreCalculation.setFillColor(sf::Color::White);
-    //     scoreCalculation.setPosition(200, 200);
-
-    //     window.draw(title);
-    //     window.draw(scoreCalculation);
-    // }
 }
 
 // render::Scene scene = render::Scene(engine.getState());

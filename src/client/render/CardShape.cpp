@@ -1,8 +1,12 @@
-#include "render.h"
 #include <iostream>
-using namespace render;
-static int nbInstance = 0;
-CardShape::CardShape(float posX, float posY, float width, float height, std::string clearImg, bool isVisible)
+#include "render.h"
+#include "state.h"
+
+using namespace state;
+int render::CardShape::nbInstance = 0;
+std::string render::CardShape::imgHidden = "../assets/card/hidden.png";
+
+render::CardShape::CardShape(float posX, float posY, float width, float height, std::string clearImg, bool isVisible, state::Card *card)
 {
     this->posX = posX;
     this->posY = posY;
@@ -11,45 +15,49 @@ CardShape::CardShape(float posX, float posY, float width, float height, std::str
     this->imgClear = clearImg;
     this->isVisible = isVisible;
     this->id = nbInstance;
+    this->cardInstance = card;
     nbInstance++;
 }
+render::CardShape::~CardShape()
+{
+}
 
-double CardShape::getX()
+double render::CardShape::getX()
 {
     return posX;
 }
-double CardShape::getY()
+double render::CardShape::getY()
 {
     return posY;
 }
-void CardShape::setX(double x)
+void render::CardShape::setX(double x)
 {
     posX = x;
 }
-void CardShape::setY(double y)
+void render::CardShape::setY(double y)
 {
     posY = y;
 }
-double CardShape::getWidth()
+double render::CardShape::getWidth()
 {
     return width;
 }
-double CardShape::getHeight()
+double render::CardShape::getHeight()
 {
     return height;
 }
 
-int CardShape::getId()
+int render::CardShape::getId()
 {
     return id;
 }
-void CardShape::changeVisibility()
+void render::CardShape::changeVisibility()
 {
 
     isVisible = !isVisible;
 }
 
-sf::Texture CardShape::createTexture(std::string img)
+sf::Texture render::CardShape::createTexture(std::string img)
 {
     sf::Texture texture;
     if (!texture.loadFromFile(img))
@@ -58,7 +66,7 @@ sf::Texture CardShape::createTexture(std::string img)
     }
     return texture;
 }
-void CardShape::setShapeProperty()
+void render::CardShape::setShapeProperty()
 {
     try
     {
@@ -80,7 +88,7 @@ void CardShape::setShapeProperty()
         std::cerr << e.what() << std::endl;
     }
 }
-
-CardShape::~CardShape()
+bool render::CardShape::compare(state::Card *card)
 {
+    return cardInstance->equals(*card);
 }
