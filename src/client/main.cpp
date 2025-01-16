@@ -5,11 +5,13 @@
 #include "client.h"
 #include "engine.h"
 #include "ai.h"
+#include "render.h"
 
 using namespace std;
 using namespace client;
 using namespace engine;
 using namespace ai;
+using namespace render;
 
 int main()
 {
@@ -17,6 +19,8 @@ int main()
 
     // Initialize the client
     Client *c = new Client();
+    Scene *s = new Scene();
+    s->drawScene();
     c->setUp();
 
     // Game configuration
@@ -57,12 +61,12 @@ int main()
         // End of round processing
         c->endRound();   // Handle end of round cards
         c->countScore(); // Calculate scores
-        
+
         if (c->isEndOfGame())
         {
             break; // Exit the game loop
         }
-        
+
         // Check if the user wants to continue the game
         char response = c->getValidatedChar("Do you want to continue the game? (y/n): ");
         if (response == 'n' || response == 'N')

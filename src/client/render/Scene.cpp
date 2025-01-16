@@ -6,7 +6,7 @@ namespace render {
     Scene::Scene()
         : window(sf::VideoMode(800, 600), "Game Scene"),
           playerInfo("DefaultPlayerName"), // Initialisation de playerInfo avec un nom par défaut
-          currentComponent(SceneComponent::MENU) // Composante par défaut : MENU
+          currentComponent(SceneComponent::PLAYER_A) // Composante par défaut : MENU
     {
         // Initialisation de la scène
         init();
@@ -114,9 +114,9 @@ namespace render {
     void Scene::renderPlayerInfo() {
         // Exemple de rendu des informations sur les joueurs
         sf::Font font;
-        if (!font.loadFromFile("arial.ttf")) {
-            std::cerr << "Erreur : Impossible de charger la police." << std::endl;
-        }
+        // if (!font.loadFromFile("arial.ttf")) {
+        //     std::cerr << "Erreur : Impossible de charger la police." << std::endl;
+        // }
 
         sf::Text playerName("Joueur: " + playerInfo.getName(), font, 30);
         playerName.setFillColor(sf::Color::Yellow);

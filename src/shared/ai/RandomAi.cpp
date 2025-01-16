@@ -35,8 +35,6 @@ void RandomAi::run(engine::Engine *eng)
         {
             if (handCards[i].getNumberCard() == boardCards[j].getNumberCard())
             {
-
-
                 CaptureCard captureAction(static_cast<int>(i), {static_cast<int>(j)});
                 eng->setActualCmd(&captureAction);
                 if (captureAction.execute(eng))
