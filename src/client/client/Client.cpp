@@ -17,7 +17,6 @@ Client::Client()
 {
     playWithAi = false;
     this->engine = engine::Engine();
-   
 }
 
 void Client::setUp()
@@ -43,7 +42,6 @@ void Client::setUp()
     }
     scene = new render::Scene(engine.getState());
     scene->drawScene();
-    
 }
 
 int Client::enterNbPlayer()
@@ -220,11 +218,17 @@ std::vector<std::string> Client::enterPlayersNames(int nbPlayers)
 
 bool Client::initDistribute()
 {
-
     char response = 'y';
     RoundInitDistributeCards roundInitDistributeCards = RoundInitDistributeCards(response);
     this->engine.setActualCmd(&roundInitDistributeCards);
-    return this->engine.runCommand(&this->engine);
+    cout << "player name :" << engine.getActualPlayer().getName() << " | nb card :" << engine.getActualPlayer().getSizeHoldedCards() << endl;
+
+    bool execResult = this->engine.runCommand(&this->engine);
+    for (state::Player *player : engine.getState().getAllPlayers())
+    {
+        scene->sceneInfo.drawCardsOnHand(scene->window, *player);
+    }
+    return execResult;
 }
 
 void Client::distributeCard()

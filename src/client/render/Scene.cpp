@@ -2,6 +2,7 @@
 #include <iostream>
 #include <filesystem>
 #include <unistd.h>
+
 #include "GameParameters.h"
 namespace render
 {
@@ -21,7 +22,6 @@ namespace render
         // Exemple d'initialisation (couleurs, styles, etc.)
         std::cout << "Initialisation de la scène avec les données nécessaires." << std::endl;
     }
-    
 
     void Scene::drawScene()
     {
@@ -63,31 +63,42 @@ namespace render
             }
         }
         window.clear();
-
         window.draw(sprite);
 
         // Dessine la scène en fonction de la composante actuelle
-        switch (currentComponent)
-        {
+        // switch (currentComponent)
+        // {
         // case SceneComponent::MENU:
         //     renderMenu();
         //     break;
         // case SceneComponent::OPTION:
         //     renderOptions();
         //     break;
-        case SceneComponent::PLAYER_A:
-        case SceneComponent::PLAYER_B:
-        case SceneComponent::PLAYER_C:
-        case SceneComponent::PLAYER_D:
-            // renderPlayerInfo(actualState.getAllPlayers());
-            break;
+        // case SceneComponent::PLAYER_A:
+        // case SceneComponent::PLAYER_B:
+        // case SceneComponent::PLAYER_C:
+        // case SceneComponent::PLAYER_D:
+
+        sceneInfo.createBoard();
+        sceneInfo.renderPlayerInfo(window, actualState.getAllPlayers());
+
+        for (size_t i = 0; i < actualState.getAllPlayers().size(); i++)
+        {
+            std::cout << sceneInfo.playersName[i].getString().toAnsiString() << std::endl;
+        }
+        window.draw(sceneInfo.board);
+
+        // sceneInfo.drawCardsOnHand(window, actualState.getAllPlayers()[0]);
+
+        // renderPlayerInfo(actualState.getAllPlayers());
+        // break;
         // case SceneComponent::SCORE_CALCULATION:
         //     renderScores();
         //     break;
-        default:
-            std::cout << "Composante inconnue !" << std::endl;
-            break;
-        }
+        // default:
+        //     std::cout << "Composante inconnue !" << std::endl;
+        //     break;
+        // }
         // this->createBoard();
         // Affiche tout ce qui a été dessiné
         window.display();

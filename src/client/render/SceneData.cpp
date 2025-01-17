@@ -104,15 +104,17 @@ const map<int, string> cardNumber = {
     {10, "10"}};
 
 const map<int, string> cardType = {
-    {0, "coeur"},
-    {1, "carreau"},
-    {2, "pique"},
-    {3, "treffle"}};
+    {1, "treffle"},
+    {2, "carreau"},
+    {3, "pique"},
+    {4, "coeur"}};
 
 // Constructeur de la classe SceneData
 SceneData::SceneData()
-    : bordWidth(800), boardHeight(600), cardWidth(80)
 {
+    bordWidth = 800;
+    boardHeight = 600;
+    cardWidth = 80;
 }
 
 // Destructeur de la classe SceneData
@@ -168,43 +170,56 @@ void SceneData::drawCardsOnHand(sf::RenderWindow &window, state::Player &player)
 
     std::vector<state::Card> heldCards = player.getHoldCard(); // Utiliser l'instance player ici
     int size = heldCards.size();
+    std::cout << "start draw player card" << std::endl;
+
     for (int i = 0; i < size; ++i)
     {
+        std::cout << "draw player card" << std::endl;
         state::Card card = heldCards[i];
         // Create CardShape object
+        std::string cardPath = "../assets/cards/" + cardType.at(card.getTypeCard()) + "_" + cardNumber.at(card.getNumberCard()) + ".png";
+        std::cout << "path=" << cardPath << std::endl;
+
         CardShape cardShape(
-            50 + i * (cardWidth + 10),                                                                              // Position en x
-            50 + boardHeight + 50,                                                                                  // Position en y
-            C_WIDTH,                                                                                                // Largeur
-            C_HEIGHT,                                                                                               // Hauteur
-            cardNumber.at(card.getNumberCard()) + "_" + cardType.at(static_cast<int>(card.getTypeCard())) + ".png", // Nom de l'image
-            false, &card);                                                                                          // Visibilité
+            50 + i * (cardWidth + 10), // Position en x
+            50 + boardHeight + 50,     // Position en y
+            200,                   // Largeur
+            200,                  // Hauteur
+            cardPath, false, &card);   // Visibilité
         window.draw(cardShape);
     }
 }
 
 void render::SceneData::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    // // Exemple : Dessiner le plateau et les cartes graphiques
-    // target.draw(board, states); // Dessine le plateau
+    // Exemple : Dessiner le plateau et les cartes graphiques
+    target.draw(board, states); // Dessine le plateau
 
-    // // Dessiner toutes les cartes sur le plateau
-    // for (const auto &cardShape : boardCardShapes)
-    // {
-    //     target.draw(cardShape, states);
-    // }
+    // Dessiner toutes les cartes sur le plateau
+    for (const auto &cardShape : boardCardShapes)
+    {
+        target.draw(cardShape, states);
+    }
 
-    // // Dessiner toutes les cartes dans la main
-    // for (const auto &handShape : handCardShapes)
-    // {
-    //     target.draw(handShape, states);
-    // }
+    // Dessiner toutes les cartes dans la main
+    for (const auto &handShape : handCardShapes)
+    {
+        std::cout << "draw player shape" << std::endl;
+        target.draw(handShape, states);
+    }
 
-    // // Dessiner le texte associé (si besoin)
-    // for (const auto &txt : text)
-    // {
-    //     target.draw(txt, states);
-    // }
+    // Dessiner le texte associé (si besoin)
+    for (sf::Text txt : playersName)
+    {
+        std::cout << "draw player name" << std::endl;
+        target.draw(txt, states);
+    }
+    for (sf::Text txt : playersScore)
+    {
+        std::cout << "draw player score" << std::endl;
+
+        target.draw(txt, states);
+    }
 }
 // Dessiner les cartes sur le plateau
 void SceneData::drawCardsOnBoard(sf::RenderWindow &window, state::Player &player)
@@ -336,20 +351,19 @@ sf::RectangleShape SceneData::drawCard(std::string img, float width, float heigh
 
 void SceneData::createBoard()
 {
-    sf::Texture texture;
     sf::RectangleShape gameBoard(sf::Vector2f(GameParameters::WIDTH * 0.7, GameParameters::HEIGHT * 0.7));
-    if (!texture.loadFromFile("../assets/tapis.png"))
+    if (!boardTexture.loadFromFile("../assets/tapis.png"))
     {
         std::cout << "error in load bg texture" << std::endl;
+        return;
     }
-    texture.setSmooth(true);
     gameBoard.setPosition(GameParameters::WIDTH * 0.15, GameParameters::HEIGHT * 0.15);
-    gameBoard.setTexture(&texture);
+    gameBoard.setTexture(&boardTexture);
 
     this->board = gameBoard;
 }
 
-void SceneData::renderPlayerInfo(std::vector<state::Player *> players)
+void SceneData::renderPlayerInfo(sf::RenderWindow &window, std::vector<state::Player *> players)
 {
     std::string filepath = "../assets/Luckiest_Guy/LuckiestGuy-Regular.ttf";
     sf::Font font = createFont(filepath);
@@ -365,24 +379,24 @@ void SceneData::renderPlayerInfo(std::vector<state::Player *> players)
     maxWidthBox += paddingX * 2;
     double heightBox = 2 * (fontSize + spacingY);
     std::vector<std::map<char, double>> allPos = generatePlayersPositions(players.size(), maxWidthBox, heightBox);
-
+    std::cout << "----------------- maxWidthBox: " << maxWidthBox << std::endl;
     for (size_t i = 0; i < players.size(); i++)
     {
 
         std::string name = START_NAME + players[i]->getName();
         std::string score = START_SCORE + std::to_string(players[i]->getScore());
-        sf::Text playerName = createText(name, font, fontSize, sf::Color(50, 50, 50), allPos[i]['x'] + 2 * paddingX, allPos[i]['y'] + spacingY);
-        sf::Text playerScore = createText(score, font, fontSize, sf::Color(87, 142, 126), allPos[i]['x'] + 2 * paddingX, allPos[i]['y'] + 2 * spacingY);
+        sf::Text playerName = createText(name, font, fontSize, sf::Color(50, 50, 50,255), allPos[i]['x'] + 2 * paddingX, allPos[i]['y'] + spacingY);
+        sf::Text playerScore = createText(score, font, fontSize, sf::Color(87, 142, 126,255), allPos[i]['x'] + 2 * paddingX, allPos[i]['y'] + 2 * spacingY);
         sf::RectangleShape box = createInfoPlayer(
-            maxWidthBox, heightBox, sf::Color(240, 240, 240, 100), allPos[i]['x'],
+            maxWidthBox, heightBox, sf::Color(240, 240, 240, 200), allPos[i]['x'],
             allPos[i]['y']);
         playersName.push_back(playerName);
         playersScore.push_back(playerScore);
         boxs.push_back(box);
-
-        // window.draw(box);
-        // window.draw(playerName);
-        // window.draw(playerScore);
+        std::cout << "----------------- player " << i << std::endl;
+        window.draw(box);
+        window.draw(playerName);
+        window.draw(playerScore);
     }
 }
 
