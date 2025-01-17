@@ -23,7 +23,7 @@ TypeCard Card::getTypeCard()
 
 bool Card::equals(Card other)
 {
-    return (this->getNumberCard() == other.numberOfCard && this->getTypeCard() == other.typeOfCard);
+    return this->getNumberCard() == other.getNumberCard() && this->getTypeCard() == other.getTypeCard();
 }
 
 Card::~Card() {}

@@ -23,66 +23,56 @@ namespace render
         std::cout << "Initialisation de la scène avec les données nécessaires." << std::endl;
     }
 
-    void Scene::drawScene()
+    void Scene::drawScene(int cindex, std::vector<int> indexs)
     {
 
-        while (window.isOpen())
+        window.clear();
+        // Démarre la boucle de rendu
+        sf::Texture texture;
+        if (!texture.loadFromFile("../assets/bg.png"))
         {
-            window.clear();
-            // Démarre la boucle de rendu
-            sf::Texture texture;
-            if (!texture.loadFromFile("../assets/bg.png"))
-            {
-                std::cout << "error in load bg texture" << std::endl;
-            }
-            sf::Sprite sprite(texture);
-
-            // Get the texture and window sizes
-            sf::Vector2u textureSize = texture.getSize();
-            sf::Vector2u windowSize = window.getSize();
-
-            // Scale the sprite to fit the window
-            sprite.setScale(
-                static_cast<float>(windowSize.x) / textureSize.x,
-                static_cast<float>(windowSize.y) / textureSize.y);
-
-            sf::Event event;
-            while (window.pollEvent(event))
-            {
-                if (event.type == sf::Event::Closed)
-                {
-                    window.close();
-                    exit(0);
-                }
-                // if (event.type == sf::Event::Resized)
-                // {
-                //     // Update the view to match the new window size
-                //     sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
-                //     window.setView(sf::View(visibleArea));
-
-                //     // Recalculate sprite scaling
-                //     float scaleX = static_cast<float>(event.size.width) / texture.getSize().x;
-                //     float scaleY = static_cast<float>(event.size.height) / texture.getSize().y;
-                //     sprite.setScale(scaleX, scaleY);
-                // }
-            }
-            window.clear();
-            window.draw(sprite);
-
-            std::vector<state::Player *> allPlayer = actualState.getAllPlayers();
-            sceneInfo.renderPlayerInfo(window, allPlayer);
-
-            // create board and display it
-            sceneInfo.createBoard();
-            window.draw(sceneInfo.board);
-
-            // display actual player cards
-            int index = actualState.turn;
-            state::Player *player = actualState.getAllPlayers()[index];
-            sceneInfo.drawCardsOnHand(window, *player);
-
-            // display window
-            window.display();
+            std::cout << "error in load bg texture" << std::endl;
         }
+        sf::Sprite sprite(texture);
+
+        // Get the texture and window sizes
+        sf::Vector2u textureSize = texture.getSize();
+        sf::Vector2u windowSize = window.getSize();
+
+        // Scale the sprite to fit the window
+        sprite.setScale(
+            static_cast<float>(windowSize.x) / textureSize.x,
+            static_cast<float>(windowSize.y) / textureSize.y);
+        window.clear();
+        window.draw(sprite);
+
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+            {
+                window.close();
+                exit(0);
+            }
+        }
+
+        std::vector<state::Player *> allPlayer = actualState.getAllPlayers();
+        state::GameBoard *board = actualState.getBoard();
+        sceneInfo.renderPlayerInfo(window, allPlayer, actualState.turn);
+
+        // create board and display it
+        sceneInfo.createBoard();
+        window.draw(sceneInfo.board);
+
+        // display actual player cards
+        int index = actualState.turn;
+        state::Player *player = actualState.getAllPlayers()[index];
+        sceneInfo.drawCardsOnHand(window, *player);
+
+        // display board cards
+        sceneInfo.drawCardsOnBoard(window, *board);
+
+        // display window
+        window.display();
     }
 }

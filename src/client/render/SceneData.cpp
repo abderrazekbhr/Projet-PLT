@@ -8,6 +8,9 @@
 using namespace render;
 using namespace std;
 
+// Initialize the board with empty places (4 rows, 10 columns)
+std::vector<std::vector<bool>> emptyPlaces(4, std::vector<bool>(10, false));
+
 const map<int, string> cardNumber = {
     {1, "01"},
     {2, "02"},
@@ -25,6 +28,25 @@ const map<int, string> cardType = {
     {2, "carreau"},
     {3, "pique"},
     {4, "coeur"}};
+
+// Find an empty position on the board
+std::pair<int, int> getEmptyPlace()
+{
+    for (int j = 0; j < 4; j++) // Iterate through rows (4 rows)
+    {
+        for (int i = 0; i < 10; i++) // Iterate through columns (10 columns)
+        {
+            if (!emptyPlaces[j][i]) // If the position is not occupied
+            {
+                emptyPlaces[j][i] = true;    // Mark it as occupied
+                return std::make_pair(j, i); // Return the position
+            }
+        }
+    }
+
+    // Return an invalid position if no space is available
+    return std::make_pair(-1, -1);
+}
 
 std::vector<std::map<char, double>> generatePlayersPositions(int nbPlayer, double width, double height)
 {
@@ -92,6 +114,7 @@ sf::RectangleShape createInfoPlayer(int width, int height, sf::Color bg, int pos
     rectangle.setPosition(posX, posY);
     rectangle.setFillColor(bg);
     rectangle.setOutlineColor(sf::Color(61, 61, 61));
+
     return rectangle;
 }
 
@@ -121,6 +144,53 @@ SceneData::SceneData()
 SceneData::~SceneData() = default;
 
 // Draw the cards on the hand of the player
+// Draw the cards on the player's board
+void SceneData::drawCardsOnBoard(sf::RenderWindow &window, state::GameBoard &board)
+{
+    // Retrieve the cards on the board
+    std::vector<state::Card> cards = board.getCardBoard();
+    int size = cards.size();
+
+    // Define starting positions and margins
+    const float START_X = GameParameters::WIDTH * 0.12f;
+    const float START_Y = GameParameters::HEIGHT * 0.15f;
+    const float C_MARGIN_X = 2.0f;
+    const float C_MARGIN_Y = 4.0f;
+    emptyPlaces = std::vector<std::vector<bool>>(4, std::vector<bool>(10, false));
+    for (int i = 0; i < size; ++i)
+    {
+        // Find an empty place on the board
+        std::pair<int, int> place = getEmptyPlace();
+        if (place.first == -1 && place.second == -1)
+        {
+            std::cout << "No more space for cards" << std::endl;
+            return;
+        }
+
+        // Retrieve the current card
+        state::Card card = cards[i];
+
+        // Prepare the file path for the card image
+        std::string cardPath = "../assets/cards/" + cardType.at(card.getTypeCard()) + "_" + cardNumber.at(card.getNumberCard()) + ".png";
+
+        // Calculate the card's position
+        float posX = place.second * (GameParameters::C_WIDTH + 2 * C_MARGIN_X) + START_X;
+        float posY = place.first * (GameParameters::C_HEIGHT + 2 * C_MARGIN_Y) + START_Y;
+
+        // Create the graphical object for the card
+        CardShape cardShape(
+            posX,                   // X position
+            posY,                   // Y position
+            70,                     // Width of the card
+            120,                    // Height of the card
+            cardPath, true, &card); // Visibility and card reference
+
+        // Draw the card on the window
+        window.draw(cardShape);
+    }
+}
+
+// Draw the cards on the hand of the player
 void SceneData::drawCardsOnHand(sf::RenderWindow &window, state::Player &player)
 {
     std::vector<state::Card> heldCards = player.getHoldCard();
@@ -135,35 +205,11 @@ void SceneData::drawCardsOnHand(sf::RenderWindow &window, state::Player &player)
 
         // Create CardShape object
         CardShape cardShape(
-            GameParameters::WIDTH / 2.5 + (i - 2) * (GameParameters::C_WIDTH + 10), // Position en x
-            GameParameters::HEIGHT - GameParameters::C_HEIGHT,                    // Position en y
-            GameParameters::C_WIDTH,                                              // Largeur
-            GameParameters::C_HEIGHT,                                             // Hauteur
-            cardPath, true, &card);                                               // Visibilité
-        window.draw(cardShape);
-    }
-}
-
-// draw the cards on the boards
-void SceneData::drawCardsOnBoard(sf::RenderWindow &window, state::Player &player)
-{
-    std::vector<state::Card> collectedCards = player.getCollectCard();
-
-    for (size_t i = 0; i < collectedCards.size(); ++i)
-    {
-        state::Card card = collectedCards[i];
-
-        // Prepare the path to the card image
-        std::string cardPath = "../assets/cards/" + cardType.at(card.getTypeCard()) + "_" + cardNumber.at(card.getNumberCard()) + ".png";
-
-        // Create CardShape object
-        CardShape cardShape(
-            GameParameters::WIDTH / 2 + i * (GameParameters::C_WIDTH + 10), // Position en x
-            GameParameters::HEIGHT - GameParameters::C_HEIGHT,              // Position en y
-            GameParameters::C_WIDTH,                                        // Largeur
-            GameParameters::C_HEIGHT,                                       // Hauteur
-            cardPath, true, &card);                                         // Visibilité
-        window.draw(cardShape);
+            GameParameters::WIDTH / 1.8 + (i - 2) * (GameParameters::C_WIDTH + 10), // Position en x
+            GameParameters::HEIGHT - GameParameters::C_HEIGHT,                      // Position en y
+            GameParameters::C_WIDTH,                                                // Largeur
+            GameParameters::C_HEIGHT,                                               // Hauteur
+            cardPath, true, &card);                                                 // Visibilité
         window.draw(cardShape);
     }
 }
@@ -258,19 +304,19 @@ sf::RectangleShape SceneData::drawCard(std::string img, float width, float heigh
 
 void SceneData::createBoard()
 {
-    sf::RectangleShape gameBoard(sf::Vector2f(GameParameters::WIDTH * 0.7, GameParameters::HEIGHT * 0.7));
+    sf::RectangleShape gameBoard(sf::Vector2f(GameParameters::WIDTH * 0.8, GameParameters::HEIGHT * 0.7));
     if (!boardTexture.loadFromFile("../assets/tapis.png"))
     {
         std::cout << "error in load bg texture" << std::endl;
         return;
     }
-    gameBoard.setPosition(GameParameters::WIDTH * 0.15, GameParameters::HEIGHT * 0.15);
+    gameBoard.setPosition(GameParameters::WIDTH * 0.10, GameParameters::HEIGHT * 0.15);
     gameBoard.setTexture(&boardTexture);
 
     this->board = gameBoard;
 }
 
-void SceneData::renderPlayerInfo(sf::RenderWindow &window, std::vector<state::Player *> players)
+void SceneData::renderPlayerInfo(sf::RenderWindow &window, std::vector<state::Player *> players, int indexCurrentPlayer)
 {
     std::string filepath = "../assets/Luckiest_Guy/LuckiestGuy-Regular.ttf";
     sf::Font font = createFont(filepath);
@@ -298,7 +344,11 @@ void SceneData::renderPlayerInfo(sf::RenderWindow &window, std::vector<state::Pl
             allPos[i]['y']);
         playersName.push_back(playerName);
         playersScore.push_back(playerScore);
-        boxs.push_back(box);
+        if (i == indexCurrentPlayer)
+        {
+            box.setOutlineThickness(4);
+            box.setOutlineColor(sf::Color(61, 170, 51, 150));
+        }
         window.draw(box);
         window.draw(playerName);
         window.draw(playerScore);

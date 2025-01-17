@@ -16,7 +16,7 @@ using namespace ai;
 int main()
 {
     cout << "Welcome to the game of CHKOBA!" << endl;
-    
+
     // Initialize the client
     Client *c = new Client();
     c->setUp();
@@ -28,7 +28,7 @@ int main()
     int nbRound = 36 / (nbPlayer * nbTours); // Number of rounds based on total cards
 
     // Main game loop
-    while (!c->isEndOfGame())
+    while (!c->isEndOfGame() && c->scene->window.isOpen())
     {
         // Distribute cards to players
         c->initDistribute();
@@ -39,6 +39,8 @@ int main()
             {
                 for (int k = 0; k < nbPlayer; k++) // Iterate through all players
                 {
+
+                    // c->scene->drawScene(-1,{});
                     // Let the player choose an action
                     ActionType action = c->chooseAction(); // Call once and store result
 
@@ -59,12 +61,12 @@ int main()
         // End of round processing
         c->endRound();   // Handle end of round cards
         c->countScore(); // Calculate scores
-        
+
         if (c->isEndOfGame())
         {
             break; // Exit the game loop
         }
-        
+
         // Check if the user wants to continue the game
         char response = c->getValidatedChar("Do you want to continue the game? (y/n): ");
         if (response == 'n' || response == 'N')

@@ -41,7 +41,6 @@ void Client::setUp()
         isValidSetUp = this->engine.runCommand(&this->engine); // Corrected to use engine instance.
     }
     scene = new render::Scene(engine.getState());
-    
 }
 
 int Client::enterNbPlayer()
@@ -224,11 +223,7 @@ bool Client::initDistribute()
     cout << "player name :" << engine.getActualPlayer().getName() << " | nb card :" << engine.getActualPlayer().getSizeHoldedCards() << endl;
 
     bool execResult = this->engine.runCommand(&this->engine);
-    // for (state::Player *player : engine.getState().getAllPlayers())
-    // {
-    //     scene->sceneInfo.drawCardsOnHand(scene->window, *player);
-    // }
-    scene->drawScene();
+
     return execResult;
 }
 
