@@ -1,1 +1,1 @@
-cd ../build && cmake .. && make -j && cd ../bin && ./client 
+cd ../build && cmake .. && make -j && cd ../bin && ./client

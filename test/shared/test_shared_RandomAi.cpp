@@ -13,7 +13,7 @@ BOOST_AUTO_TEST_SUITE(RandomAiTestSuite)
 BOOST_AUTO_TEST_CASE(RandomAiCaptureCardTest)
 {
     // Set up the game with 2 players, including 1 AI player.
-    std::vector<std::string> playerNames = {"Player1", "AI"};         // Names for the players
+    std::vector<std::string> playerNames = {"Player1", "RandomAI_1"};         // Names for the players
     SetUpGame *setUpGame = new SetUpGame(2, 21, playerNames, 'y', 1); // 2 players, max score 21, 1 AI
 
     Engine engine;                  // Create an engine to run the game

@@ -31,7 +31,7 @@ bool CaptureCard::execute(Engine *engine)
 
         // Vérifiez pour un match direct
         bool directMatchFound = false;
-        int directMatchIndex = -1;
+
 
         for (size_t i = 0; i < cardsOnBoard.size(); ++i)
         {
@@ -46,7 +46,7 @@ bool CaptureCard::execute(Engine *engine)
         if (directMatchFound)
         {
             // Si un match direct existe, vérifiez les indices
-            if (indexsCardsBoard.size() != 1 || !cardsOnBoard[indexsCardsBoard[0]].getNumberCard() == cardFromHand.getNumberCard())
+            if (indexsCardsBoard.size() != 1 || cardsOnBoard[indexsCardsBoard[0]].getNumberCard() != cardFromHand.getNumberCard())
             {
                 std::cout << "Invalid indices for direct match." << std::endl;
                 return false;
@@ -72,7 +72,6 @@ bool CaptureCard::execute(Engine *engine)
         // Capture des cartes
         player.removeCardFromHand(cardFromHand);
         player.addCollectedCard(cardFromHand);
-
         // Capture multiple cartes depuis le plateau
         this->collectMultipleCard(*board, cardsToCollect, player);
 

@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE(test_execute_invalid_max_score) {
 }
 
 BOOST_AUTO_TEST_CASE(test_execute_with_multiple_ai_players) {
-    std::vector<std::string> players = {"Alice", "AI1", "AI2", "AI3"};
+    std::vector<std::string> players = {"Alice", "HeuristicAI_1", "HeuristicAI_2", "HeuristicAI_3"};
     SetUpGame setup(4, 21, players, 'y', 2); // 4 players, 3 AIs with level 2
 
     Engine engine;
