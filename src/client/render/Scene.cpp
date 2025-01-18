@@ -3,7 +3,7 @@
 
 namespace render {
 
-    Scene::Scene()
+    Scene::Scene(state::State&  state)
         : window(sf::VideoMode(800, 600), "Game Scene"),
           playerInfo("DefaultPlayerName"), // Initialisation de playerInfo avec un nom par défaut
           currentComponent(SceneComponent::MENU) // Composante par défaut : MENU
