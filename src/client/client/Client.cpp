@@ -26,17 +26,25 @@ void Client::setUp()
 
     while (!isValidSetUp)
     {
-        // Affichage pour choisir le type de partie
-        std::cout << "Choose the game type:\n";
-        std::cout << "1. RandomAI vs HeuristicAI\n";
-        std::cout << "2. RandomAI vs RandomAI\n";
-        std::cout << "3. HeuristicAI vs HeuristicAI\n";
-        std::cout << "4. Player vs AI\n";
-        std::cout << "5. Player vs Player\n";
-        std::cout << "Enter your choice (1-5): ";
+        int gameType = 0;
+        while (true) {
+            std::cout << "Choose the game type:\n";
+            std::cout << "1. RandomAI vs HeuristicAI\n";
+            std::cout << "2. RandomAI vs RandomAI\n";
+            std::cout << "3. HeuristicAI vs HeuristicAI\n";
+            std::cout << "4. Player vs AI\n";
+            std::cout << "5. Player vs Player\n";
+            std::cout << "Enter your choice (1-5): ";
+            std::cin >> gameType;
 
-        int gameType;
-        std::cin >> gameType;
+            if (std::cin.fail() || gameType < 1 || gameType > 5) {
+                std::cin.clear(); // Réinitialise le flag d'erreur
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore la saisie incorrecte
+                std::cout << "Invalid choice. Please enter a number between 1 and 5.\n";
+            } else {
+                break; // Sortie de la boucle si le choix est valide
+            }
+        }
 
         int nbPlayer = 2; // Par défaut pour IA vs IA
         int maxScore = this->enterMaxScore();
@@ -67,10 +75,10 @@ void Client::setUp()
         else if (gameType == 4)
         {
             // Cas Joueur vs AI
-            nbPlayer = this->enterNbPlayer(); // Permet de configurer 2 ou 4 joueurs
-            playerIsIA = this->wantToPlayWithIA();
+            nbPlayer = this->enterNbPlayer();
             level = this->enterIALevel();
             playWithAi = true;
+            playerIsIA = 'w';
             playersNames = this->enterPlayersNames(nbPlayer,level);
         }
         else if (gameType == 5)
@@ -92,13 +100,29 @@ void Client::setUp()
     }
     scene = new render::Scene(engine.getState());
 }
-
 int Client::enterNbPlayer()
 {
-    std::string prompt = "Enter number of players (2 or 4): ";
-    int nbPlayer = this->getValidatedInteger(prompt);
+    int nbPlayer = 0;
+    while (true)
+    {
+        std::cout << "Enter number of players (2 or 4): ";
+        std::cin >> nbPlayer;
+
+        // Vérification de la validité de la saisie
+        if (std::cin.fail() || (nbPlayer != 2 && nbPlayer != 4))
+        {
+            std::cin.clear(); // Réinitialise le flag d'erreur
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore les caractères restants dans le buffer
+            std::cout << "Invalid input. Please enter 2 or 4.\n";
+        }
+        else
+        {
+            break; // Sortie de la boucle si la saisie est valide
+        }
+    }
     return nbPlayer;
 }
+
 
 char Client::wantToPlayWithIA()
 {
@@ -107,18 +131,40 @@ char Client::wantToPlayWithIA()
     return resp;
 }
 
-int Client::enterMaxScore()
-{
-    std::string prompt = "Enter the maximum score (4 or 21): ";
-    int maxScore = this->getValidatedInteger(prompt);
-    return maxScore;
+int Client::enterMaxScore() {
+    int maxScore;
+    while (true) {
+        std::cout << "Enter the maximum score (4 or 11): ";
+        std::cin >> maxScore;
+
+        if (std::cin.fail()) {
+            std::cin.clear(); // Réinitialise le flag d'erreur
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore la saisie incorrecte
+            std::cout << "Invalid input. Please enter a valid number.\n";
+        } else if (maxScore == 4 || maxScore == 11) {
+            return maxScore; // Valeur valide, on retourne
+        } else {
+            std::cout << "Invalid choice. Please enter 4 or 11.\n";
+        }
+    }
 }
 
-int Client::enterIALevel()
-{
-    std::string prompt = "Enter the level of the AI (1 or 2): ";
-    int level = this->getValidatedInteger(prompt);
-    return level;
+int Client::enterIALevel() {
+    int level;
+    while (true) {
+        std::cout << "Enter the level of the AI (1 or 2): ";
+        std::cin >> level;
+
+        if (std::cin.fail()) {
+            std::cin.clear(); // Réinitialise le flag d'erreur
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore la saisie incorrecte
+            std::cout << "Invalid input. Please enter a valid number.\n";
+        } else if (level == 1 || level == 2) {
+            return level; // Valeur valide, on retourne
+        } else {
+            std::cout << "Invalid choice. Please enter 1 or 2.\n";
+        }
+    }
 }
 
 int Client::getValidatedInteger(std::string prompt)
