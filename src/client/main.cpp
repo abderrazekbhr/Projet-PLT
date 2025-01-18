@@ -75,7 +75,7 @@ int main()
     c->displayWinner();
 
     // Proper memory management
-    delete c;
+    // delete c;
 
     return 0;
 }
