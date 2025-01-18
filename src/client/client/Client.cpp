@@ -295,7 +295,7 @@ int Client::enterIndexToThrowedCard()
     return indexCard;
 }
 
-std::vector<int> Client::enterIndexesToBeCollectedCards()
+std::vector<int> Client::enterIndexesToBeCollectedCards(int indexOfCardFromHand)
 {
     std::vector<int> indexes;
     bool isDone = false;
@@ -303,6 +303,7 @@ std::vector<int> Client::enterIndexesToBeCollectedCards()
     {
         int index = this->getValidatedInteger("Enter the index of the card you wish to collect from the board (indices start from 0): ");
         indexes.push_back(index);
+        this->scene->drawScene(indexOfCardFromHand, indexes);
         char response = this->getValidatedChar("Do you want to select another card to collect from the board? (y/n):");
         if (response == 'y' || response == 'Y')
         {
@@ -357,8 +358,7 @@ void Client::playCaptureCard()
     {
         int indexOfCardFromHand = this->enterIndexToThrowedCard();
         scene->drawScene(indexOfCardFromHand, {});
-        std::vector<int> indexesOfCardsFromBoard = this->enterIndexesToBeCollectedCards();
-        scene->drawScene(indexOfCardFromHand, indexesOfCardsFromBoard);
+        std::vector<int> indexesOfCardsFromBoard = this->enterIndexesToBeCollectedCards(indexOfCardFromHand);
         sleep(1);
         CaptureCard captureCard = CaptureCard(indexOfCardFromHand, indexesOfCardsFromBoard);
 
