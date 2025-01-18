@@ -15,97 +15,85 @@ bool CaptureCard::execute(Engine *engine)
 {
     try
     {
-        // Get the current state and player
+        // Obtenez l'état actuel et le joueur
         state::State &currentState = engine->getState();
         state::Player &player = engine->getActualPlayer();
         state::GameBoard *board = currentState.getBoard();
+        std::vector<state::Card> cardsOnBoard = board->getCardBoard();
+        std::vector<state::Card> cardsToCollect;
 
-        // Ensure board is not null
-        if (!board)
-        {
-            throw std::runtime_error("GameBoard pointer is null");
-        }
-
-        // Validate indices before performing any operation
+        // Validez les indices
         this->validateCardHand(indexCardHand, player.getSizeHoldedCards());
         this->validateCardBoard(indexsCardsBoard, board->getNumberCardBoard());
 
-        // Capture card from hand
-        state::Card card = player.getHoldCard()[indexCardHand];
+        // Carte de la main du joueur
+        state::Card cardFromHand = player.getHoldCard()[indexCardHand];
 
-        // Check for direct match on the board
-        bool directMatch = false;
-        int directMatchIndex = -1;
-        for (size_t i = 0; i < board->getCardBoard().size(); ++i)
+        // Vérifiez pour un match direct
+        bool directMatchFound = false;
+
+
+        for (size_t i = 0; i < cardsOnBoard.size(); ++i)
         {
-            if (board->getCardBoard()[i].getNumberCard() == card.getNumberCard())
+            if (cardsOnBoard[i].getNumberCard() == cardFromHand.getNumberCard())
             {
-                directMatch = true;
-                directMatchIndex = i;
+                directMatchFound = true;
+                // directMatchIndex = static_cast<int>(i);
                 break;
             }
         }
 
-        // If a direct match exists, enforce capturing it
-        if (directMatch)
+        if (directMatchFound)
         {
-            if (indexsCardsBoard.size() != 1 || indexsCardsBoard[0] != directMatchIndex)
+            // Si un match direct existe, vérifiez les indices
+            if (indexsCardsBoard.size() != 1 || cardsOnBoard[indexsCardsBoard[0]].getNumberCard() != cardFromHand.getNumberCard())
             {
-                throw std::logic_error("");
-            }
-        }
-        else
-        {
-            // If no direct match, validate the sum
-            std::vector<state::Card> cardBoard;
-            for (int index : indexsCardsBoard)
-            {
-                cardBoard.push_back(board->getCardBoard()[index]);
-            }
-
-            if (!validateSum(card, cardBoard))
-            {
+                std::cout << "Invalid indices for direct match." << std::endl;
                 return false;
             }
-        }
 
-        // Proceed with capture
-        player.removeCardFromHand(card);
-        player.addCollectedCard(card);
-
-        // Capture cards from board
-        std::vector<state::Card> cardToCollect;
-        if (directMatch)
-        {
-            cardToCollect.push_back(board->getCardBoard()[directMatchIndex]);
+            cardsToCollect.push_back(cardsOnBoard[indexsCardsBoard[0]]);
         }
         else
         {
+            // Validez les cartes sélectionnées pour la somme
             for (int index : indexsCardsBoard)
             {
-                cardToCollect.push_back(board->getCardBoard()[index]);
+                cardsToCollect.push_back(cardsOnBoard[index]);
+            }
+
+            if (!validateSum(cardFromHand, cardsToCollect))
+            {
+                std::cout << "Invalid sum." << std::endl;
+                return false; // Somme invalide
             }
         }
 
-        this->collectMultipleCard(*board, cardToCollect, player);
+        // Capture des cartes
+        player.removeCardFromHand(cardFromHand);
+        player.addCollectedCard(cardFromHand);
+        // Capture multiple cartes depuis le plateau
+        this->collectMultipleCard(*board, cardsToCollect, player);
 
-        // Check chkoba condition
+        // Vérifiez la condition "chkoba"
         if (this->verifyChkoba(*board))
         {
             player.addToScore(1);
         }
+
+        // Mettez à jour l'état de l'engin
         engine->setPlayerIndexForLastCapturedCard();
-        // Update to next player
         engine->setNextPlayer();
+
         return true;
     }
+
     catch (const std::exception &e)
     {
-        //std::cerr << "Exception in execute: " << e.what() << std::endl;
+        std::cerr << "Exception in execute: " << e.what() << std::endl;
         return false;
     }
 }
-
 
 bool CaptureCard::validateCardHand(int indexCard, int maxIndex)
 {
@@ -134,6 +122,7 @@ bool CaptureCard::validateCardBoard(std::vector<int> indexsCards, int maxIndex)
 bool CaptureCard::validateSum(state::Card cardFromHand, std::vector<state::Card> cardBoard)
 {
     int sum = 0;
+
     for (auto &card : cardBoard) // Use const reference to avoid unnecessary copies
     {
         sum += card.getNumberCard();
