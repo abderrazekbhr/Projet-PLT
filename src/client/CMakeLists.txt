@@ -28,6 +28,7 @@ target_link_libraries(${lib_client_target} PUBLIC
 set(client_target client)
 add_executable(${client_target} main.cpp
         render/SceneData.cpp
+        ../server/main.cpp
 )
 target_link_libraries(${client_target} ${lib_client_target})
 if(BUILD_CODE_COVERAGE)
