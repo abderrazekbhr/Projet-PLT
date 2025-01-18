@@ -1,11 +1,12 @@
-#include "../server.h"
+
+#include "server.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
 #include <cstring>
 #include <iostream>
 #include <json/json.h>
-
+#include "../../src/client/client.h"
 using namespace server;
 using namespace state;
 using namespace engine;
@@ -14,7 +15,8 @@ using namespace client;
 const std::string ACK_MESSAGE = "ACK";
 
 Server::Server(int port, bool running, State* state)
-    : server_fd(-1), port(port), running(running), state(state), nextClientId(0) {}
+    : server_fd(-1), port(port), running(running), nextClientId(0), state(state) {}
+
 
 Server::~Server() {
     stop();
@@ -130,7 +132,7 @@ Json::Value Server::serializeCardsDeck(CardsDeck* cards) {
 }
 
 void Server::sendIdentifierToClients() {
-    for (int i = 0; i < clients.size(); ++i) {
+    for (std::vector<int>::size_type i = 0; i < clients.size(); ++i) {
         ssize_t sent = send(clients[i], &i, sizeof(i), 0);
         if (sent != sizeof(i)) {
             perror("Failed to send identifier");

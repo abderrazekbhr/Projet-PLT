@@ -7,7 +7,7 @@ using namespace server;
 
 int main()
 {
-  /*  try
+    /*try
     {
         // Création d'une instance de State directement (plus simple, sans allocation dynamique)
         state::State state;
@@ -15,7 +15,6 @@ int main()
         // Création d'une instance de NetworkClient et passage de la référence de state
         NetworkClient client("127.0.0.1", 8080, &state);
         client.connectToServer();
-
         // Réception de l'identifiant du client
         auto id = client.receiveIdentifier();
         client.setPlayerName(id);
@@ -56,8 +55,7 @@ int main()
             }
         }
     }
-    catch (const std::exception& e)
-    {
+    catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
         return 1;
     }*/
