@@ -13,7 +13,7 @@ BOOST_AUTO_TEST_SUITE(HeuristicAiTestSuite)
 BOOST_AUTO_TEST_CASE(HeuristicAiCaptureCardTest)
 {
     // Set up the game with 2 players, including 1 AI player.
-    std::vector<std::string> playerNames = {"Player1", "Heuristic AI"}; // Names for the players
+    std::vector<std::string> playerNames = {"Player1", "HeuristicAI_1"}; // Names for the players
     SetUpGame *setUpGame = new SetUpGame(2, 4, playerNames, 'y', 2); // 2 players, max score 21, 1 AI
 
     Engine engine;                  // Create an engine to run the game

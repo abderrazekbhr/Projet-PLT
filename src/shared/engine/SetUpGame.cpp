@@ -39,7 +39,7 @@ namespace engine
             {
                 // Définir le niveau de l'IA en fonction du nom
                 int aiLevel = 1;  // Par défaut, les IA Random sont au niveau 1
-                if (playersName.at(i).find("HeuristicAI_2") != std::string::npos) {
+                if (playersName.at(i).find("HeuristicAI") != std::string::npos) {
                     aiLevel = 2; // Les IA Heuristic sont au niveau 2
                 }
 

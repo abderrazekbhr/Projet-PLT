@@ -71,13 +71,13 @@ void Client::setUp()
             playerIsIA = this->wantToPlayWithIA();
             level = this->enterIALevel();
             playWithAi = true;
-            playersNames = this->enterPlayersNames(nbPlayer);
+            playersNames = this->enterPlayersNames(nbPlayer,level);
         }
         else if (gameType == 5)
         {
             // Cas Joueur vs Joueur
             nbPlayer = this->enterNbPlayer();
-            playersNames = this->enterPlayersNames(nbPlayer);
+            playersNames = this->enterPlayersNames(nbPlayer,level);
         }
         else
         {
@@ -241,27 +241,45 @@ void Client::displayBoardCards()
     }
 }
 
-std::vector<std::string> Client::enterPlayersNames(int nbPlayers)
+std::vector<std::string> Client::enterPlayersNames(int nbPlayers,int level)
 {
     std::vector<std::string> playersNames;
-    string name;
-    cout << "Enter player " << 1 << " name: ";
-    cin >> name;
+    std::string name;
+
+    // Demander le nom pour le premier joueur (toujours humain)
+    std::cout << "Enter player " << 1 << " name: ";
+    std::cin >> name;
     playersNames.push_back(name);
 
+    // Ajouter les autres joueurs (IA ou humains)
     for (int i = 1; i < nbPlayers; i++)
     {
         if (playWithAi)
         {
-            cout << "Enter AI " << i + 1 << " name: ";
+            // Assigner un nom par défaut selon le niveau
+            if (level == 1)
+            {
+                name = "RandomAI_" + std::to_string(i);
+            }
+            else if (level == 2)
+            {
+                name = "HeuristicAI_" + std::to_string(i);
+            }
+
+            // Afficher un message pour informer l'utilisateur
+            std::cout << "AI " << i + 1 << " assigned name: " << name << std::endl;
         }
         else
         {
-            cout << "Enter player " << i + 1 << " name: ";
+            // Demander un nom pour un joueur humain
+            std::cout << "Enter player " << i + 1 << " name: ";
+            std::cin >> name;
         }
-        cin >> name;
+
+        // Ajouter le nom à la liste
         playersNames.push_back(name);
     }
+
     return playersNames;
 }
 
@@ -348,7 +366,7 @@ int Client::enterIndexToThrowedCard()
     return indexCard;
 }
 
-std::vector<int> Client::enterIndexesToBeCollectedCards()
+std::vector<int> Client::enterIndexesToBeCollectedCards(int indexOfCardFromHand)
 {
     std::vector<int> indexes;
     bool isDone = false;
@@ -410,7 +428,7 @@ void Client::playCaptureCard()
     {
         int indexOfCardFromHand = this->enterIndexToThrowedCard();
         scene->drawScene(indexOfCardFromHand, {});
-        std::vector<int> indexesOfCardsFromBoard = this->enterIndexesToBeCollectedCards();
+        std::vector<int> indexesOfCardsFromBoard = this->enterIndexesToBeCollectedCards(indexOfCardFromHand);
         scene->drawScene(indexOfCardFromHand, indexesOfCardsFromBoard);
         sleep(1);
         CaptureCard captureCard = CaptureCard(indexOfCardFromHand, indexesOfCardsFromBoard);
