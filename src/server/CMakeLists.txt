@@ -9,7 +9,8 @@ file(GLOB_RECURSE server_sources *.cpp)
 list(REMOVE_ITEM server_sources "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")
 
 # Build the "server" library, add required include and link against dependencies
-add_library(${lib_server_target} STATIC ${server_sources} ${jsoncpp_sources})
+add_library(${lib_server_target} STATIC ${server_sources} ${jsoncpp_sources}
+        main.cpp)
 add_dependencies(${lib_server_target} generate-headers)
 target_include_directories(${lib_server_target} PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
@@ -30,7 +31,8 @@ endif()
 
 # Compile "client_network" executable
 set(client_server_target client_network)
-add_executable(${client_server_target} main_clientNetwork.cpp)
+add_executable(${client_server_target} main_clientNetwork.cpp
+        server/Server.cpp)
 target_link_libraries(${client_server_target} ${lib_server_target})
 if (BUILD_CODE_COVERAGE)
   add_dependencies(code-coverage ${client_server_target})
