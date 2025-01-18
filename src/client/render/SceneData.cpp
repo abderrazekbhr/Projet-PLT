@@ -146,7 +146,7 @@ SceneData::SceneData()
 SceneData::~SceneData() = default;
 
 // Draw the cards on the hand of the player
-void SceneData::drawCardsOnBoard(sf::RenderWindow &window, state::GameBoard &board)
+void SceneData::drawCardsOnBoard(sf::RenderWindow &window, state::GameBoard &board, std::vector<int> selectedCardsBoard)
 {
     // Retrieve the cards on the board
     std::vector<state::Card> cards = board.getCardBoard();
@@ -189,6 +189,10 @@ void SceneData::drawCardsOnBoard(sf::RenderWindow &window, state::GameBoard &boa
             C_WIDTH_BOARD,          // Width of the card
             C_HEIGHT_BOARD,         // Height of the card
             cardPath, true, &card); // Visibility and card reference
+        if (std::find(selectedCardsBoard.begin(), selectedCardsBoard.end(), i) != selectedCardsBoard.end())
+        {
+            setCardAsSelected(cardShape);
+        }
         std::string cardIndex = "[" + std::to_string(i) + "]";
         sf::Text indexText = createText(cardIndex, font, 14, sf::Color(136, 231, 136, 200), posX + 25, posY + C_HEIGHT_BOARD);
 
@@ -199,7 +203,7 @@ void SceneData::drawCardsOnBoard(sf::RenderWindow &window, state::GameBoard &boa
 }
 
 // Draw the cards on the hand of the player
-void SceneData::drawCardsOnHand(sf::RenderWindow &window, state::Player &player)
+void SceneData::drawCardsOnHand(sf::RenderWindow &window, state::Player &player, int selectedCardHand)
 {
     std::vector<state::Card> heldCards = player.getHoldCard();
     int size = heldCards.size();
@@ -221,11 +225,20 @@ void SceneData::drawCardsOnHand(sf::RenderWindow &window, state::Player &player)
             cardPath, true, &card);
         std::string cardIndex = "[" + std::to_string(i) + "]";
         sf::Text indexText = createText(cardIndex, font, 14, sf::Color(87, 142, 126), posX + 30, posY);
-
+        if (selectedCardHand == i)
+        {
+            setCardAsSelected(cardShape);
+        }
         // Draw the card on the window
         window.draw(cardShape);
         window.draw(indexText);
     }
+}
+
+void SceneData::setCardAsSelected(CardShape &card)
+{
+    card.setOutlineThickness(6);
+    card.setOutlineColor(sf::Color(106, 0, 0));
 }
 
 void SceneData::addCardToBoard(state::Card &card)
@@ -259,44 +272,44 @@ void SceneData::addCardToHand(state::Card &card)
 // }
 
 // Sélectionner une carte de la main du joueur en fonction de son index
-void SceneData::selectCardFromHand(int cardIndex)
-{
-    int size = handCardShapes.size();
-    if (cardIndex >= 0 && cardIndex < size)
-    {
-        selectedCardIndex = cardIndex; // Marquer l'index de la carte sélectionnée
-    }
-    else
-    {
-        selectedCardIndex = -1; // Aucune carte sélectionnée si l'index est invalide
-    }
-}
+// void SceneData::selectCardFromHand(int cardIndex)
+// {
+//     int size = handCardShapes.size();
+//     if (cardIndex >= 0 && cardIndex < size)
+//     {
+//         selectedCardIndex = cardIndex; // Marquer l'index de la carte sélectionnée
+//     }
+//     else
+//     {
+//         selectedCardIndex = -1; // Aucune carte sélectionnée si l'index est invalide
+//     }
+// }
 
-// Sélectionner plusieurs cartes sur le plateau de jeu
-void SceneData::selectCardsFromBoard(std::vector<int> &cardIndexes)
-{
-    selectedBoardCards.clear(); // Réinitialiser les cartes sélectionnées précédemment
+// // Sélectionner plusieurs cartes sur le plateau de jeu
+// void SceneData::selectCardsFromBoard(std::vector<int> &cardIndexes)
+// {
+//     selectedBoardCards.clear(); // Réinitialiser les cartes sélectionnées précédemment
 
-    // Ajouter les indices des cartes sélectionnées
-    for (int idx : cardIndexes)
-    {
-        int size = boardCardShapes.size();
-        if (idx >= 0 && idx < size)
-        {
-            selectedBoardCards.push_back(idx); // Ajouter l'index de la carte sélectionnée
-        }
-    }
-}
+//     // Ajouter les indices des cartes sélectionnées
+//     for (int idx : cardIndexes)
+//     {
+//         int size = boardCardShapes.size();
+//         if (idx >= 0 && idx < size)
+//         {
+//             selectedBoardCards.push_back(idx); // Ajouter l'index de la carte sélectionnée
+//         }
+//     }
+// }
 
-void SceneData::setSelectedCardIndex(int index)
-{
-    selectedCardIndex = index;
-}
+// void SceneData::setSelectedCardIndex(int index)
+// {
+//     selectedCardIndex = index;
+// }
 
-int SceneData::getSelectedCardIndex()
-{
-    return selectedCardIndex;
-}
+// int SceneData::getSelectedCardIndex()
+// {
+//     return selectedCardIndex;
+// }
 
 sf::RectangleShape SceneData::drawCard(std::string img, float width, float height, float posX, float posY)
 {

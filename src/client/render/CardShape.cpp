@@ -4,13 +4,11 @@
 namespace render
 {
 
-    int CardShape::nbInstance = 0;
     std::string CardShape::imgHidden = "../assets/cards/hidden.png";
 
     CardShape::CardShape(int index,float posX, float posY, float width, float height, std::string clearImg, bool isVisible, state::Card *card)
 
     {
-        id = nbInstance++;
         this->posX = posX;
         this->posY = posY;
         this->width = width;
@@ -18,7 +16,6 @@ namespace render
         this->imgClear = clearImg;
         this->isVisible = isVisible;
         this->cardInstance = card;
-        this->index=index;
         setShapeProperty(); // Initialise les propriétés
     }
 
@@ -30,7 +27,6 @@ namespace render
     void CardShape::setY(double y) { posY = y; }
     double CardShape::getWidth() { return width; }
     double CardShape::getHeight() { return height; }
-    int CardShape::getId() { return id; }
 
     void CardShape::changeVisibility()
     {
