@@ -56,13 +56,15 @@ namespace render
             }
         }
 
+        // create board and display it
+        sceneInfo.createBoard();
+        window.draw(sceneInfo.board);
+        
         std::vector<state::Player *> allPlayer = actualState.getAllPlayers();
         state::GameBoard *board = actualState.getBoard();
         sceneInfo.renderPlayerInfo(window, allPlayer, actualState.turn);
 
-        // create board and display it
-        sceneInfo.createBoard();
-        window.draw(sceneInfo.board);
+        
 
         // display actual player cards
         int index = actualState.turn;
