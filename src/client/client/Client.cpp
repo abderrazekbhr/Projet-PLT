@@ -22,23 +22,72 @@ Client::Client()
 void Client::setUp()
 {
     bool isValidSetUp = false;
+
     while (!isValidSetUp)
     {
-        int nbPlayer = this->enterNbPlayer();
+        // Affichage pour choisir le type de partie
+        std::cout << "Choose the game type:\n";
+        std::cout << "1. RandomAI vs HeuristicAI\n";
+        std::cout << "2. RandomAI vs RandomAI\n";
+        std::cout << "3. HeuristicAI vs HeuristicAI\n";
+        std::cout << "4. Player vs AI\n";
+        std::cout << "5. Player vs Player\n";
+        std::cout << "Enter your choice (1-5): ";
+
+        int gameType;
+        std::cin >> gameType;
+
+        int nbPlayer = 2; // Par défaut pour IA vs IA
         int maxScore = this->enterMaxScore();
-        char playerIsIA = this->wantToPlayWithIA();
+        char playerIsIA = 'n'; // Par défaut pour IA vs IA
         int level = -1;
-        if (playerIsIA == 'y' || playerIsIA == 'Y')
+        std::vector<std::string> playersNames;
+
+        if (gameType >= 1 && gameType <= 3)
         {
+            // Cas IA vs IA
+            playerIsIA = 'y';
+            if (gameType == 1) // RandomAI vs HeuristicAI
+            {
+                level = 1; // RandomAI pour le premier joueur
+                playersNames = {"RandomAI_1", "HeuristicAI_2"}; // Noms des IA
+            }
+            else if (gameType == 2) // RandomAI vs RandomAI
+            {
+                level = 1; // RandomAI pour les deux joueurs
+                playersNames = {"RandomAI_1", "RandomAI_2"}; // Noms des IA
+            }
+            else if (gameType == 3) // HeuristicAI vs HeuristicAI
+            {
+                level = 2; // HeuristicAI pour les deux joueurs
+                playersNames = {"HeuristicAI_1", "HeuristicAI_2"}; // Noms des IA
+            }
+        }
+        else if (gameType == 4)
+        {
+            // Cas Joueur vs AI
+            nbPlayer = this->enterNbPlayer(); // Permet de configurer 2 ou 4 joueurs
+            playerIsIA = this->wantToPlayWithIA();
             level = this->enterIALevel();
             playWithAi = true;
+            playersNames = this->enterPlayersNames(nbPlayer);
+        }
+        else if (gameType == 5)
+        {
+            // Cas Joueur vs Joueur
+            nbPlayer = this->enterNbPlayer();
+            playersNames = this->enterPlayersNames(nbPlayer);
+        }
+        else
+        {
+            std::cout << "Invalid choice. Please enter a valid option (1-5).\n";
+            continue;
         }
 
-        std::vector<std::string> playersNames = this->enterPlayersNames(nbPlayer);
-
+        // Création et exécution de la commande SetUpGame
         SetUpGame setUpCommand = SetUpGame(nbPlayer, maxScore, playersNames, playerIsIA, level);
         this->engine.setActualCmd(&setUpCommand);
-        isValidSetUp = this->engine.runCommand(&this->engine); // Corrected to use engine instance.
+        isValidSetUp = this->engine.runCommand(&this->engine);
     }
 }
 
@@ -241,12 +290,15 @@ ActionType Client::chooseAction()
     if (ai1 != nullptr)
     {
         std::cout << "\nName of Random AI Player: " << player.getName() << std::endl;
+        this->displayBoardCards(); // Display the board after AI action
+
         ai1->run(&engine); // Corrected to pass engine pointer
         return Nothing;    // AI has no action prompt for human input
     }
     else if (ai2 != nullptr)
     {
         std::cout << "\nName of Heuristic AI Player: " << player.getName() << std::endl;
+        this->displayBoardCards(); // Display the board after AI action
         ai2->run(&engine); // Corrected to pass engine pointer
         return Nothing;    // AI has no action prompt for human input
     }
@@ -257,6 +309,7 @@ ActionType Client::chooseAction()
         std::cout << "\nName of player: " << player.getName() << std::endl;
 
         std::cout << "CARDS IN YOUR HAND:" << std::endl;
+
         this->displayHandCards();
 
         std::cout << "\n--------------------------------------\n"

@@ -1,13 +1,13 @@
 #include "SetUpGame.h"
+
+#include <iostream>
 #include <stdexcept>
 #include <vector>
 
 namespace engine
 {
-
     SetUpGame::SetUpGame(int nbPlayer, int maxScore, std::vector<std::string> &players, char playerIsIA, int level) : playersName(players)
     {
-
         this->setNewCMD(SETUP_GAME);
         this->nbPlayer = nbPlayer;
         this->maxScore = maxScore;
@@ -25,37 +25,55 @@ namespace engine
 
     void SetUpGame::validateMaxScore()
     {
-
         if (maxScore != 4 && maxScore != 21)
-        // if (maxScore != 5 && maxScore != 21)
         {
-            throw std::invalid_argument("The maximum score must be 11 or 21.");
+            throw std::invalid_argument("The maximum score must be 4 or 21.");
         }
     }
 
     void SetUpGame::initPlayers(state::State &currentState)
     {
-        // int expectedPlayerNames =  nbPlayer;
-
-        // if ((int) playersName.size() != expectedPlayerNames)
-        // {
-        //     throw std::invalid_argument("The number of players does not match the number of names provided.");
-        // }
-
-        currentState.addPlayer(playersName.at(0));
-
         if (playerIsIA == 'y' || playerIsIA == 'Y')
         {
-            for (int i = 1; i < nbPlayer; i++)
+            for (int i = 0; i < nbPlayer; i++)
             {
-                currentState.addIA(playersName.at(i), level);
+                // Définir le niveau de l'IA en fonction du nom
+                int aiLevel = 1;  // Par défaut, les IA Random sont au niveau 1
+                if (playersName.at(i).find("HeuristicAI_2") != std::string::npos) {
+                    aiLevel = 2; // Les IA Heuristic sont au niveau 2
+                }
+
+                // Vérifier les nouveaux noms des IA et les affecter en fonction de leur type
+                if (playersName.at(i).find("RandomAI") != std::string::npos)
+                {
+                    currentState.addIA(playersName.at(i), aiLevel);
+                }
+                else if (playersName.at(i).find("HeuristicAI") != std::string::npos)
+                {
+                    currentState.addIA(playersName.at(i), aiLevel);
+                }
+                else
+                {
+                    // Ajout d'un joueur humain si le nom ne correspond à aucune IA
+                    currentState.addPlayer(playersName.at(i));
+                }
             }
         }
         else
         {
+            // Ajouter le premier joueur comme humain, les autres comme IA ou humains
+            currentState.addPlayer(playersName.at(0)); // Premier joueur toujours humain
+
             for (int i = 1; i < nbPlayer; i++)
             {
-                currentState.addPlayer(playersName.at(i));
+                if (playerIsIA == 'y' || playerIsIA == 'Y')
+                {
+                    currentState.addIA(playersName.at(i), level);
+                }
+                else
+                {
+                    currentState.addPlayer(playersName.at(i));
+                }
             }
         }
     }
@@ -68,7 +86,6 @@ namespace engine
             validateMaxScore();
 
             state::State &currentState = engine->getState();
-
             currentState.setNbPlayer(nbPlayer);
             currentState.setMaxScore(maxScore);
 
@@ -78,10 +95,10 @@ namespace engine
         }
         catch (const std::invalid_argument &e)
         {
-
+            // Catch specific exception and rethrow if necessary
             throw e;
         }
     }
-    SetUpGame::~SetUpGame() {}
 
+    SetUpGame::~SetUpGame() {}
 }
