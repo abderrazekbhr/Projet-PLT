@@ -27,7 +27,6 @@ BOOST_AUTO_TEST_CASE(RandomAiCaptureCardTest)
 
     // Retrieve all players from the engine's state
     std::vector<Player *> players = engine.getState().getAllPlayers();
-    std::cout << "Number of players: " << players.size() << std::endl; // Print number of players
 
     // Attempt to cast the second player to a RandomAi object.
     RandomAi *randomAi = dynamic_cast<RandomAi *>(players[1]);
@@ -59,7 +58,6 @@ BOOST_AUTO_TEST_CASE(RandomAiCaptureCardTest)
 
     // Execute the RandomAI logic again (AI should make another move)
     randomAi->run(&engine);
-    std::cout << "nb=" << randomAi->getHoldCard().size() << std::endl; // Output number of cards in RandomAi's hand
 
     // Verify the state after RandomAI's execution
     BOOST_CHECK_EQUAL(randomAi->getHoldCard().size(), 0); // After running, RandomAi's hand should be empty

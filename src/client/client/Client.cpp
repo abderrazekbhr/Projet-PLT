@@ -2,6 +2,7 @@
 #include <iostream>
 #include <limits>
 #include "ai.h"
+#include <unistd.h>
 #define MAX_PLAYERS 4
 #define MIN_PLAYERS 2
 #define MAX_SCORE 21
@@ -89,6 +90,7 @@ void Client::setUp()
         this->engine.setActualCmd(&setUpCommand);
         isValidSetUp = this->engine.runCommand(&this->engine);
     }
+    scene = new render::Scene(engine.getState());
 }
 
 int Client::enterNbPlayer()
@@ -265,11 +267,14 @@ std::vector<std::string> Client::enterPlayersNames(int nbPlayers)
 
 bool Client::initDistribute()
 {
-
     char response = 'y';
     RoundInitDistributeCards roundInitDistributeCards = RoundInitDistributeCards(response);
     this->engine.setActualCmd(&roundInitDistributeCards);
-    return this->engine.runCommand(&this->engine);
+    cout << "player name :" << engine.getActualPlayer().getName() << " | nb card :" << engine.getActualPlayer().getSizeHoldedCards() << endl;
+
+    bool execResult = this->engine.runCommand(&this->engine);
+
+    return execResult;
 }
 
 void Client::distributeCard()
@@ -374,11 +379,15 @@ void Client::playThrowCard()
     while (!isValidThrowCard)
     {
         int indexCard = this->enterIndexToThrowedCard();
+        scene->drawScene(indexCard, {});
+        sleep(1);
         ThrowCard throwCard = ThrowCard(indexCard);
         this->engine.setActualCmd(&throwCard);
         isValidThrowCard = this->engine.runCommand(&this->engine);
         if (!isValidThrowCard)
         {
+            scene->drawScene(-1, {});
+
             cout << "Invalid card throw action: This may be caused by an incorrect card index." << endl;
             action = this->chooseAction();
             if (action == Collecting)
@@ -400,12 +409,17 @@ void Client::playCaptureCard()
     while (!isValidCaptureCard)
     {
         int indexOfCardFromHand = this->enterIndexToThrowedCard();
+        scene->drawScene(indexOfCardFromHand, {});
         std::vector<int> indexesOfCardsFromBoard = this->enterIndexesToBeCollectedCards();
+        scene->drawScene(indexOfCardFromHand, indexesOfCardsFromBoard);
+        sleep(1);
         CaptureCard captureCard = CaptureCard(indexOfCardFromHand, indexesOfCardsFromBoard);
+
         this->engine.setActualCmd(&captureCard);
         isValidCaptureCard = this->engine.runCommand(&this->engine);
         if (!isValidCaptureCard)
         {
+            scene->drawScene(-1, {});
             cout << "Invalid card capture action: You must capture a card on the board with the same number as your selected card." << endl;
             action = this->chooseAction();
             if (action == Throwing)
@@ -499,5 +513,5 @@ void Client::displayWinner()
 
 Client::~Client()
 {
-    delete &engine; // Fixed memory management
+    // delete &engine; // Fixed memory management
 }
