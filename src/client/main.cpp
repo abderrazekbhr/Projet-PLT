@@ -40,7 +40,7 @@ int main()
                 for (int k = 0; k < nbPlayer; k++) // Iterate through all players
                 {
 
-                    // c->scene->drawScene(-1,{});
+                    c->scene->drawScene(-1,{});
                     // Let the player choose an action
                     ActionType action = c->chooseAction(); // Call once and store result
 
