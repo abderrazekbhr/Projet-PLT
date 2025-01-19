@@ -46,7 +46,8 @@ Lorsque les joueurs n'ont plus de cartes en main :
 Le moteur du jeu repose sur plusieurs classes clés, chacune ayant un rôle spécifique dans la gestion des actions et de l'état du jeu.
 
 ### Diagramme :
-<center><img src="../ressources/engine.png" style="border-radius:2em;width:100%;"></center>
+<center><img src="../ressources/engine.png" style="border-radius:2em;width:100%;"></center> 
+
 ### Classes principales
 
 #### **Classe `Engine`**
@@ -106,10 +107,4 @@ Le moteur du jeu repose sur plusieurs classes clés, chacune ayant un rôle spé
     - Si le plateau n’est pas vide.
 - Les cartes restantes sont attribuées au dernier joueur ayant capturé.
 
----
 
-## Fonctionnalités principales
-- **Initialisation du jeu et des paramètres.**
-- **Gestion des manches et distribution des cartes.**
-- **Suivi des actions des joueurs (poser ou capturer des cartes).**
-- **Calcul automatique du score et déclaration du vainqueur.**
