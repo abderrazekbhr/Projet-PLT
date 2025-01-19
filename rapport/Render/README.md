@@ -27,3 +27,4 @@ La classe CardShape gère l'affichage graphique d'une carte, avec des propriét�
 - Elle permet de créer et de manipuler cette carte, en chargeant une texture, en modifiant sa visibilité, et en comparant les cartes via une instance de la classe `state::Card`.
 
 **Voici un aperçu de notre interface graphique.**
+<center><img src="../ressources/interface.png" style="border-radius:2em;width:100%;"></center>
