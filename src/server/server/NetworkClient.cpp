@@ -4,8 +4,8 @@
 #include <unistd.h>
 #include <iostream>
 #include <thread>
-#include "../server.h"
 #include <json/json.h>
+#include "../server.h"
 
 using namespace server;
 using namespace state;
@@ -128,7 +128,6 @@ GameState NetworkClient::deserializeGameState(const std::string& jsonString) {
 }
 
 void NetworkClient::updateGameState(GameState gameState) {
-
     for (const Card& card : gameState.cards->getAllCards()) {
         state->getAllCards()->getAllCards().push_back(card);
     }
@@ -136,19 +135,23 @@ void NetworkClient::updateGameState(GameState gameState) {
 }
 
 std::string NetworkClient::receiveIdentifier() {
-    std::string identifier;
-    ssize_t received = recv(client_fd, &identifier, sizeof(identifier), 0);
-    if (received != sizeof(identifier)) {
+    char buffer[512];  // Tampon pour éviter débordement
+    ssize_t received = recv(client_fd, buffer, sizeof(buffer), 0);
+    if (received <= 0) {
         perror("Failed to receive identifier");
         throw std::runtime_error("Error receiving identifier from server.");
     }
+
+    std::string identifier(buffer, received);  // Crée une chaîne à partir du tampon reçu
     std::cout << "Received identifier: " << identifier << std::endl;
+
     try {
         sendAcknowledgment();
     } catch (const std::exception& e) {
-        std::cerr << "Failed to send acknowledgment receiveIdentifier: " << e.what() << std::endl;
+        std::cerr << "Failed to send acknowledgment in receiveIdentifier: " << e.what() << std::endl;
         throw;
     }
+
     return identifier;
 }
 
@@ -167,7 +170,7 @@ void NetworkClient::sendResponseToServer(RequestType type, Json::Value response)
     }
 
     if (!waitForAcknowledgment()) {
-        throw std::runtime_error("Failed to receive acknowledgment sendResponseToServer.");
+        throw std::runtime_error("Failed to receive acknowledgment in sendResponseToServer.");
     }
 }
 
@@ -180,19 +183,26 @@ ServerRequest NetworkClient::receiveRequest() {
 
     buffer[bytesReceived] = '\0';
     std::string jsonString(buffer);
+
     ServerRequest request;
     try {
         sendAcknowledgment();
     } catch (const std::exception& e) {
-        std::cerr << "Failed to send acknowledgment receiveRequest: " << e.what() << std::endl;
+        std::cerr << "Failed to send acknowledgment in receiveRequest: " << e.what() << std::endl;
         throw;
     }
+
     return request.deserialize(jsonString);
 }
 
 bool NetworkClient::waitForAcknowledgment() {
     char buffer[4096];
     ssize_t bytesReceived = recv(client_fd, buffer, sizeof(buffer) - 1, 0);
+
+    if (bytesReceived <= 0) {
+        perror("Failed to receive acknowledgment");
+        return false;
+    }
 
     buffer[bytesReceived] = '\0';
     std::string response(buffer);
@@ -205,4 +215,22 @@ void NetworkClient::sendAcknowledgment() {
     if (sent != static_cast<ssize_t>(ACK_MESSAGE.size())) {
         throw std::runtime_error("Failed to send acknowledgment to server.");
     }
+}
+
+std::string NetworkClient::receiveLargeJson() {
+    std::string data;
+    char buffer[4096];
+    ssize_t bytesReceived;
+
+    while ((bytesReceived = recv(client_fd, buffer, sizeof(buffer) - 1, 0)) > 0) {
+        buffer[bytesReceived] = '\0';
+        data += buffer;
+        if (bytesReceived < sizeof(buffer) - 1) break; // Fin des données
+    }
+
+    if (bytesReceived < 0) {
+        throw std::runtime_error("Error receiving large JSON from server.");
+    }
+
+    return data;
 }
