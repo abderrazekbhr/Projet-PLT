@@ -78,8 +78,7 @@ int main()
     // Display the winner at the end of the game
     c->displayWinner();
 
-    // Proper memory management
-    delete c;
+    
 
     return 0;
 }

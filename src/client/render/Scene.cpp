@@ -11,7 +11,6 @@ namespace render
         // sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
         window.create(sf::VideoMode(GameParameters::WIDTH, GameParameters::HEIGHT), "CHKOBA");
 
-        currentComponent = SceneComponent::PLAYER_A;
         init();
     }
 
