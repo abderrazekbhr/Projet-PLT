@@ -15,7 +15,6 @@ RandomAi::RandomAi(std::string name) : AI(name)
 
 void RandomAi::run(engine::Engine *eng)
 {
-
     state::State &currentState = eng->getState();
     state::Player &player = eng->getActualPlayer();
     state::GameBoard *board = currentState.getBoard();
