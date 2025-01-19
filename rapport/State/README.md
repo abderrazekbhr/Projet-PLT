@@ -30,7 +30,7 @@ Ce diagramme représente le diagramme de classes de l'état du jeu, et nous allo
     - Ses cartes en main (*holdedCard*).
     - Ses cartes collectées (*collectedCard*).
     - Son score total.  
-      Elle fournit des méthodes pour :
+  Elle fournit des méthodes pour :
     - Ajouter ou retirer des cartes.
     - Sélectionner une carte de la main.
     - Mettre à jour son score ou son statut.
@@ -55,6 +55,6 @@ Ce diagramme représente le diagramme de classes de l'état du jeu, et nous allo
   La classe Card représente une carte du jeu, définie par :
     - Son numéro (*numberOfCard*).
     - Son type (*typeOfCard*).  
-      Elle propose des méthodes pour :
+  Elle propose des méthodes pour :
     - Obtenir ces propriétés.
     - Comparer deux cartes avec la méthode *equals*, qui vérifie si deux cartes ont le même numéro et le même type.
