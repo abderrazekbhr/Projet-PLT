@@ -41,7 +41,7 @@ Lorsque les joueurs n'ont plus de cartes en main :
 
 ---
 
-## 3. Conception logicielle
+## 3. Conception logicielle 
 
 Le moteur du jeu repose sur plusieurs classes clés, chacune ayant un rôle spécifique dans la gestion des actions et de l'état du jeu.
 
