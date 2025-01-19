@@ -6,11 +6,11 @@
 #include <cstring>
 #include <iostream>
 #include <json/json.h>
-#include "../../src/client/client.h"
+// #include "../../src/client/client.h"
 using namespace server;
 using namespace state;
 using namespace engine;
-using namespace client;
+// using namespace client;
 
 const std::string ACK_MESSAGE = "ACK";
 

@@ -11,7 +11,7 @@ using namespace engine;
 using namespace client;
 
 int main()
-{/*
+{
     // Initialisation de l'état du jeu
     State* state = new State();
 
@@ -63,6 +63,5 @@ int main()
     // Arrêt du serveur et des threads
     server->stop();
     serverThread.join();
-*/
     return 0;
 }

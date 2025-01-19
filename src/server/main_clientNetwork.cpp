@@ -7,7 +7,7 @@ using namespace server;
 
 int main()
 {
-    /*try
+    try
     {
         // Création d'une instance de State directement (plus simple, sans allocation dynamique)
         state::State state;
@@ -58,6 +58,6 @@ int main()
     catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
         return 1;
-    }*/
+    }
     return 0;
 }
