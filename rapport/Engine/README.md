@@ -108,3 +108,4 @@ Le moteur du jeu repose sur plusieurs classes clés, chacune ayant un rôle spé
 - Les cartes restantes sont attribuées au dernier joueur ayant capturé.
 
 
+
