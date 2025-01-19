@@ -58,3 +58,4 @@ Ce diagramme représente le diagramme de classes de l'état du jeu, et nous allo
   Elle propose des méthodes pour :
     - Obtenir ces propriétés.
     - Comparer deux cartes avec la méthode *equals*, qui vérifie si deux cartes ont le même numéro et le même type.
+
