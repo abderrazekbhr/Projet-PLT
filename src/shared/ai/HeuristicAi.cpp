@@ -224,6 +224,8 @@ int HeuristicAi::throwStrategy(vector<Card> hand) {
 
 // Run AI logic
 void HeuristicAi::run(engine::Engine *eng) {
+
+
     State &state = eng->getState();
     Player &player = eng->getActualPlayer();
     vector<Card> hand = player.getHoldCard();
@@ -232,7 +234,6 @@ void HeuristicAi::run(engine::Engine *eng) {
     if (!state.getBoard() || hand.empty()) {
         return;
     }
-
     map<string, vector<int>> vals;
 
     // Checking Chkobba

@@ -14,5 +14,7 @@ add_custom_test(shared_HeuristicAi)
 add_custom_test(shared_RandomAi)
 add_custom_test(shared_CountScore)
 add_custom_test(shared_EndRound)
+add_custom_test(shared_IA_VS_IA)
+
 # vim: set sw=2 sts=2 et:
 

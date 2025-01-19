@@ -25,9 +25,9 @@ namespace engine
 
     void SetUpGame::validateMaxScore()
     {
-        if (maxScore != 4 && maxScore != 21)
+        if (maxScore != 4 && maxScore != 11)
         {
-            throw std::invalid_argument("The maximum score must be 4 or 21.");
+            throw std::invalid_argument("The maximum score must be 4 or 11.");
         }
     }
 
@@ -66,7 +66,7 @@ namespace engine
 
             for (int i = 1; i < nbPlayer; i++)
             {
-                if (playerIsIA == 'y' || playerIsIA == 'Y')
+                if (playerIsIA == 'w' || playerIsIA == 'W')
                 {
                     currentState.addIA(playersName.at(i), level);
                 }
