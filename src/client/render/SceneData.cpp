@@ -250,67 +250,84 @@ void SceneData::addCardToHand(state::Card &card)
 {
     boardCards.push_back(card);
 }
+void SceneData::createEndOfGame(sf::RenderWindow &window, std::vector<state::Player *> players)
+{
 
-// void SceneData::removeCardFromBoard(state::Card &card)
-// {
-//     auto it = std::find_if(boardCards.begin(), boardCards.end(), [&card](state::Card &c)
-//                            { return c.equals(card); });
-//     if (it != boardCards.end())
-//     {
-//         boardCards.erase(it);
-//     }
-// }
+    // Define background for the end-of-game area
+    sf::RectangleShape endOfGame(sf::Vector2f(GameParameters::WIDTH * 0.4, 300));
+    if (!boardTexture.loadFromFile("../assets/endOfGame.jpg"))
+    {
+        std::cout << "Error: failed to load background texture" << std::endl;
+        return;
+    }
 
-// void SceneData::removeCardFromHand(state::Card &card)
-// {
-//     auto it = std::find_if(boardCards.begin(), boardCards.end(), [&card](state::Card &c)
-//                            { return c.equals(card); });
-//     if (it != boardCards.end())
-//     {
-//         boardCards.erase(it);
-//     }
-// }
+    float initPosX = GameParameters::WIDTH * 0.3;
+    float initPosY = GameParameters::HEIGHT * 0.2;
+    endOfGame.setPosition(initPosX, initPosY);
+    endOfGame.setTexture(&boardTexture);
+    window.draw(endOfGame);
 
-// Sélectionner une carte de la main du joueur en fonction de son index
-// void SceneData::selectCardFromHand(int cardIndex)
-// {
-//     int size = handCardShapes.size();
-//     if (cardIndex >= 0 && cardIndex < size)
-//     {
-//         selectedCardIndex = cardIndex; // Marquer l'index de la carte sélectionnée
-//     }
-//     else
-//     {
-//         selectedCardIndex = -1; // Aucune carte sélectionnée si l'index est invalide
-//     }
-// }
+    // Add "Game Over" title
+    sf::Text title = createText("Game Over", font, 30, sf::Color(255, 80, 20, 255),
+                                GameParameters::WIDTH * 0.4, initPosY - 50);
+    window.draw(title);
 
-// // Sélectionner plusieurs cartes sur le plateau de jeu
-// void SceneData::selectCardsFromBoard(std::vector<int> &cardIndexes)
-// {
-//     selectedBoardCards.clear(); // Réinitialiser les cartes sélectionnées précédemment
+    // Find the winner (player with the highest score)
+    auto winner = std::max_element(players.begin(), players.end(),
+                                   [](state::Player *a, state::Player *b)
+                                   {
+                                       return a->getScore() < b->getScore();
+                                   });
 
-//     // Ajouter les indices des cartes sélectionnées
-//     for (int idx : cardIndexes)
-//     {
-//         int size = boardCardShapes.size();
-//         if (idx >= 0 && idx < size)
-//         {
-//             selectedBoardCards.push_back(idx); // Ajouter l'index de la carte sélectionnée
-//         }
-//     }
-// }
+    // Constants for player info box dimensions
+    const int BOX_WIDTH = 250;
+    const int BOX_HEIGHT = 80;
+    const int PADDING_Y = 10;
+    const int FONT_SIZE = 20;
 
-// void SceneData::setSelectedCardIndex(int index)
-// {
-//     selectedCardIndex = index;
-// }
+    // Start position for player info
+    float currentY = initPosY + 40;
 
-// int SceneData::getSelectedCardIndex()
-// {
-//     return selectedCardIndex;
-// }
+    for (auto p : players)
+    {
+        // Highlight winner with a special style
+        sf::Color boxColor = sf::Color(240, 240, 240, 200);
+        sf::RectangleShape playerBox = createInfoPlayer(BOX_WIDTH, BOX_HEIGHT, boxColor, initPosX + 20, currentY);
+        if (p == *winner)
+        {
+            playerBox.setOutlineThickness(4);
+            playerBox.setOutlineColor(sf::Color(255, 215, 0, 255));
+        }
+        // Player name and score
+        std::string name = "Player: " + p->getName();
+        std::string score = "Score: " + std::to_string(p->getScore());
 
+        // Create and position name text
+        sf::Text playerName = createText(name, font, FONT_SIZE, sf::Color(50, 50, 50, 255),
+                                         playerBox.getPosition().x + 10, playerBox.getPosition().y + PADDING_Y);
+
+        // Create and position score text
+        sf::Text playerScore = createText(score, font, FONT_SIZE, sf::Color(87, 142, 126, 255),
+                                          playerBox.getPosition().x + 10, playerBox.getPosition().y + PADDING_Y + FONT_SIZE + 5);
+
+        // Draw player box, name, and score
+        window.draw(playerBox);
+        window.draw(playerName);
+        window.draw(playerScore);
+
+        // Increment Y position for the next player
+        currentY += BOX_HEIGHT + 20;
+    }
+
+    // Add congratulatory message for the winner
+    if (winner != players.end())
+    {
+        std::string winnerMessage = "Congratulations " + (*winner)->getName() + "!";
+        sf::Text congratulation = createText(winnerMessage, font, 25, sf::Color(255, 215, 0, 255),
+                                             GameParameters::WIDTH * 0.32, currentY + 20);
+        window.draw(congratulation);
+    }
+}
 sf::RectangleShape SceneData::drawCard(std::string img, float width, float height, float posX, float posY)
 {
     std::string PATH = "../assets/card/";

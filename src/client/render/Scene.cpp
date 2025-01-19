@@ -10,21 +10,9 @@ namespace render
     {
         // sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
         window.create(sf::VideoMode(GameParameters::WIDTH, GameParameters::HEIGHT), "CHKOBA");
-
-        init();
     }
-
-    Scene::~Scene() {}
-
-    void Scene::init()
+    void Scene::prepareBackground()
     {
-        // Exemple d'initialisation (couleurs, styles, etc.)
-        std::cout << "Initialisation de la scène avec les données nécessaires." << std::endl;
-    }
-
-    void Scene::drawScene(int cindex, std::vector<int> indexs)
-    {
-
         window.clear();
         // Démarre la boucle de rendu
         sf::Texture texture;
@@ -44,17 +32,12 @@ namespace render
             static_cast<float>(windowSize.y) / textureSize.y);
         window.clear();
         window.draw(sprite);
+    }
+    Scene::~Scene() {}
 
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-            {
-                window.close();
-                exit(0);
-            }
-        }
-
+    void Scene::drawScene(int cindex, std::vector<int> indexs, bool isEndOfGame)
+    {
+        this->prepareBackground();
         // create board and display it
         sceneInfo.createBoard();
         window.draw(sceneInfo.board);
@@ -71,6 +54,11 @@ namespace render
         // display board cards
         sceneInfo.drawCardsOnBoard(window, *board, indexs);
 
+        // display end of game
+        if (isEndOfGame)
+        {
+            sceneInfo.createEndOfGame(window, allPlayer);
+        }
         // display window
         window.display();
     }

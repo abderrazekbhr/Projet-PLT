@@ -28,7 +28,7 @@ int main()
     int nbRound = 36 / (nbPlayer * nbTours); // Number of rounds based on total cards
 
     // Main game loop
-    while (!c->isEndOfGame() && c->scene->window.isOpen())
+    while (!c->isEndOfGame())
     {
         // Distribute cards to players
         c->initDistribute();
@@ -40,7 +40,7 @@ int main()
                 for (int k = 0; k < nbPlayer; k++) // Iterate through all players
                 {
 
-                    c->scene->drawScene(-1,{});
+                    c->scene->drawScene(-1, {}, false);
                     // Let the player choose an action
                     ActionType action = c->chooseAction(); // Call once and store result
 
@@ -74,11 +74,21 @@ int main()
             break; // Exit the game loop
         }
     }
-
     // Display the winner at the end of the game
     c->displayWinner();
-
-    
+    while (c->scene->window.isOpen())
+    {
+        c->scene->drawScene(-1, {}, true);
+        sf::Event event;
+        while (c->scene->window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+            {
+                c->scene->window.close();
+                exit(0);
+            }
+        }
+    }
 
     return 0;
 }

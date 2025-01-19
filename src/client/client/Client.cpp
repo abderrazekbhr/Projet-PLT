@@ -27,7 +27,8 @@ void Client::setUp()
     while (!isValidSetUp)
     {
         int gameType = 0;
-        while (true) {
+        while (true)
+        {
             std::cout << "Choose the game type:\n";
             std::cout << "1. RandomAI vs HeuristicAI\n";
             std::cout << "2. RandomAI vs RandomAI\n";
@@ -37,11 +38,14 @@ void Client::setUp()
             std::cout << "Enter your choice (1-5): ";
             std::cin >> gameType;
 
-            if (std::cin.fail() || gameType < 1 || gameType > 5) {
-                std::cin.clear(); // Réinitialise le flag d'erreur
+            if (std::cin.fail() || gameType < 1 || gameType > 5)
+            {
+                std::cin.clear();                                                   // Réinitialise le flag d'erreur
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore la saisie incorrecte
                 std::cout << "Invalid choice. Please enter a number between 1 and 5.\n";
-            } else {
+            }
+            else
+            {
                 break; // Sortie de la boucle si le choix est valide
             }
         }
@@ -58,17 +62,17 @@ void Client::setUp()
             playerIsIA = 'y';
             if (gameType == 1) // RandomAI vs HeuristicAI
             {
-                level = 1; // RandomAI pour le premier joueur
+                level = 1;                                      // RandomAI pour le premier joueur
                 playersNames = {"RandomAI_1", "HeuristicAI_2"}; // Noms des IA
             }
             else if (gameType == 2) // RandomAI vs RandomAI
             {
-                level = 1; // RandomAI pour les deux joueurs
+                level = 1;                                   // RandomAI pour les deux joueurs
                 playersNames = {"RandomAI_1", "RandomAI_2"}; // Noms des IA
             }
             else if (gameType == 3) // HeuristicAI vs HeuristicAI
             {
-                level = 2; // HeuristicAI pour les deux joueurs
+                level = 2;                                         // HeuristicAI pour les deux joueurs
                 playersNames = {"HeuristicAI_1", "HeuristicAI_2"}; // Noms des IA
             }
         }
@@ -79,13 +83,13 @@ void Client::setUp()
             level = this->enterIALevel();
             playWithAi = true;
             playerIsIA = 'w';
-            playersNames = this->enterPlayersNames(nbPlayer,level);
+            playersNames = this->enterPlayersNames(nbPlayer, level);
         }
         else if (gameType == 5)
         {
             // Cas Joueur vs Joueur
             nbPlayer = this->enterNbPlayer();
-            playersNames = this->enterPlayersNames(nbPlayer,level);
+            playersNames = this->enterPlayersNames(nbPlayer, level);
         }
         else
         {
@@ -111,7 +115,7 @@ int Client::enterNbPlayer()
         // Vérification de la validité de la saisie
         if (std::cin.fail() || (nbPlayer != 2 && nbPlayer != 4))
         {
-            std::cin.clear(); // Réinitialise le flag d'erreur
+            std::cin.clear();                                                   // Réinitialise le flag d'erreur
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore les caractères restants dans le buffer
             std::cout << "Invalid input. Please enter 2 or 4.\n";
         }
@@ -123,7 +127,6 @@ int Client::enterNbPlayer()
     return nbPlayer;
 }
 
-
 char Client::wantToPlayWithIA()
 {
     std::string prompt = "Do you want to play with IA ? (y/n): ";
@@ -131,37 +134,51 @@ char Client::wantToPlayWithIA()
     return resp;
 }
 
-int Client::enterMaxScore() {
+int Client::enterMaxScore()
+{
     int maxScore;
-    while (true) {
+    while (true)
+    {
         std::cout << "Enter the maximum score (4 or 11): ";
         std::cin >> maxScore;
 
-        if (std::cin.fail()) {
-            std::cin.clear(); // Réinitialise le flag d'erreur
+        if (std::cin.fail())
+        {
+            std::cin.clear();                                                   // Réinitialise le flag d'erreur
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore la saisie incorrecte
             std::cout << "Invalid input. Please enter a valid number.\n";
-        } else if (maxScore == 4 || maxScore == 11) {
+        }
+        else if (maxScore == 4 || maxScore == 11)
+        {
             return maxScore; // Valeur valide, on retourne
-        } else {
+        }
+        else
+        {
             std::cout << "Invalid choice. Please enter 4 or 11.\n";
         }
     }
 }
 
-int Client::enterIALevel() {
+int Client::enterIALevel()
+{
     int level;
-    while (true) {
+    while (true)
+    {
         std::cout << "Enter the level of the AI (1 or 2): ";
         std::cin >> level;
 
-        if (std::cin.fail()) {
-            std::cin.clear(); // Réinitialise le flag d'erreur
+        if (std::cin.fail())
+        {
+            std::cin.clear();                                                   // Réinitialise le flag d'erreur
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore la saisie incorrecte
             std::cout << "Invalid input. Please enter a valid number.\n";
-        } else if (level == 1 || level == 2) {
+        }
+        else if (level == 1 || level == 2)
+        {
             return level; // Valeur valide, on retourne
-        } else {
+        }
+        else
+        {
             std::cout << "Invalid choice. Please enter 1 or 2.\n";
         }
     }
@@ -287,7 +304,7 @@ void Client::displayBoardCards()
     }
 }
 
-std::vector<std::string> Client::enterPlayersNames(int nbPlayers,int level)
+std::vector<std::string> Client::enterPlayersNames(int nbPlayers, int level)
 {
     std::vector<std::string> playersNames;
     std::string name;
@@ -368,8 +385,8 @@ ActionType Client::chooseAction()
     {
         std::cout << "\nName of Heuristic AI Player: " << player.getName() << std::endl;
         this->displayBoardCards(); // Display the board after AI action
-        ai2->run(&engine); // Corrected to pass engine pointer
-        return Nothing;    // AI has no action prompt for human input
+        ai2->run(&engine);         // Corrected to pass engine pointer
+        return Nothing;            // AI has no action prompt for human input
     }
 
     // For human players, prompt for an action
@@ -420,7 +437,7 @@ std::vector<int> Client::enterIndexesToBeCollectedCards(int indexOfCardFromHand)
     {
         int index = this->getValidatedInteger("Enter the index of the card you wish to collect from the board (indices start from 0): ");
         indexes.push_back(index);
-        this->scene->drawScene(indexOfCardFromHand, indexes);
+        this->scene->drawScene(indexOfCardFromHand, indexes, false);
         char response = this->getValidatedChar("Do you want to select another card to collect from the board? (y/n):");
         if (response == 'y' || response == 'Y')
         {
@@ -444,14 +461,14 @@ void Client::playThrowCard()
     while (!isValidThrowCard)
     {
         int indexCard = this->enterIndexToThrowedCard();
-        scene->drawScene(indexCard, {});
+        scene->drawScene(indexCard, {}, false);
         sleep(1);
         ThrowCard throwCard = ThrowCard(indexCard);
         this->engine.setActualCmd(&throwCard);
         isValidThrowCard = this->engine.runCommand(&this->engine);
         if (!isValidThrowCard)
         {
-            scene->drawScene(-1, {});
+            scene->drawScene(-1, {}, false);
 
             cout << "Invalid card throw action: This may be caused by an incorrect card index." << endl;
             action = this->chooseAction();
@@ -474,7 +491,7 @@ void Client::playCaptureCard()
     while (!isValidCaptureCard)
     {
         int indexOfCardFromHand = this->enterIndexToThrowedCard();
-        scene->drawScene(indexOfCardFromHand, {});
+        scene->drawScene(indexOfCardFromHand, {}, false);
         std::vector<int> indexesOfCardsFromBoard = this->enterIndexesToBeCollectedCards(indexOfCardFromHand);
         sleep(1);
         CaptureCard captureCard = CaptureCard(indexOfCardFromHand, indexesOfCardsFromBoard);
@@ -483,7 +500,7 @@ void Client::playCaptureCard()
         isValidCaptureCard = this->engine.runCommand(&this->engine);
         if (!isValidCaptureCard)
         {
-            scene->drawScene(-1, {});
+            scene->drawScene(-1, {}, false);
             cout << "Invalid card capture action: You must capture a card on the board with the same number as your selected card." << endl;
             action = this->chooseAction();
             if (action == Throwing)
