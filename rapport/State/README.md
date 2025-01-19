@@ -7,7 +7,7 @@ Le diagramme de classes de l'état permet d'identifier les composants essentiels
 
 Le **State** gère l'état global du jeu et supervise son déroulement, le **Player** représente les joueurs en suivant leurs cartes et scores, le **GameBoard** s'occupe des cartes placées sur le plateau, et le **CardsDeck** est responsable de la création, du mélange et de la distribution des cartes. Ensemble, ces composants assurent le bon fonctionnement et la logique du jeu.
 
-## 2. Conception logicielle
+## 2. Conception logicielle 
 
 
 Ce diagramme représente le diagramme de classes de l'état du jeu, et nous allons détailler les différentes classes qui le composent.
